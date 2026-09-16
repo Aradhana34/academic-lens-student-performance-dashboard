@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Profile | Academic Lens</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+</head>
+
+
+<body>
+
+<div class="dashboard">
+
+
+    <!-- =====================================================
+         SIDEBAR
+    ====================================================== -->
+
+    <aside class="sidebar">
+
+        <div class="brand">
+
+            <div class="brand-icon">
+                🎓
+            </div>
+
+            <div>
+
+                <h2>Academic Lens</h2>
+
+                <small>
+                    Student Performance Analyzer
+                </small>
+
+            </div>
+
+        </div>
+
+
+        <nav>
+
+            <a href="{{ url_for('student_dashboard') }}">
+                <i class="fa-solid fa-chart-pie"></i>
+                <span>Dashboard</span>
+            </a>
+
+
+            <a href="{{ url_for('student_performance_page') }}">
+                <i class="fa-solid fa-chart-line"></i>
+                <span>Performance</span>
+            </a>
+
+
+            <a href="{{ url_for('student_attendance') }}">
+                <i class="fa-solid fa-calendar-check"></i>
+                <span>Attendance</span>
+            </a>
+
+
+            <a href="{{ url_for('student_subjects') }}">
+                <i class="fa-solid fa-book"></i>
+                <span>Subjects</span>
+            </a>
+
+
+            <a href="{{ url_for('student_profile') }}"
+               class="active">
+
+                <i class="fa-solid fa-user"></i>
+                <span>Profile</span>
+
+            </a>
+
+
+            <a href="{{ url_for('logout') }}">
+
+                <i class="fa-solid fa-right-from-bracket"></i>
+                <span>Logout</span>
+
+            </a>
+
+        </nav>
+
+    </aside>
+
+
+
+    <!-- =====================================================
+         MAIN CONTENT
+    ====================================================== -->
+
+    <main class="main-content profile-page">
+
+
+        <!-- Page Heading -->
+
+        <div class="profile-page-header">
+
+            <div>
+
+                <h1>My Profile</h1>
+
+                <p>
+                    View and manage your student information.
+                </p>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =================================================
+             PROFILE HEADER CARD
+        ================================================== -->
+
+        <section class="profile-header-card">
+
+            <div class="profile-avatar-large">
+
+                {{ student.name[0] | upper }}
+
+            </div>
+
+
+            <div class="profile-header-info">
+
+                <h2>
+                    {{ student.name }}
+                </h2>
+
+                <p>
+                    <i class="fa-solid fa-graduation-cap"></i>
+
+                    {{ student.course }}
+
+                    <span class="separator">•</span>
+
+                    Semester {{ student.semester }}
+
+                </p>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             STUDENT INFORMATION
+        ================================================== -->
+
+        <section class="profile-section">
+
+            <div class="section-heading">
+
+                <div class="section-icon">
+                    <i class="fa-solid fa-user"></i>
+                </div>
+
+                <div>
+
+                    <h2>Student Information</h2>
+
+                    <p>
+                        Your registered academic information
+                    </p>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="profile-details-grid">
+
+
+                <!-- Student ID -->
+
+                <div class="profile-detail-card">
+
+                    <div class="detail-icon">
+                        <i class="fa-solid fa-id-card"></i>
+                    </div>
+
+                    <div class="detail-content">
+
+                        <span>Student ID</span>
+
+                        <strong>
+                            {{ student.id }}
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- Email -->
+
+                <div class="profile-detail-card">
+
+                    <div class="detail-icon">
+                        <i class="fa-solid fa-envelope"></i>
+                    </div>
+
+                    <div class="detail-content">
+
+                        <span>Email Address</span>
+
+                        <strong>
+                            {{ student.email }}
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- Course -->
+
+                <div class="profile-detail-card">
+
+                    <div class="detail-icon">
+                        <i class="fa-solid fa-book-open"></i>
+                    </div>
+
+                    <div class="detail-content">
+
+                        <span>Course</span>
+
+                        <strong>
+                            {{ student.course }}
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- Semester -->
+
+                <div class="profile-detail-card">
+
+                    <div class="detail-icon">
+                        <i class="fa-solid fa-layer-group"></i>
+                    </div>
+
+                    <div class="detail-content">
+
+                        <span>Current Semester</span>
+
+                        <strong>
+                            Semester {{ student.semester }}
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             ACADEMIC SUMMARY
+        ================================================== -->
+
+        <section class="profile-section academic-summary">
+
+            <div class="section-heading">
+
+                <div class="section-icon">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                </div>
+
+                <div>
+
+                    <h2>Academic Summary</h2>
+
+                    <p>
+                        Your current academic details
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="summary-row">
+
+
+                <div class="summary-item">
+
+                    <span>Course</span>
+
+                    <strong>
+                        {{ student.course }}
+                    </strong>
+
+                </div>
+
+
+                <div class="summary-item">
+
+                    <span>Semester</span>
+
+                    <strong>
+                        {{ student.semester }}
+                    </strong>
+
+                </div>
+
+
+                <div class="summary-item">
+
+                    <span>Student Status</span>
+
+                    <strong class="status-active">
+                        Active
+                    </strong>
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+
+    </main>
+
+</div>
+
+</body>
+
+</html>

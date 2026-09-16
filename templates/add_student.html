@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Academic Lens | Add Student</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+
+    <style>
+
+        /* =========================================
+           PAGE
+        ========================================= */
+
+        .form-page {
+
+            min-height: 100vh;
+
+            background:
+                radial-gradient(
+                    circle at top right,
+                    rgba(108,99,255,0.12),
+                    transparent 35%
+                ),
+                var(--background);
+
+            padding: 35px;
+
+        }
+
+
+        /* =========================================
+           TOP BAR
+        ========================================= */
+
+        .form-topbar {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            margin-bottom: 30px;
+
+        }
+
+
+        .back-btn {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+            padding: 10px 16px;
+
+            border-radius: 10px;
+
+            background: white;
+
+            color: #334155;
+
+            text-decoration: none;
+
+            font-size: 13px;
+
+            font-weight: 600;
+
+            box-shadow:
+                0 5px 20px rgba(15,23,42,0.06);
+
+            transition: 0.3s;
+
+        }
+
+
+        .back-btn:hover {
+
+            transform: translateX(-3px);
+
+            box-shadow:
+                0 8px 25px rgba(15,23,42,0.12);
+
+        }
+
+
+        /* =========================================
+           HEADER
+        ========================================= */
+
+        .form-heading {
+
+            text-align: center;
+
+            margin-bottom: 28px;
+
+        }
+
+
+        .form-heading-icon {
+
+            width: 65px;
+
+            height: 65px;
+
+            margin: auto;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border-radius: 18px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #7c3aed,
+                    #6366f1
+                );
+
+            color: white;
+
+            font-size: 25px;
+
+            box-shadow:
+                0 12px 30px rgba(99,102,241,0.25);
+
+        }
+
+
+        .form-heading h1 {
+
+            margin-top: 18px;
+
+            font-size: 28px;
+
+            font-weight: 800;
+
+            color: #172033;
+
+        }
+
+
+        .form-heading p {
+
+            margin-top: 6px;
+
+            color: #64748b;
+
+            font-size: 14px;
+
+        }
+
+
+        /* =========================================
+           FORM CARD
+        ========================================= */
+
+        .form-card {
+
+            max-width: 850px;
+
+            margin: auto;
+
+            background: rgba(255,255,255,0.95);
+
+            border-radius: 22px;
+
+            padding: 32px;
+
+            box-shadow:
+                0 20px 50px rgba(15,23,42,0.10);
+
+            border: 1px solid rgba(226,232,240,0.8);
+
+        }
+
+
+        /* =========================================
+           SECTION
+        ========================================= */
+
+        .form-section {
+
+            margin-bottom: 28px;
+
+        }
+
+
+        .form-section-title {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            padding-bottom: 12px;
+
+            margin-bottom: 20px;
+
+            border-bottom: 1px solid #e2e8f0;
+
+            color: #1e293b;
+
+            font-size: 15px;
+
+            font-weight: 700;
+
+        }
+
+
+        .form-section-title i {
+
+            color: #6366f1;
+
+        }
+
+
+        /* =========================================
+           GRID
+        ========================================= */
+
+        .form-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 20px;
+
+        }
+
+
+        .form-group {
+
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 7px;
+
+        }
+
+
+        .form-group.full {
+
+            grid-column: 1 / -1;
+
+        }
+
+
+        .form-group label {
+
+            font-size: 12px;
+
+            font-weight: 700;
+
+            color: #475569;
+
+        }
+
+/* ================================
+   INPUT BOX WITH ICON
+================================ */
+
+.input-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.input-wrapper i {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #6366f1;
+    font-size: 14px;
+    z-index: 2;
+    pointer-events: none;
+}
+
+.form-control {
+    width: 100%;
+    height: 46px;
+
+    /* Space for icon */
+    padding: 12px 14px 12px 44px;
+
+    border: 1px solid #dbe2ea;
+    border-radius: 11px;
+
+    background: #f8fafc;
+
+    font-size: 13px;
+    color: #1e293b;
+
+    outline: none;
+    transition: all 0.25s ease;
+
+    box-sizing: border-box;
+}
+
+.form-control::placeholder {
+    color: #94a3b8;
+    opacity: 1;
+}
+
+.form-control:focus {
+    background: #ffffff;
+    border-color: #6366f1;
+
+    box-shadow:
+        0 0 0 4px rgba(99,102,241,0.10);
+}
+
+/* Select box */
+select.form-control {
+    cursor: pointer;
+    appearance: auto;
+}
+
+
+
+        /* =========================================
+           ACTIONS
+        ========================================= */
+
+        .form-actions {
+
+            display: flex;
+
+            justify-content: flex-end;
+
+            gap: 12px;
+
+            padding-top: 25px;
+
+            border-top: 1px solid #e2e8f0;
+
+        }
+
+
+        .cancel-btn,
+        .save-btn {
+
+            border: none;
+
+            border-radius: 11px;
+
+            padding: 13px 22px;
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+            text-decoration: none;
+
+            transition: 0.3s;
+
+        }
+
+
+        .cancel-btn {
+
+            background: #f1f5f9;
+
+            color: #475569;
+
+        }
+
+
+        .cancel-btn:hover {
+
+            background: #e2e8f0;
+
+        }
+
+
+        .save-btn {
+
+            color: white;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #6366f1,
+                    #7c3aed
+                );
+
+            box-shadow:
+                0 8px 20px rgba(99,102,241,0.25);
+
+        }
+
+
+        .save-btn:hover {
+
+            transform: translateY(-2px);
+
+            box-shadow:
+                0 12px 25px rgba(99,102,241,0.35);
+
+        }
+
+
+        /* =========================================
+           RESPONSIVE
+        ========================================= */
+
+        @media(max-width:700px) {
+
+            .form-page {
+
+                padding: 20px;
+
+            }
+
+            .form-grid {
+
+                grid-template-columns: 1fr;
+
+            }
+
+            .form-group.full {
+
+                grid-column: auto;
+
+            }
+
+            .form-card {
+
+                padding: 22px;
+
+            }
+
+            .form-actions {
+
+                flex-direction: column;
+
+            }
+
+            .cancel-btn,
+            .save-btn {
+
+                justify-content: center;
+
+            }
+
+        }
+        /* =================================================
+   FINAL FIX - INPUT ICON AND TEXT ALIGNMENT
+   ================================================= */
+
+.form-page .input-wrapper {
+    position: relative !important;
+    width: 100% !important;
+    display: block !important;
+}
+
+.form-page .input-wrapper i {
+    position: absolute !important;
+    left: 16px !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+
+    width: 16px !important;
+    text-align: center !important;
+
+    color: #6366f1 !important;
+    font-size: 14px !important;
+
+    z-index: 10 !important;
+    pointer-events: none !important;
+}
+
+.form-page .form-control {
+    width: 100% !important;
+    height: 48px !important;
+
+    padding: 12px 15px 12px 48px !important;
+
+    margin: 0 !important;
+
+    border: 1px solid #dbe2ea !important;
+    border-radius: 11px !important;
+
+    background: #f8fafc !important;
+
+    color: #1e293b !important;
+    font-size: 14px !important;
+
+    line-height: normal !important;
+
+    box-sizing: border-box !important;
+}
+
+.form-page .form-control::placeholder {
+    color: #94a3b8 !important;
+    opacity: 1 !important;
+    padding: 0 !important;
+}
+
+.form-page .form-control:focus {
+    background: #ffffff !important;
+    border-color: #6366f1 !important;
+    outline: none !important;
+
+    box-shadow: 0 0 0 4px rgba(99,102,241,0.10) !important;
+}
+
+/* Select text alignment */
+.form-page select.form-control {
+    padding-left: 48px !important;
+    cursor: pointer !important;
+}
+
+/* Labels */
+.form-page .form-group label {
+    display: block !important;
+    margin-bottom: 7px !important;
+    color: #475569 !important;
+}
+
+/* Prevent any external CSS from moving the icon */
+.form-page .input-wrapper > i {
+    margin: 0 !important;
+}
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="form-page">
+
+
+    <!-- TOP -->
+
+    <div class="form-topbar">
+
+        <a href="{{ url_for('admin_dashboard') }}"
+           class="back-btn">
+
+            <i class="fa-solid fa-arrow-left"></i>
+
+            Dashboard
+
+        </a>
+
+    </div>
+
+
+
+    <!-- HEADER -->
+
+    <div class="form-heading">
+
+        <div class="form-heading-icon">
+
+            <i class="fa-solid fa-user-plus"></i>
+
+        </div>
+
+        <h1>Add New Student</h1>
+
+        <p>
+            Register a new student in the Academic Lens system
+        </p>
+
+    </div>
+
+
+
+    <!-- FORM -->
+
+    <div class="form-card">
+
+
+        <form method="POST">
+
+
+            <!-- STUDENT INFORMATION -->
+
+            <div class="form-section">
+
+                <div class="form-section-title">
+
+                    <i class="fa-solid fa-user"></i>
+
+                    Student Information
+
+                </div>
+
+
+                <div class="form-grid">
+
+
+                    <!-- NAME -->
+
+                    <div class="form-group">
+
+                        <label>
+                            Student Name
+                        </label>
+
+                        <div class="input-wrapper">
+
+                            <i class="fa-solid fa-user"></i>
+
+                            <input
+                                type="text"
+                                name="name"
+                                class="form-control"
+                                placeholder="Enter full name"
+                                required>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- EMAIL -->
+
+                    <div class="form-group">
+
+                        <label>
+                            Email Address
+                        </label>
+
+                        <div class="input-wrapper">
+
+                            <i class="fa-solid fa-envelope"></i>
+
+                            <input
+                                type="email"
+                                name="email"
+                                class="form-control"
+                                placeholder="student@example.com"
+                                required>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- PASSWORD -->
+
+                    <div class="form-group">
+
+                        <label>
+                            Password
+                        </label>
+
+                        <div class="input-wrapper">
+
+                            <i class="fa-solid fa-lock"></i>
+
+                            <input
+                                type="password"
+                                name="password"
+                                class="form-control"
+                                placeholder="Create password"
+                                required>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- COURSE -->
+
+                    <div class="form-group">
+
+                        <label>
+                            Course
+                        </label>
+
+                        <div class="input-wrapper">
+
+                            <i class="fa-solid fa-graduation-cap"></i>
+
+                            <select
+                                name="course"
+                                class="form-control"
+                                required>
+
+                                <option value="">
+                               Select course
+                                </option>
+
+                                <option value="BSc IT">
+                                BSc IT
+                                </option>
+
+                                <option value="BCA">
+                                 BCA
+                                </option>
+
+                                <option value="BSc CS">
+                                BSc Computer Science
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- SEMESTER -->
+
+                    <div class="form-group">
+
+                        <label>
+                        Semester
+                        </label>
+
+                        <div class="input-wrapper">
+
+                            <i class="fa-solid fa-layer-group"></i>
+
+                            <select
+                                name="semester"
+                                class="form-control"
+                                required>
+
+                                <option value="">
+                                Select semester
+                                </option>
+
+                                <option value="1">Semester 1</option>
+                                <option value="2">Semester 2</option>
+                                <option value="3">Semester 3</option>
+                                <option value="4">Semester 4</option>
+                                <option value="5">Semester 5</option>
+                                <option value="6">Semester 6</option>
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+
+
+            <!-- ACTIONS -->
+
+            <div class="form-actions">
+
+                <a href="{{ url_for('admin_dashboard') }}"
+                   class="cancel-btn">
+
+                    Cancel
+
+                </a>
+
+
+                <button
+                    type="submit"
+                    class="save-btn">
+
+                    <i class="fa-solid fa-user-plus"></i>
+
+                    Add Student
+
+                </button>
+
+            </div>
+
+
+        </form>
+
+    </div>
+
+
+</div>
+
+
+</body>
+
+</html>

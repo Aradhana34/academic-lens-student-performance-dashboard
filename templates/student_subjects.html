@@ -1,0 +1,1449 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>Academic Lens | Subjects</title>
+
+
+    <!-- =====================================================
+         FONT AWESOME
+    ====================================================== -->
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+
+    <!-- =====================================================
+         MAIN PROJECT CSS
+    ====================================================== -->
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}">
+
+
+    <style>
+
+        /* =====================================================
+           THEME VARIABLES
+        ====================================================== */
+
+        :root {
+
+            --background: #f5f7fb;
+
+            --card: #ffffff;
+
+            --card-soft: #f8fafc;
+
+            --text: #172033;
+
+            --heading: #0f172a;
+
+            --muted: #64748b;
+
+            --border: #e2e8f0;
+
+            --primary: #6366f1;
+
+            --secondary: #7c3aed;
+
+            --success: #10b981;
+
+            --shadow:
+                0 10px 30px rgba(15, 23, 42, 0.08);
+
+        }
+
+
+        /* =====================================================
+           DARK MODE
+        ====================================================== */
+
+        body.dark {
+
+            --background: #0f172a;
+
+            --card: #18243b;
+
+            --card-soft: #1e293b;
+
+            --text: #f8fafc;
+
+            --heading: #ffffff;
+
+            --muted: #94a3b8;
+
+            --border: #334155;
+
+            --primary: #818cf8;
+
+            --secondary: #a78bfa;
+
+            --success: #34d399;
+
+            --shadow:
+                0 12px 35px rgba(0, 0, 0, 0.25);
+
+        }
+
+
+        /* =====================================================
+           RESET
+        ====================================================== */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+
+        body {
+
+            min-height: 100vh;
+
+            background:
+                var(--background);
+
+            color:
+                var(--text);
+
+            font-family:
+                "Segoe UI",
+                Arial,
+                sans-serif;
+
+            transition:
+                background-color 0.3s ease,
+                color 0.3s ease;
+
+        }
+
+
+        /* =====================================================
+           NAVBAR
+        ====================================================== */
+
+        .navbar {
+
+            background:
+                var(--card) !important;
+
+            border-bottom:
+                1px solid var(--border) !important;
+
+            color:
+                var(--text);
+
+        }
+
+
+        .navbar h2 {
+
+            color:
+                var(--heading) !important;
+
+        }
+
+
+        .navbar span {
+
+            color:
+                var(--muted) !important;
+
+        }
+
+
+        .icon-btn {
+
+            background:
+                var(--card) !important;
+
+            color:
+                var(--text) !important;
+
+            border:
+                1px solid var(--border) !important;
+
+            cursor:
+                pointer;
+
+        }
+
+
+        .icon-btn:hover {
+
+            color:
+                var(--primary) !important;
+
+            border-color:
+                var(--primary) !important;
+
+        }
+
+
+        /* =====================================================
+           MAIN DASHBOARD WRAPPER
+        ====================================================== */
+
+        .dashboard {
+
+            width:
+                100%;
+
+            min-height:
+                calc(100vh - 75px);
+
+            background:
+                var(--background);
+
+            position:
+                relative;
+
+        }
+
+
+        /* =====================================================
+           SIDEBAR
+        ====================================================== */
+
+        .sidebar {
+
+            width:
+                245px !important;
+
+            position:
+                fixed !important;
+
+            left:
+                0 !important;
+
+            top:
+                75px !important;
+
+            bottom:
+                0 !important;
+
+            background:
+                #111827 !important;
+
+            z-index:
+                1000;
+
+            overflow-y:
+                auto;
+
+        }
+
+
+        .sidebar-title {
+
+            color:
+                #64748b !important;
+
+        }
+
+
+        .sidebar-link {
+
+            color:
+                #cbd5e1 !important;
+
+            text-decoration:
+                none;
+
+        }
+
+
+        .sidebar-link:hover {
+
+            color:
+                #ffffff !important;
+
+        }
+
+
+        .sidebar-link.active {
+
+            color:
+                #ffffff !important;
+
+        }
+
+
+        /* =====================================================
+           MAIN CONTENT
+           
+           IMPORTANT:
+           Reserve the full sidebar width.
+        ====================================================== */
+
+        .subjects-main {
+
+            margin-left:
+                245px !important;
+
+            width:
+                calc(100% - 245px) !important;
+
+            min-height:
+                calc(100vh - 75px);
+
+            padding:
+                40px 45px 60px;
+
+            background:
+                var(--background);
+
+            color:
+                var(--text);
+
+            position:
+                relative;
+
+        }
+
+
+        /* =====================================================
+           PAGE HEADER
+        ====================================================== */
+
+        .subjects-header {
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            justify-content:
+                space-between;
+
+            gap:
+                25px;
+
+            margin-bottom:
+                32px;
+
+        }
+
+
+        .subjects-title-area {
+
+            min-width:
+                0;
+
+        }
+
+
+        .subjects-title {
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            gap:
+                14px;
+
+            margin:
+                0;
+
+            color:
+                var(--heading);
+
+            font-size:
+                32px;
+
+            font-weight:
+                800;
+
+            line-height:
+                1.2;
+
+        }
+
+
+        .title-icon {
+
+            width:
+                50px;
+
+            height:
+                50px;
+
+            flex-shrink:
+                0;
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            justify-content:
+                center;
+
+            border-radius:
+                14px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    var(--primary),
+                    var(--secondary)
+                );
+
+            color:
+                #ffffff;
+
+            font-size:
+                20px;
+
+            box-shadow:
+                0 10px 25px
+                rgba(99, 102, 241, 0.20);
+
+        }
+
+
+        .subjects-subtitle {
+
+            margin:
+                10px 0 0 64px;
+
+            color:
+                var(--muted);
+
+            font-size:
+                14px;
+
+        }
+
+
+        /* =====================================================
+           SUBJECT COUNT
+        ====================================================== */
+
+        .subject-count {
+
+            flex-shrink:
+                0;
+
+            display:
+                inline-flex;
+
+            align-items:
+                center;
+
+            gap:
+                8px;
+
+            padding:
+                11px 15px;
+
+            border-radius:
+                12px;
+
+            background:
+                var(--card);
+
+            border:
+                1px solid var(--border);
+
+            color:
+                var(--muted);
+
+            font-size:
+                12px;
+
+            font-weight:
+                700;
+
+            box-shadow:
+                var(--shadow);
+
+        }
+
+
+        .subject-count i {
+
+            color:
+                var(--primary);
+
+        }
+
+
+        /* =====================================================
+           SUBJECT GRID
+        ====================================================== */
+
+        .subjects-grid {
+
+            width:
+                100%;
+
+            display:
+                grid;
+
+            grid-template-columns:
+                repeat(3, minmax(0, 1fr));
+
+            gap:
+                22px;
+
+        }
+
+
+        /* =====================================================
+           SUBJECT CARD
+        ====================================================== */
+
+        .subject-card {
+
+            position:
+                relative;
+
+            overflow:
+                hidden;
+
+            min-width:
+                0;
+
+            min-height:
+                190px;
+
+            padding:
+                25px;
+
+            background:
+                var(--card);
+
+            border:
+                1px solid var(--border);
+
+            border-radius:
+                18px;
+
+            box-shadow:
+                var(--shadow);
+
+            transition:
+                transform 0.25s ease,
+                box-shadow 0.25s ease,
+                border-color 0.25s ease,
+                background-color 0.3s ease;
+
+        }
+
+
+        .subject-card::before {
+
+            content:
+                "";
+
+            position:
+                absolute;
+
+            width:
+                140px;
+
+            height:
+                140px;
+
+            right:
+                -70px;
+
+            top:
+                -70px;
+
+            border-radius:
+                50%;
+
+            background:
+                rgba(99, 102, 241, 0.08);
+
+        }
+
+
+        .subject-card:hover {
+
+            transform:
+                translateY(-6px);
+
+            border-color:
+                rgba(99, 102, 241, 0.45);
+
+            box-shadow:
+                0 18px 40px rgba(15, 23, 42, 0.12);
+
+        }
+
+
+        /* =====================================================
+           SUBJECT ICON
+        ====================================================== */
+
+        .subject-icon {
+
+            width:
+                52px;
+
+            height:
+                52px;
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            justify-content:
+                center;
+
+            border-radius:
+                15px;
+
+            background:
+                #eef2ff;
+
+            color:
+                #6366f1;
+
+            font-size:
+                21px;
+
+            margin-bottom:
+                20px;
+
+        }
+
+
+        body.dark .subject-icon {
+
+            background:
+                rgba(99, 102, 241, 0.15);
+
+            color:
+                #a5b4fc;
+
+        }
+
+
+        /* =====================================================
+           SUBJECT NAME
+        ====================================================== */
+
+        .subject-card h3 {
+
+            margin:
+                0 0 7px;
+
+            color:
+                var(--heading);
+
+            font-size:
+                19px;
+
+            font-weight:
+                750;
+
+        }
+
+
+        .subject-card p {
+
+            margin:
+                0;
+
+            color:
+                var(--muted);
+
+            font-size:
+                12px;
+
+        }
+
+
+        /* =====================================================
+           SUBJECT FOOTER
+        ====================================================== */
+
+        .subject-footer {
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            justify-content:
+                space-between;
+
+            margin-top:
+                22px;
+
+            padding-top:
+                14px;
+
+            border-top:
+                1px solid var(--border);
+
+        }
+
+
+        .subject-status {
+
+            display:
+                inline-flex;
+
+            align-items:
+                center;
+
+            gap:
+                6px;
+
+            color:
+                var(--muted);
+
+            font-size:
+                11px;
+
+            font-weight:
+                600;
+
+        }
+
+
+        .subject-status i {
+
+            color:
+                var(--success);
+
+        }
+
+
+        .subject-arrow {
+
+            width:
+                32px;
+
+            height:
+                32px;
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            justify-content:
+                center;
+
+            border-radius:
+                9px;
+
+            background:
+                #eef2ff;
+
+            color:
+                #6366f1;
+
+            transition:
+                all 0.25s ease;
+
+        }
+
+
+        .subject-card:hover
+        .subject-arrow {
+
+            background:
+                var(--primary);
+
+            color:
+                #ffffff;
+
+            transform:
+                translateX(3px);
+
+        }
+
+
+        body.dark .subject-arrow {
+
+            background:
+                rgba(99, 102, 241, 0.15);
+
+            color:
+                #a5b4fc;
+
+        }
+
+
+        /* =====================================================
+           EMPTY STATE
+        ====================================================== */
+
+        .empty-subjects {
+
+            grid-column:
+                1 / -1;
+
+            padding:
+                60px 20px;
+
+            text-align:
+                center;
+
+            background:
+                var(--card);
+
+            border:
+                1px solid var(--border);
+
+            border-radius:
+                18px;
+
+            box-shadow:
+                var(--shadow);
+
+        }
+
+
+        .empty-icon {
+
+            width:
+                72px;
+
+            height:
+                72px;
+
+            margin:
+                0 auto 18px;
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            justify-content:
+                center;
+
+            border-radius:
+                18px;
+
+            background:
+                var(--card-soft);
+
+            color:
+                var(--muted);
+
+            font-size:
+                28px;
+
+        }
+
+
+        .empty-subjects h3 {
+
+            margin:
+                0 0 8px;
+
+            color:
+                var(--heading);
+
+            font-size:
+                19px;
+
+        }
+
+
+        .empty-subjects p {
+
+            margin:
+                0;
+
+            color:
+                var(--muted);
+
+            font-size:
+                13px;
+
+        }
+
+
+        /* =====================================================
+           RESPONSIVE - TABLET
+        ====================================================== */
+
+        @media (max-width: 1100px) {
+
+            .subjects-grid {
+
+                grid-template-columns:
+                    repeat(2, minmax(0, 1fr));
+
+            }
+
+        }
+
+
+        /* =====================================================
+           RESPONSIVE - MOBILE
+        ====================================================== */
+
+        @media (max-width: 800px) {
+
+            .sidebar {
+
+                display:
+                    none !important;
+
+            }
+
+
+            .subjects-main {
+
+                margin-left:
+                    0 !important;
+
+                width:
+                    100% !important;
+
+                padding:
+                    30px 25px 50px;
+
+            }
+
+
+            .subjects-header {
+
+                align-items:
+                    flex-start;
+
+            }
+
+        }
+
+
+        @media (max-width: 600px) {
+
+            .subjects-main {
+
+                padding:
+                    25px 18px 40px;
+
+            }
+
+
+            .subjects-header {
+
+                flex-direction:
+                    column;
+
+                align-items:
+                    flex-start;
+
+            }
+
+
+            .subjects-title {
+
+                font-size:
+                    27px;
+
+            }
+
+
+            .subjects-subtitle {
+
+                margin-left:
+                    0;
+
+            }
+
+
+            .subjects-grid {
+
+                grid-template-columns:
+                    1fr;
+
+            }
+
+        }
+
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     NAVBAR
+===================================================== -->
+
+<header class="navbar">
+
+
+    <div class="logo-area">
+
+
+        <div class="logo-icon">
+
+            <i class="fa-solid fa-graduation-cap"></i>
+
+        </div>
+
+
+        <div>
+
+            <h2>
+                Academic Lens
+            </h2>
+
+            <span>
+                Student Performance Analyzer
+            </span>
+
+        </div>
+
+
+    </div>
+
+
+    <div class="nav-actions">
+
+
+        <button
+            class="icon-btn"
+            id="themeButton"
+            type="button"
+            title="Toggle theme">
+
+            <i class="fa-solid fa-moon"></i>
+
+        </button>
+
+
+        <a
+            href="{{ url_for('logout') }}"
+            class="logout-btn">
+
+            <i class="fa-solid fa-right-from-bracket"></i>
+
+            Logout
+
+        </a>
+
+
+    </div>
+
+</header>
+
+
+
+<!-- =====================================================
+     DASHBOARD
+===================================================== -->
+
+<div class="dashboard">
+
+
+    <!-- =================================================
+         SIDEBAR
+    ================================================== -->
+
+    <nav class="sidebar">
+
+
+        <div class="sidebar-title">
+            MAIN MENU
+        </div>
+
+
+        <a
+            href="{{ url_for('student_dashboard') }}"
+            class="sidebar-link">
+
+            <i class="fa-solid fa-chart-pie"></i>
+
+            <span>
+                Dashboard
+            </span>
+
+        </a>
+
+
+        <a
+            href="{{ url_for('student_performance_page') }}"
+            class="sidebar-link">
+
+            <i class="fa-solid fa-chart-line"></i>
+
+            <span>
+                Performance
+            </span>
+
+        </a>
+
+
+        <a
+            href="{{ url_for('student_attendance') }}"
+            class="sidebar-link">
+
+            <i class="fa-solid fa-calendar-check"></i>
+
+            <span>
+                Attendance
+            </span>
+
+        </a>
+
+
+        <a
+            href="{{ url_for('student_subjects') }}"
+            class="sidebar-link active">
+
+            <i class="fa-solid fa-book-open"></i>
+
+            <span>
+                Subjects
+            </span>
+
+        </a>
+
+
+        <div class="sidebar-title account-title">
+            ACCOUNT
+        </div>
+
+
+        <a
+            href="{{ url_for('student_profile') }}"
+            class="sidebar-link">
+
+            <i class="fa-solid fa-user"></i>
+
+            <span>
+                Profile
+            </span>
+
+        </a>
+
+
+        <a
+            href="{{ url_for('logout') }}"
+            class="sidebar-link logout-item">
+
+            <i class="fa-solid fa-right-from-bracket"></i>
+
+            <span>
+                Logout
+            </span>
+
+        </a>
+
+
+    </nav>
+
+
+
+    <!-- =================================================
+         MAIN CONTENT
+    ================================================== -->
+
+    <main class="subjects-main">
+
+
+        <!-- =================================================
+             HEADER
+        ================================================== -->
+
+        <section class="subjects-header">
+
+
+            <div class="subjects-title-area">
+
+
+                <h1 class="subjects-title">
+
+
+                    <span class="title-icon">
+
+                        <i class="fa-solid fa-book-open"></i>
+
+                    </span>
+
+
+                    My Subjects
+
+
+                </h1>
+
+
+                <p class="subjects-subtitle">
+
+                    Subjects currently evaluated
+                    for your performance.
+
+                </p>
+
+
+            </div>
+
+
+            <div class="subject-count">
+
+                <i class="fa-solid fa-layer-group"></i>
+
+                <span>
+
+                    {{ subjects|length }}
+
+                    Subject{% if subjects|length != 1 %}s{% endif %}
+
+                </span>
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             SUBJECT CARDS
+        ================================================== -->
+
+        <section class="subjects-grid">
+
+
+            {% for subject in subjects %}
+
+
+            <article class="subject-card">
+
+
+                <div class="subject-icon">
+
+                    <i class="fa-solid fa-book"></i>
+
+                </div>
+
+
+                <h3>
+
+                    {{ subject.subject_name }}
+
+                </h3>
+
+
+                <p>
+                    Academic Subject
+                </p>
+
+
+                <div class="subject-footer">
+
+
+                    <span class="subject-status">
+
+                        <i class="fa-solid fa-circle-check"></i>
+
+                        Evaluated
+
+                    </span>
+
+
+                    <span class="subject-arrow">
+
+                        <i class="fa-solid fa-arrow-right"></i>
+
+                    </span>
+
+
+                </div>
+
+
+            </article>
+
+
+            {% else %}
+
+
+            <div class="empty-subjects">
+
+
+                <div class="empty-icon">
+
+                    <i class="fa-solid fa-book-open"></i>
+
+                </div>
+
+
+                <h3>
+                    No Subjects Available
+                </h3>
+
+
+                <p>
+                    No subjects have been evaluated
+                    for your account yet.
+                </p>
+
+
+            </div>
+
+
+            {% endfor %}
+
+
+        </section>
+
+
+    </main>
+
+
+</div>
+
+
+
+<!-- =====================================================
+     THEME JAVASCRIPT
+===================================================== -->
+
+<script>
+
+
+/* =====================================================
+   LOAD SAVED THEME
+===================================================== */
+
+const savedTheme =
+    localStorage.getItem(
+        "academicLensTheme"
+    );
+
+
+if (savedTheme === "dark") {
+
+    document.body.classList.add("dark");
+
+}
+
+
+
+/* =====================================================
+   THEME BUTTON
+===================================================== */
+
+const themeButton =
+    document.getElementById(
+        "themeButton"
+    );
+
+
+function updateThemeIcon() {
+
+    if (!themeButton) {
+        return;
+    }
+
+
+    const icon =
+        themeButton.querySelector("i");
+
+
+    if (!icon) {
+        return;
+    }
+
+
+    if (
+        document.body.classList.contains("dark")
+    ) {
+
+        icon.className =
+            "fa-solid fa-sun";
+
+        themeButton.title =
+            "Switch to light mode";
+
+    } else {
+
+        icon.className =
+            "fa-solid fa-moon";
+
+        themeButton.title =
+            "Switch to dark mode";
+
+    }
+
+}
+
+
+updateThemeIcon();
+
+
+
+if (themeButton) {
+
+    themeButton.addEventListener(
+        "click",
+        function () {
+
+
+            document.body.classList.toggle(
+                "dark"
+            );
+
+
+            const isDark =
+                document.body.classList.contains(
+                    "dark"
+                );
+
+
+            localStorage.setItem(
+                "academicLensTheme",
+                isDark
+                    ? "dark"
+                    : "light"
+            );
+
+
+            updateThemeIcon();
+
+
+        }
+    );
+
+}
+
+
+</script>
+
+
+</body>
+
+</html>

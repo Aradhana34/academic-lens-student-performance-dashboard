@@ -1,0 +1,1203 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Academic Lens | Add Marks</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f5f7fb;
+            color: #1e293b;
+        }
+
+
+        /* =========================
+           PAGE
+        ========================= */
+
+        .marks-page {
+            min-height: 100vh;
+            padding: 30px 45px 50px;
+
+            background:
+                radial-gradient(
+                    circle at top right,
+                    rgba(59, 130, 246, 0.10),
+                    transparent 35%
+                ),
+                #f5f7fb;
+        }
+
+
+        /* =========================
+           TOP BAR
+        ========================= */
+
+        .topbar {
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+
+            text-decoration: none;
+
+            color: #334155;
+            background: #ffffff;
+
+            padding: 11px 18px;
+
+            border-radius: 10px;
+
+            font-size: 13px;
+            font-weight: 700;
+
+            border: 1px solid #e2e8f0;
+
+            box-shadow:
+                0 5px 18px rgba(15, 23, 42, 0.06);
+
+            transition: 0.25s;
+        }
+
+        .back-btn:hover {
+            color: #4f46e5;
+            transform: translateX(-3px);
+
+            box-shadow:
+                0 8px 22px rgba(15, 23, 42, 0.10);
+        }
+
+
+        /* =========================
+           PAGE HEADER
+        ========================= */
+
+        .page-heading {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .heading-icon {
+            width: 65px;
+            height: 65px;
+
+            margin: 0 auto 15px;
+
+            border-radius: 18px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            color: #ffffff;
+
+            font-size: 25px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #2563eb,
+                    #4f46e5
+                );
+
+            box-shadow:
+                0 12px 28px rgba(37, 99, 235, 0.25);
+        }
+
+        .page-heading h1 {
+            margin: 0 0 7px;
+
+            font-size: 30px;
+            font-weight: 800;
+
+            color: #172033;
+        }
+
+        .page-heading p {
+            margin: 0;
+
+            color: #64748b;
+
+            font-size: 14px;
+        }
+
+
+        /* =========================
+           MAIN CARD
+        ========================= */
+
+        .form-card {
+            max-width: 900px;
+
+            margin: 0 auto;
+
+            background: #ffffff;
+
+            border-radius: 22px;
+
+            padding: 32px;
+
+            border: 1px solid #e2e8f0;
+
+            box-shadow:
+                0 18px 45px rgba(15, 23, 42, 0.08);
+        }
+
+
+        /* =========================
+           SECTION TITLE
+        ========================= */
+
+        .section-title {
+            display: flex;
+            align-items: center;
+
+            gap: 10px;
+
+            margin-bottom: 22px;
+
+            padding-bottom: 13px;
+
+            border-bottom: 1px solid #e2e8f0;
+
+            color: #1e293b;
+
+            font-size: 16px;
+            font-weight: 800;
+        }
+
+        .section-title i {
+            width: 32px;
+            height: 32px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 9px;
+
+            color: #4f46e5;
+
+            background: #eef2ff;
+
+            font-size: 14px;
+        }
+
+
+        /* =========================
+           FORM GRID
+        ========================= */
+
+        .form-grid {
+            display: grid;
+
+            grid-template-columns: repeat(2, 1fr);
+
+            gap: 22px;
+        }
+
+        .full {
+            grid-column: 1 / -1;
+        }
+
+
+        /* =========================
+           FORM GROUP
+        ========================= */
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+
+            gap: 8px;
+        }
+
+        .form-group label {
+            font-size: 12px;
+
+            font-weight: 700;
+
+            color: #475569;
+        }
+
+
+        /* =========================
+           INPUT / SELECT FIX
+        ========================= */
+
+        .input-box {
+            position: relative;
+            width: 100%;
+        }
+
+        .input-box i {
+            position: absolute;
+
+            left: 15px;
+            top: 50%;
+
+            transform: translateY(-50%);
+
+            width: 16px;
+
+            text-align: center;
+
+            color: #94a3b8;
+
+            font-size: 14px;
+
+            pointer-events: none;
+
+            z-index: 2;
+        }
+
+        .input-box input,
+        .input-box select {
+
+            width: 100%;
+            height: 48px;
+
+            /* Proper space for icon */
+            padding: 0 14px 0 48px !important;
+
+            margin: 0 !important;
+
+            border: 1px solid #dbe2ea;
+
+            border-radius: 11px;
+
+            background: #f8fafc;
+
+            color: #1e293b;
+
+            font-size: 13px;
+
+            outline: none;
+
+            line-height: normal;
+
+            transition: all 0.25s;
+
+            box-sizing: border-box;
+        }
+
+        .input-box input::placeholder {
+            color: #94a3b8;
+            opacity: 1;
+            padding: 0;
+        }
+
+        .input-box input:focus,
+        .input-box select:focus {
+
+            background: #ffffff;
+
+            border-color: #4f46e5;
+
+            box-shadow:
+                0 0 0 4px rgba(79, 70, 229, 0.10);
+        }
+
+        .input-box select {
+            cursor: pointer;
+        }
+
+
+        /* =========================
+           PERFORMANCE PREVIEW
+        ========================= */
+
+        .marks-preview {
+            margin-top: 30px;
+
+            padding: 24px;
+
+            border-radius: 17px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #eef2ff,
+                    #eff6ff
+                );
+
+            border: 1px solid #dbeafe;
+        }
+
+        .preview-top {
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            margin-bottom: 18px;
+        }
+
+        .preview-title {
+            margin-bottom: 5px;
+
+            font-size: 11px;
+
+            font-weight: 800;
+
+            letter-spacing: 0.6px;
+
+            color: #64748b;
+        }
+
+        .preview-number {
+            font-size: 31px;
+
+            line-height: 1;
+
+            font-weight: 800;
+
+            color: #4f46e5;
+        }
+
+        .preview-label {
+            margin-top: 6px;
+
+            font-size: 12px;
+
+            color: #64748b;
+        }
+
+        .preview-icon {
+            width: 48px;
+            height: 48px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 13px;
+
+            background: #ffffff;
+
+            color: #4f46e5;
+
+            font-size: 20px;
+
+            box-shadow:
+                0 5px 15px rgba(79, 70, 229, 0.10);
+        }
+
+
+        /* =========================
+           PROGRESS BAR
+        ========================= */
+
+        .progress-track {
+            width: 100%;
+
+            height: 10px;
+
+            margin-top: 18px;
+
+            background: #dbeafe;
+
+            border-radius: 20px;
+
+            overflow: hidden;
+        }
+
+        .preview-fill {
+            height: 100%;
+            width: 0%;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #2563eb,
+                    #4f46e5
+                );
+
+            border-radius: 20px;
+
+            transition: width 0.35s ease;
+        }
+
+
+        /* =========================
+           STATUS
+        ========================= */
+
+        .marks-status {
+            margin-top: 13px;
+
+            font-size: 12px;
+
+            font-weight: 700;
+
+            color: #64748b;
+        }
+
+        .excellent {
+            color: #059669;
+        }
+
+        .good {
+            color: #2563eb;
+        }
+
+        .average {
+            color: #d97706;
+        }
+
+        .poor {
+            color: #dc2626;
+        }
+
+
+        /* =========================
+           ACTIONS
+        ========================= */
+
+        .actions {
+            display: flex;
+
+            justify-content: flex-end;
+
+            gap: 12px;
+
+            margin-top: 30px;
+
+            padding-top: 24px;
+
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .cancel-btn,
+        .save-btn {
+            min-height: 44px;
+
+            padding: 0 21px;
+
+            border: none;
+
+            border-radius: 10px;
+
+            font-size: 13px;
+            font-weight: 700;
+
+            cursor: pointer;
+
+            text-decoration: none;
+
+            display: inline-flex;
+
+            align-items: center;
+            justify-content: center;
+
+            gap: 8px;
+
+            transition: 0.25s;
+        }
+
+        .cancel-btn {
+            color: #475569;
+
+            background: #f1f5f9;
+
+            border: 1px solid #e2e8f0;
+        }
+
+        .cancel-btn:hover {
+            background: #e2e8f0;
+
+            transform: translateY(-1px);
+        }
+
+        .save-btn {
+            color: #ffffff;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #2563eb,
+                    #4f46e5
+                );
+
+            box-shadow:
+                0 7px 18px rgba(79, 70, 229, 0.22);
+        }
+
+        .save-btn:hover {
+            transform: translateY(-2px);
+
+            box-shadow:
+                0 10px 24px rgba(79, 70, 229, 0.30);
+        }
+
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 700px) {
+
+            .marks-page {
+                padding: 20px;
+            }
+
+            .form-card {
+                padding: 22px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .full {
+                grid-column: auto;
+            }
+
+            .page-heading h1 {
+                font-size: 25px;
+            }
+
+            .actions {
+                flex-direction: column;
+            }
+
+            .cancel-btn,
+            .save-btn {
+                width: 100%;
+            }
+        }
+
+        .performance-badge-box {
+    margin-top: 20px;
+    padding: 18px 20px;
+    border-radius: 14px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+}
+
+.badge-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: #334155;
+}
+
+.badge-title i {
+    margin-right: 8px;
+}
+
+.performance-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+
+    padding: 8px 16px;
+    border-radius: 30px;
+
+    font-size: 13px;
+    font-weight: 700;
+
+    background: #e2e8f0;
+    color: #475569;
+
+    transition: all 0.3s ease;
+}
+
+.performance-badge.excellent {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.performance-badge.good {
+    background: #dbeafe;
+    color: #1d4ed8;
+}
+
+.performance-badge.average {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.performance-badge.poor {
+    background: #fee2e2;
+    color: #b91c1c;
+}
+
+@media (max-width: 576px) {
+    .performance-badge-box {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
+
+    </style>
+
+</head>
+
+
+<body>
+
+<div class="marks-page">
+
+
+    <!-- TOP BAR -->
+
+    <div class="topbar">
+
+        <a href="{{ url_for('admin_dashboard') }}"
+           class="back-btn">
+
+            <i class="fa-solid fa-arrow-left"></i>
+
+            Dashboard
+
+        </a>
+
+    </div>
+
+
+    <!-- PAGE HEADER -->
+
+    <div class="page-heading">
+
+        <div class="heading-icon">
+
+            <i class="fa-solid fa-chart-line"></i>
+
+        </div>
+
+        <h1>Add Student Marks</h1>
+
+        <p>
+            Enter or update internal examination performance
+        </p>
+
+    </div>
+
+
+    <!-- FORM -->
+
+    <div class="form-card">
+
+        <form method="POST">
+
+
+            <!-- STUDENT & SUBJECT -->
+
+            <div class="section-title">
+
+                <i class="fa-solid fa-graduation-cap"></i>
+
+                <span>Student & Subject</span>
+
+            </div>
+
+
+            <div class="form-grid">
+
+
+                <!-- STUDENT -->
+
+                <div class="form-group">
+
+                    <label for="student_id">
+                        Student
+                    </label>
+
+                    <div class="input-box">
+
+                        <i class="fa-solid fa-user"></i>
+
+                        <select
+                            name="student_id"
+                            id="student_id"
+                            required>
+
+                            <option value="">Select Student</option>
+
+                            {% for student in students %}
+
+                            <option value="{{ student.id }}">
+                                {{ student.name }}
+                            </option>
+
+                            {% endfor %}
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+
+                <!-- SUBJECT -->
+
+                <div class="form-group">
+
+                    <label for="subject_id">
+                        Subject
+                    </label>
+
+                    <div class="input-box">
+
+                        <i class="fa-solid fa-book"></i>
+
+                        <select
+                            name="subject_id"
+                            id="subject_id"
+                            required>
+
+                            <option value="">Select Subject</option>
+
+                            {% for subject in subjects %}
+
+                            <option value="{{ subject.id }}">
+                                {{ subject.subject_name }}
+                            </option>
+
+                            {% endfor %}
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- EXAMINATION -->
+
+            <div class="section-title"
+                 style="margin-top: 32px;">
+
+                <i class="fa-solid fa-pen-to-square"></i>
+
+                <span>Internal Examination</span>
+
+            </div>
+
+
+            <div class="form-grid">
+
+
+                <!-- INTERNAL EXAM 1 -->
+
+                <div class="form-group">
+
+                    <label for="internal1">
+                        Internal Exam 1
+                    </label>
+
+                    <div class="input-box">
+
+                        <i class="fa-solid fa-1"></i>
+
+                        <input
+                            type="number"
+                            name="internal1"
+                            id="internal1"
+                            min="0"
+                            max="100"
+                            placeholder="Enter marks"
+                             oninput="updatePerformanceBadge()"
+    
+                            required>
+
+                    </div>
+
+                </div>
+
+
+                <!-- INTERNAL EXAM 2 -->
+
+                <div class="form-group">
+
+                    <label for="internal2">
+                        Internal Exam 2
+                    </label>
+
+                    <div class="input-box">
+
+                        <i class="fa-solid fa-2"></i>
+
+                        <input
+                            type="number"
+                            name="internal2"
+                            id="internal2"
+                            min="0"
+                            max="100"
+                            placeholder="Enter marks"
+                            oninput="updatePerformanceBadge()"
+                            required>
+                    </div>
+
+                    
+
+                </div>
+
+
+                <!-- FINAL MARKS -->
+
+                <div class="form-group full">
+
+                    <label for="final_marks">
+                        Final Marks
+                    </label>
+
+                    <div class="input-box">
+
+                        <i class="fa-solid fa-award"></i>
+
+                        <input
+                            type="number"
+                            name="final_marks"
+                            id="final_marks"
+                            min="0"
+                            max="100"
+                            placeholder="Enter final marks"
+                            oninput="updatePerformanceBadge()"
+                            required>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- PERFORMANCE PREVIEW -->
+
+            <div class="marks-preview">
+
+                <div class="preview-top">
+
+                    <div>
+
+                        <div class="preview-title">
+                            PERFORMANCE PREVIEW
+                        </div>
+
+                        <div
+                            class="preview-number"
+                            id="averageMarks">
+
+                            0%
+
+                        </div>
+
+                        <div class="preview-label">
+                            Average Marks
+                        </div>
+
+                    </div>
+
+
+                    <div class="preview-icon">
+
+                        <i class="fa-solid fa-chart-column"></i>
+
+                    </div>
+
+                </div>
+
+
+                <div class="progress-track">
+
+                    <div
+                        class="preview-fill"
+                        id="marksProgress">
+                    </div>
+
+                </div>
+                <div class="performance-badge-box">
+    <span class="badge-title">
+        <i class="fa-solid fa-award"></i>
+        Performance Badge
+    </span>
+
+    <span id="performanceBadge" class="performance-badge">
+        <i class="fa-solid fa-minus"></i>
+        No Performance
+    </span>
+</div>
+
+
+                <div
+                    class="marks-status"
+                    id="marksStatus">
+
+                    Enter marks to calculate average performance.
+
+                </div>
+
+            </div>
+
+
+            <!-- ACTIONS -->
+
+            <div class="actions">
+
+                <a href="{{ url_for('admin_dashboard') }}"
+                   class="cancel-btn">
+
+                    <i class="fa-solid fa-xmark"></i>
+
+                    Cancel
+
+                </a>
+
+
+                <button
+                    type="submit"
+                    class="save-btn">
+
+                    <i class="fa-solid fa-floppy-disk"></i>
+
+                    Save Marks
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<script>
+    
+
+const internal1 =
+    document.getElementById("internal1");
+
+const internal2 =
+    document.getElementById("internal2");
+
+const finalMarks =
+    document.getElementById("final_marks");
+
+const averageMarks =
+    document.getElementById("averageMarks");
+
+const marksProgress =
+    document.getElementById("marksProgress");
+
+const marksStatus =
+    document.getElementById("marksStatus");
+
+    function updatePerformanceBadge() {
+
+    const internal1 = parseFloat(
+        document.getElementById("internal1").value
+    ) || 0;
+
+    const internal2 = parseFloat(
+        document.getElementById("internal2").value
+    ) || 0;
+
+    const finalMarks = parseFloat(
+        document.getElementById("final_marks").value
+    ) || 0;
+
+    const average = (internal1 + internal2 + finalMarks) / 3;
+
+    const badge = document.getElementById("performanceBadge");
+
+    badge.className = "performance-badge";
+
+    if (internal1 === 0 && internal2 === 0 && finalMarks === 0) {
+
+        badge.innerHTML = `
+            <i class="fa-solid fa-minus"></i>
+            No Performance
+        `;
+
+    } else if (average >= 75) {
+
+        badge.classList.add("excellent");
+
+        badge.innerHTML = `
+            <i class="fa-solid fa-trophy"></i>
+            Excellent
+        `;
+
+    } else if (average >= 60) {
+
+        badge.classList.add("good");
+
+        badge.innerHTML = `
+            <i class="fa-solid fa-thumbs-up"></i>
+            Good
+        `;
+
+    } else if (average >= 40) {
+
+        badge.classList.add("average");
+
+        badge.innerHTML = `
+            <i class="fa-solid fa-chart-line"></i>
+            Average
+        `;
+
+    } else {
+
+        badge.classList.add("poor");
+
+        badge.innerHTML = `
+            <i class="fa-solid fa-triangle-exclamation"></i>
+            Needs Improvement
+        `;
+    }
+}
+
+function updateMarks() {
+
+    const a =
+        Number(internal1.value) || 0;
+
+    const b =
+        Number(internal2.value) || 0;
+
+    const c =
+        Number(finalMarks.value) || 0;
+
+
+    const filledInputs =
+        [internal1.value, internal2.value, finalMarks.value]
+        .filter(value => value !== "")
+        .length;
+
+
+    /* No marks entered */
+
+    if (filledInputs === 0) {
+
+        averageMarks.textContent = "0%";
+
+        marksProgress.style.width = "0%";
+
+        marksStatus.textContent =
+            "Enter marks to calculate average performance.";
+
+        marksStatus.className =
+            "marks-status";
+
+        return;
+    }
+
+
+    /* Calculate average */
+
+    const average =
+        (a + b + c) / 3;
+
+    const rounded =
+        Math.round(average);
+
+
+    averageMarks.textContent =
+        rounded + "%";
+
+
+    marksProgress.style.width =
+        Math.min(average, 100) + "%";
+
+
+    /* Performance status */
+
+    if (average >= 75) {
+
+        marksStatus.textContent =
+            "✓ Excellent performance — strong academic result.";
+
+        marksStatus.className =
+            "marks-status excellent";
+
+    }
+
+    else if (average >= 60) {
+
+        marksStatus.textContent =
+            "✓ Good performance — keep improving.";
+
+        marksStatus.className =
+            "marks-status good";
+
+    }
+
+    else if (average >= 40) {
+
+        marksStatus.textContent =
+            "⚠ Average performance — more practice is recommended.";
+
+        marksStatus.className =
+            "marks-status average";
+
+    }
+
+    else {
+
+        marksStatus.textContent =
+            "⚠ Low performance — additional improvement is needed.";
+
+        marksStatus.className =
+            "marks-status poor";
+
+    }
+
+}
+
+
+internal1.addEventListener(
+    "input",
+    updateMarks
+);
+
+internal2.addEventListener(
+    "input",
+    updateMarks
+);
+
+finalMarks.addEventListener(
+    "input",
+    updateMarks
+);
+
+</script>
+
+</body>
+</html>

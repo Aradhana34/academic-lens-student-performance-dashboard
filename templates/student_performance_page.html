@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Academic Lens | Performance</title>
+
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+    <style>
+
+        .page-container {
+            padding: 35px;
+        }
+
+
+        .page-header {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            margin-bottom: 30px;
+
+        }
+
+
+        .page-header h1 {
+
+            margin: 0;
+
+            font-size: 30px;
+
+            color: #f8fafc;
+
+        }
+
+
+        .page-header p {
+
+            color: #94a3b8;
+
+            margin-top: 6px;
+
+        }
+
+
+        .back-btn {
+
+            text-decoration: none;
+
+            padding: 11px 18px;
+
+            border-radius: 10px;
+
+            background: #6366f1;
+
+            color: white;
+
+        }
+
+
+        .info-card {
+
+            background: #1b273d;
+
+            border: 1px solid #2b3a55;
+
+            border-radius: 18px;
+
+            padding: 25px;
+
+            margin-bottom: 25px;
+
+        }
+
+
+        .info-card h2 {
+
+            margin-top: 0;
+
+            color: #f8fafc;
+
+        }
+
+
+        .info-card p {
+
+            color: #94a3b8;
+
+        }
+
+
+        .info-card strong {
+
+            color: #f8fafc;
+
+        }
+
+
+        .chart-grid {
+
+            display: grid;
+
+            grid-template-columns: 1fr 1fr;
+
+            gap: 25px;
+
+            margin-bottom: 25px;
+
+        }
+
+
+        .chart-card {
+
+            background: #1b273d;
+
+            border: 1px solid #2b3a55;
+
+            border-radius: 18px;
+
+            padding: 25px;
+
+        }
+
+
+        .chart-card h2 {
+
+            margin-top: 0;
+
+            color: #f8fafc;
+
+        }
+
+
+        .chart-card p {
+
+            color: #94a3b8;
+
+        }
+
+
+        .chart-box {
+
+            height: 320px;
+
+        }
+
+
+        .performance-table {
+
+            width: 100%;
+
+            border-collapse: collapse;
+
+        }
+
+
+        .performance-table th,
+
+        .performance-table td {
+
+            padding: 14px;
+
+            text-align: left;
+
+            border-bottom: 1px solid #334155;
+
+        }
+
+
+        .performance-table th {
+
+            color: #94a3b8;
+
+        }
+
+
+        .performance-table td {
+
+            color: #f8fafc;
+
+        }
+
+
+        .empty-message {
+
+            padding: 35px;
+
+            text-align: center;
+
+            color: #94a3b8;
+
+        }
+
+
+        @media(max-width: 900px) {
+
+            .chart-grid {
+
+                grid-template-columns: 1fr;
+
+            }
+
+            .page-container {
+
+                padding: 20px;
+
+            }
+
+            .page-header {
+
+                flex-direction: column;
+
+                align-items: flex-start;
+
+                gap: 15px;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<header class="navbar">
+
+
+    <div class="logo-area">
+
+        <div class="logo-icon">
+
+            <i class="fa-solid fa-graduation-cap"></i>
+
+        </div>
+
+
+        <div>
+
+            <h2>Academic Lens</h2>
+
+            <span>
+                Student Performance Analyzer
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <div class="nav-actions">
+
+        <a href="{{ url_for('student_dashboard') }}"
+           class="logout-btn">
+
+            <i class="fa-solid fa-arrow-left"></i>
+
+            Dashboard
+
+        </a>
+
+    </div>
+
+
+</header>
+
+
+
+<main class="main-content">
+
+
+<div class="page-container">
+
+
+    <!-- HEADER -->
+
+    <div class="page-header">
+
+        <div>
+
+            <h1 class="performance-title">
+                Performance Analysis
+            </h1>
+
+
+            <p>
+
+                {{ student.name }}
+
+                •
+
+                {{ student.course }}
+
+                •
+
+                Semester {{ student.semester }}
+
+            </p>
+
+        </div>
+
+
+        <a href="{{ url_for('student_dashboard') }}"
+           class="back-btn">
+
+            <i class="fa-solid fa-arrow-left"></i>
+
+            Back
+
+        </a>
+
+    </div>
+
+
+
+    <!-- SUMMARY -->
+
+    <div class="info-card">
+
+        <h2>
+
+            <i class="fa-solid fa-graduation-cap"></i>
+
+            Academic Performance
+
+        </h2>
+
+
+        <p>
+
+            Average Marks:
+
+            <strong>
+                {{ average_marks }}%
+            </strong>
+
+        </p>
+
+
+        <p>
+
+            Performance Status:
+
+            <strong>
+                {{ status }}
+            </strong>
+
+        </p>
+
+    </div>
+
+
+
+    <!-- CHARTS -->
+
+    <div class="chart-grid">
+
+
+        <!-- INTERNAL EXAM -->
+
+        <div class="chart-card">
+
+            <h2>
+                Internal Exam Performance
+            </h2>
+
+
+            <p>
+                Internal Exam 1 vs Internal Exam 2
+            </p>
+
+
+            <div class="chart-box">
+
+                <canvas id="internalChart"></canvas>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- FINAL MARKS -->
+
+        <div class="chart-card">
+
+            <h2>
+                Final Marks
+            </h2>
+
+
+            <p>
+                Subject-wise final marks
+            </p>
+
+
+            <div class="chart-box">
+
+                <canvas id="finalChart"></canvas>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- MARKS TABLE -->
+
+    <div class="info-card">
+
+
+        <h2>
+
+            <i class="fa-solid fa-table"></i>
+
+            Detailed Marks
+
+        </h2>
+
+
+        {% if marks %}
+
+
+        <div style="overflow-x:auto;">
+
+            <table class="performance-table">
+
+                <thead>
+
+                    <tr>
+
+                        <th>Subject</th>
+
+                        <th>Internal 1</th>
+
+                        <th>Internal 2</th>
+
+                        <th>Final Marks</th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+
+                {% for mark in marks %}
+
+                    <tr>
+
+                        <td>
+                            {{ mark.subject_name }}
+                        </td>
+
+
+                        <td>
+                            {{ mark.internal1 or 0 }}
+                        </td>
+
+
+                        <td>
+                            {{ mark.internal2 or 0 }}
+                        </td>
+
+
+                        <td>
+                            {{ mark.final_marks or 0 }}/100
+                        </td>
+
+                    </tr>
+
+                {% endfor %}
+
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+        {% else %}
+
+
+        <div class="empty-message">
+
+            <i class="fa-solid fa-chart-line"
+               style="font-size:40px;">
+            </i>
+
+
+            <p>
+                No marks have been added yet.
+            </p>
+
+        </div>
+
+
+        {% endif %}
+
+
+    </div>
+
+
+</div>
+
+
+</main>
+
+
+
+<!--
+    Flask sends chart information here as JSON.
+    This prevents Jinja from being mixed directly
+    with JavaScript statements.
+-->
+
+<script id="performance-data"
+        type="application/json">
+
+{{ chart_data | tojson }}
+
+</script>
+
+
+
+<script>
+
+
+    const performanceElement =
+        document.getElementById("performance-data");
+
+
+    const chartData =
+        JSON.parse(performanceElement.textContent);
+
+
+
+    /*
+        INTERNAL EXAM LINE CHART
+    */
+
+    const internalCanvas =
+        document.getElementById("internalChart");
+
+
+    if (internalCanvas) {
+
+        new Chart(internalCanvas, {
+
+            type: "line",
+
+            data: {
+
+                labels: chartData.subjects,
+
+                datasets: [
+
+                    {
+
+                        label: "Internal Exam 1",
+
+                        data: chartData.internal1,
+
+                        tension: 0.4,
+
+                        fill: false,
+
+                        pointRadius: 5
+
+                    },
+
+
+                    {
+
+                        label: "Internal Exam 2",
+
+                        data: chartData.internal2,
+
+                        tension: 0.4,
+
+                        fill: false,
+
+                        pointRadius: 5
+
+                    }
+
+                ]
+
+            },
+
+
+            options: {
+
+                responsive: true,
+
+                maintainAspectRatio: false,
+
+                scales: {
+
+                    y: {
+
+                        beginAtZero: true,
+
+                        max: 100
+
+                    }
+
+                }
+
+            }
+
+        });
+
+    }
+
+
+
+    /*
+        FINAL MARKS BAR CHART
+    */
+
+    const finalCanvas =
+        document.getElementById("finalChart");
+
+
+    if (finalCanvas) {
+
+        new Chart(finalCanvas, {
+
+            type: "bar",
+
+            data: {
+
+                labels: chartData.subjects,
+
+                datasets: [
+
+                    {
+
+                        label: "Final Marks",
+
+                        data: chartData.final_marks
+
+                    }
+
+                ]
+
+            },
+
+
+            options: {
+
+                responsive: true,
+
+                maintainAspectRatio: false,
+
+                scales: {
+
+                    y: {
+
+                        beginAtZero: true,
+
+                        max: 100
+
+                    }
+
+                }
+
+            }
+
+        });
+
+    }
+
+
+</script>
+
+
+</body>
+
+</html>

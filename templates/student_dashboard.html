@@ -1,0 +1,3722 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>Academic Lens | Student Dashboard</title>
+
+
+    <!-- =====================================================
+         ICONS
+    ====================================================== -->
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+
+    <!-- =====================================================
+         MAIN PROJECT CSS
+    ====================================================== -->
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}">
+
+
+    <!-- =====================================================
+         CHART.JS
+    ====================================================== -->
+
+    <script
+        src="https://cdn.jsdelivr.net/npm/chart.js">
+    </script>
+
+
+    <!-- =====================================================
+         PAGE CSS
+    ====================================================== -->
+
+    <style>
+
+        /* =====================================================
+           THEME
+        ===================================================== */
+
+        :root {
+
+            --background: #f5f7fb;
+            --card: #ffffff;
+            --card-soft: #f8fafc;
+
+            --heading: #0f172a;
+            --text: #172033;
+            --muted: #64748b;
+
+            --border: #e2e8f0;
+
+            --primary: #6366f1;
+            --secondary: #7c3aed;
+
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --info: #3b82f6;
+
+            --shadow:
+                0 10px 30px rgba(15, 23, 42, 0.08);
+        }
+
+
+        /* =====================================================
+           DARK MODE
+        ===================================================== */
+
+        body.dark {
+
+            --background: #0f172a;
+            --card: #18243b;
+            --card-soft: #1e293b;
+
+            --heading: #ffffff;
+            --text: #f8fafc;
+            --muted: #94a3b8;
+
+            --border: #334155;
+
+            --primary: #818cf8;
+            --secondary: #a78bfa;
+
+            --success: #34d399;
+            --warning: #fbbf24;
+            --danger: #f87171;
+            --info: #60a5fa;
+
+            --shadow:
+                0 12px 35px rgba(0, 0, 0, 0.25);
+        }
+
+
+        /* =====================================================
+           RESET
+        ===================================================== */
+
+        * {
+            box-sizing: border-box;
+        }
+
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+
+        body {
+
+            margin: 0;
+
+            min-height: 100vh;
+
+            background:
+                var(--background) !important;
+
+            color:
+                var(--text);
+
+            font-family:
+                "Segoe UI",
+                Arial,
+                sans-serif;
+
+            transition:
+                background-color 0.3s ease,
+                color 0.3s ease;
+        }
+
+
+        /* =====================================================
+           NAVBAR
+        ===================================================== */
+
+        .navbar {
+
+            background:
+                var(--card) !important;
+
+            border-bottom:
+                1px solid var(--border) !important;
+
+            color:
+                var(--text);
+        }
+
+
+        .navbar h2 {
+
+            color:
+                var(--heading) !important;
+        }
+
+
+        .navbar span {
+
+            color:
+                var(--muted) !important;
+        }
+
+
+        .icon-btn {
+
+            background:
+                var(--card) !important;
+
+            color:
+                var(--text) !important;
+
+            border:
+                1px solid var(--border) !important;
+
+            cursor:
+                pointer;
+        }
+
+
+        .icon-btn:hover {
+
+            color:
+                var(--primary) !important;
+
+            border-color:
+                var(--primary) !important;
+        }
+
+
+        /* =====================================================
+           DASHBOARD LAYOUT
+        ===================================================== */
+
+        .dashboard {
+
+            min-height:
+                calc(100vh - 75px);
+
+            background:
+                var(--background);
+
+            position:
+                relative;
+        }
+
+
+        /* =====================================================
+           SIDEBAR
+        ===================================================== */
+
+        .sidebar {
+
+            width:
+                245px !important;
+
+            position:
+                fixed !important;
+
+            left:
+                0 !important;
+
+            top:
+                75px !important;
+
+            bottom:
+                0 !important;
+
+            background:
+                #111827 !important;
+
+            z-index:
+                1000;
+
+            overflow-y:
+                auto;
+        }
+
+
+        .sidebar-title {
+
+            color:
+                #64748b !important;
+        }
+
+
+        .sidebar-link {
+
+            color:
+                #cbd5e1 !important;
+
+            text-decoration:
+                none;
+        }
+
+
+        .sidebar-link:hover {
+
+            color:
+                #ffffff !important;
+        }
+
+
+        .sidebar-link.active {
+
+            color:
+                #ffffff !important;
+        }
+
+
+        /* =====================================================
+           MAIN CONTENT
+        ===================================================== */
+
+        .main-content {
+
+            margin-left:
+                245px !important;
+
+            width:
+                calc(100% - 245px) !important;
+
+            min-height:
+                calc(100vh - 75px);
+
+            padding:
+                35px 40px 50px;
+
+            background:
+                var(--background) !important;
+
+            color:
+                var(--text);
+
+            transition:
+                background-color 0.3s ease,
+                color 0.3s ease;
+        }
+
+
+        /* =====================================================
+           WELCOME
+        ===================================================== */
+
+        .welcome {
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            justify-content:
+                space-between;
+
+            gap:
+                20px;
+
+            margin-bottom:
+                25px;
+        }
+
+
+        .welcome h1 {
+
+            margin:
+                0 0 7px;
+
+            color:
+                var(--heading) !important;
+
+            font-size:
+                28px;
+
+            font-weight:
+                800;
+        }
+
+
+        .welcome h1 span {
+
+            color:
+                var(--primary) !important;
+        }
+
+
+        .welcome p {
+
+            margin:
+                0;
+
+            color:
+                var(--muted) !important;
+
+            font-size:
+                13px;
+        }
+
+
+        .date-badge {
+
+            display:
+                inline-flex;
+
+            align-items:
+                center;
+
+            gap:
+                8px;
+
+            padding:
+                11px 15px;
+
+            background:
+                var(--card) !important;
+
+            color:
+                var(--muted) !important;
+
+            border:
+                1px solid var(--border) !important;
+
+            border-radius:
+                11px;
+
+            box-shadow:
+                var(--shadow);
+
+            font-size:
+                12px;
+
+            white-space:
+                nowrap;
+        }
+
+
+        /* =====================================================
+           PROFILE CARD
+        ===================================================== */
+
+        .student-profile-card {
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            justify-content:
+                space-between;
+
+            gap:
+                25px;
+
+            padding:
+                23px;
+
+            margin-bottom:
+                20px;
+
+            background:
+                var(--card) !important;
+
+            border:
+                1px solid var(--border) !important;
+
+            border-radius:
+                18px;
+
+            box-shadow:
+                var(--shadow);
+
+            color:
+                var(--text) !important;
+        }
+
+
+        .profile-left {
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            gap:
+                15px;
+
+            min-width:
+                0;
+        }
+
+
+        .student-avatar {
+
+            width:
+                58px;
+
+            height:
+                58px;
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            justify-content:
+                center;
+
+            flex-shrink:
+                0;
+
+            border-radius:
+                15px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    var(--primary),
+                    var(--secondary)
+                );
+
+            color:
+                #ffffff;
+
+            font-size:
+                22px;
+
+            font-weight:
+                800;
+
+            box-shadow:
+                0 10px 25px
+                rgba(99, 102, 241, 0.20);
+        }
+
+
+        .student-basic-info h2 {
+
+            margin:
+                0 0 5px;
+
+            color:
+                var(--heading) !important;
+
+            font-size:
+                19px;
+
+            font-weight:
+                750;
+        }
+
+
+        .student-role {
+
+            margin:
+                0;
+
+            color:
+                var(--muted) !important;
+
+            font-size:
+                11px;
+        }
+
+
+        .student-role i {
+
+            color:
+                var(--primary);
+
+            margin-right:
+                5px;
+        }
+
+
+        .student-details {
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            gap:
+                12px;
+        }
+
+
+        .detail-item {
+
+            min-width:
+                145px;
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            gap:
+                10px;
+
+            padding:
+                11px 13px;
+
+            background:
+                var(--card-soft) !important;
+
+            border:
+                1px solid var(--border) !important;
+
+            border-radius:
+                12px;
+
+            color:
+                var(--text) !important;
+        }
+
+
+        .detail-icon {
+
+            width:
+                36px;
+
+            height:
+                36px;
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            justify-content:
+                center;
+
+            border-radius:
+                10px;
+
+            background:
+                #eef2ff;
+
+            color:
+                var(--primary);
+        }
+
+
+        body.dark .detail-icon {
+
+            background:
+                rgba(129, 140, 248, 0.15);
+
+            color:
+                #a5b4fc;
+        }
+
+
+        .detail-item span {
+
+            display:
+                block;
+
+            margin-bottom:
+                3px;
+
+            color:
+                var(--muted) !important;
+
+            font-size:
+                9px;
+        }
+
+
+        .detail-item strong {
+
+            display:
+                block;
+
+            color:
+                var(--heading) !important;
+
+            font-size:
+                11px;
+        }
+
+
+        /* =====================================================
+           PERFORMANCE STAT GRID
+        ===================================================== */
+
+        .stats-grid {
+
+            display:
+                grid;
+
+            grid-template-columns:
+                repeat(4, minmax(0, 1fr));
+
+            gap:
+                20px;
+
+            margin-bottom:
+                25px;
+        }
+
+
+        /* =====================================================
+           PERFORMANCE CARD
+        ===================================================== */
+
+        .stats-grid .stat-card {
+
+            position:
+                relative;
+
+            overflow:
+                hidden;
+
+            min-height:
+                190px;
+
+            padding:
+                22px;
+
+            background:
+                var(--card) !important;
+
+            border:
+                1px solid var(--border) !important;
+
+            border-radius:
+                18px;
+
+            box-shadow:
+                var(--shadow) !important;
+
+            color:
+                var(--text) !important;
+
+            transition:
+                transform 0.25s ease,
+                box-shadow 0.25s ease,
+                background-color 0.3s ease,
+                border-color 0.3s ease;
+        }
+
+
+        .stats-grid .stat-card::before {
+
+            content:
+                "";
+
+            position:
+                absolute;
+
+            width:
+                105px;
+
+            height:
+                105px;
+
+            right:
+                -48px;
+
+            top:
+                -48px;
+
+            border-radius:
+                50%;
+
+            background:
+                rgba(99, 102, 241, 0.06);
+        }
+
+
+        .stats-grid .stat-card:hover {
+
+            transform:
+                translateY(-4px);
+        }
+
+
+        /* =====================================================
+           UNIFORM PERFORMANCE CARD TEXT
+        ===================================================== */
+
+        .stats-grid .stat-card h3 {
+
+            margin:
+                16px 0 7px;
+
+            color:
+                var(--muted) !important;
+
+            font-size:
+                14px !important;
+
+            font-weight:
+                600 !important;
+
+            line-height:
+                1.4 !important;
+        }
+
+
+        .stats-grid .stat-card h2,
+        .stats-grid .stat-card .status-value {
+
+            margin:
+                0 !important;
+
+            color:
+                var(--heading) !important;
+
+            font-size:
+                28px !important;
+
+            font-weight:
+                800 !important;
+
+            line-height:
+                1.2 !important;
+        }
+
+
+        .stats-grid .stat-card small {
+
+            display:
+                block;
+
+            margin-top:
+                9px;
+
+            color:
+                var(--muted) !important;
+
+            font-size:
+                12px !important;
+
+            font-weight:
+                400 !important;
+
+            line-height:
+                1.5 !important;
+        }
+
+
+        /* =====================================================
+           STAT TOP
+        ===================================================== */
+
+        .stat-top {
+
+            min-height:
+                44px;
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            justify-content:
+                space-between;
+        }
+
+
+        /* =====================================================
+           STAT ICONS
+        ===================================================== */
+
+        .stat-icon {
+
+            width:
+                44px;
+
+            height:
+                44px;
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            justify-content:
+                center;
+
+            border-radius:
+                12px;
+
+            font-size:
+                17px;
+        }
+
+
+        .icon-purple {
+
+            background:
+                #ede9fe !important;
+
+            color:
+                #7c3aed !important;
+        }
+
+
+        .icon-blue {
+
+            background:
+                #dbeafe !important;
+
+            color:
+                #2563eb !important;
+        }
+
+
+        .icon-green {
+
+            background:
+                #d1fae5 !important;
+
+            color:
+                #059669 !important;
+        }
+
+
+        .icon-orange {
+
+            background:
+                #ffedd5 !important;
+
+            color:
+                #ea580c !important;
+        }
+
+
+        body.dark .icon-purple {
+
+            background:
+                rgba(124, 58, 237, 0.18) !important;
+
+            color:
+                #c4b5fd !important;
+        }
+
+
+        body.dark .icon-blue {
+
+            background:
+                rgba(37, 99, 235, 0.18) !important;
+
+            color:
+                #93c5fd !important;
+        }
+
+
+        body.dark .icon-green {
+
+            background:
+                rgba(5, 150, 105, 0.18) !important;
+
+            color:
+                #6ee7b7 !important;
+        }
+
+
+        body.dark .icon-orange {
+
+            background:
+                rgba(234, 88, 12, 0.18) !important;
+
+            color:
+                #fdba74 !important;
+        }
+
+
+        /* =====================================================
+           GENERAL CARDS
+        ===================================================== */
+
+        .card {
+
+            background:
+                var(--card) !important;
+
+            border:
+                1px solid var(--border) !important;
+
+            border-radius:
+                18px;
+
+            padding:
+                23px;
+
+            box-shadow:
+                var(--shadow) !important;
+
+            color:
+                var(--text) !important;
+
+            transition:
+                background-color 0.3s ease,
+                border-color 0.3s ease;
+        }
+
+
+        .card-header {
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            justify-content:
+                space-between;
+
+            gap:
+                15px;
+
+            margin-bottom:
+                15px;
+        }
+
+
+        .card-header h2 {
+
+            margin:
+                0 0 4px;
+
+            color:
+                var(--heading) !important;
+
+            font-size:
+                17px;
+
+            font-weight:
+                750;
+        }
+
+
+        .card-header p {
+
+            margin:
+                0;
+
+            color:
+                var(--muted) !important;
+
+            font-size:
+                11px;
+        }
+
+
+        .card-header > i {
+
+            font-size:
+                17px;
+        }
+
+
+        /* =====================================================
+           CHART GRID
+        ===================================================== */
+
+        .dashboard-grid {
+
+            display:
+                grid;
+
+            grid-template-columns:
+                repeat(2, minmax(0, 1fr));
+
+            gap:
+                20px;
+
+            margin-bottom:
+                20px;
+        }
+
+
+        .chart-box {
+
+            height:
+                310px;
+
+            position:
+                relative;
+        }
+
+
+        /* =====================================================
+           INSIGHT BOX
+        ===================================================== */
+
+        .insight-box {
+
+            margin-top:
+                15px;
+
+            padding:
+                17px;
+
+            border-radius:
+                12px;
+
+            background:
+                var(--card-soft) !important;
+
+            border:
+                1px solid var(--border);
+
+        }
+
+
+        .insight-box p {
+
+            color:
+                var(--muted) !important;
+
+            font-size:
+                13px;
+
+            line-height:
+                1.8;
+        }
+
+
+        .insight-box strong {
+
+            color:
+                var(--heading) !important;
+        }
+
+
+        .insight-message {
+
+            margin-top:
+                18px;
+
+            padding:
+                15px;
+
+            border-radius:
+                11px;
+
+            background:
+                var(--card) !important;
+
+            border:
+                1px solid var(--border);
+        }
+
+
+        /* =====================================================
+           PERFORMANCE TABLE
+        ===================================================== */
+
+        .performance-table-wrapper {
+
+            overflow-x:
+                auto;
+        }
+
+
+        .performance-table {
+
+            width:
+                100%;
+
+            border-collapse:
+                collapse;
+
+            min-width:
+                650px;
+        }
+
+
+        .performance-table th {
+
+            padding:
+                13px;
+
+            text-align:
+                left;
+
+            background:
+                var(--card-soft) !important;
+
+            color:
+                var(--muted) !important;
+
+            border-bottom:
+                1px solid var(--border);
+
+            font-size:
+                11px;
+
+            font-weight:
+                700;
+        }
+
+
+        .performance-table td {
+
+            padding:
+                14px 13px;
+
+            color:
+                var(--text) !important;
+
+            border-bottom:
+                1px solid var(--border);
+
+            font-size:
+                12px;
+        }
+
+
+        .performance-table tbody tr:hover td {
+
+            background:
+                var(--card-soft) !important;
+        }
+
+
+        .subject-name {
+
+            color:
+                var(--heading) !important;
+
+            font-weight:
+                650;
+        }
+
+
+        .marks-value {
+
+            color:
+                var(--text) !important;
+
+            font-weight:
+                700;
+        }
+
+
+        /* =====================================================
+           PROGRESS
+        ===================================================== */
+
+        .progress {
+
+            width:
+                100px;
+
+            height:
+                7px;
+
+            overflow:
+                hidden;
+
+            background:
+                var(--border);
+
+            border-radius:
+                20px;
+        }
+
+
+        .progress-bar {
+
+            width:
+                0;
+
+            height:
+                100%;
+
+            border-radius:
+                20px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    var(--primary),
+                    var(--secondary)
+                );
+
+            transition:
+                width 0.8s ease;
+        }
+
+
+        /* =====================================================
+           BADGES
+        ===================================================== */
+
+        .badge {
+
+            display:
+                inline-flex;
+
+            align-items:
+                center;
+
+            gap:
+                5px;
+
+            padding:
+                6px 10px;
+
+            border-radius:
+                20px;
+
+            font-size:
+                10px;
+
+            font-weight:
+                700;
+        }
+
+
+        .badge-good {
+
+            background:
+                #dcfce7 !important;
+
+            color:
+                #15803d !important;
+        }
+
+
+        .badge-average {
+
+            background:
+                #fef3c7 !important;
+
+            color:
+                #b45309 !important;
+        }
+
+
+        .badge-danger {
+
+            background:
+                #fee2e2 !important;
+
+            color:
+                #dc2626 !important;
+        }
+
+
+        body.dark .badge-good {
+
+            background:
+                rgba(34,197,94,0.15) !important;
+
+            color:
+                #86efac !important;
+        }
+
+
+        body.dark .badge-average {
+
+            background:
+                rgba(245,158,11,0.15) !important;
+
+            color:
+                #fcd34d !important;
+        }
+
+
+        body.dark .badge-danger {
+
+            background:
+                rgba(239,68,68,0.15) !important;
+
+            color:
+                #fca5a5 !important;
+        }
+
+
+        /* =====================================================
+           IMPROVEMENT BOX
+        ===================================================== */
+
+        .improvement-box {
+
+            padding:
+                21px 23px;
+
+            background:
+                var(--card) !important;
+
+            border:
+                1px solid var(--border) !important;
+
+            border-radius:
+                18px;
+
+            box-shadow:
+                var(--shadow);
+
+            color:
+                var(--text) !important;
+        }
+
+
+        .improvement-header {
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            gap:
+                13px;
+        }
+
+
+        .warning-icon {
+
+            width:
+                43px;
+
+            height:
+                43px;
+
+            flex-shrink:
+                0;
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            justify-content:
+                center;
+
+            border-radius:
+                12px;
+
+            background:
+                #fef3c7;
+
+            color:
+                #d97706;
+        }
+
+
+        .improvement-box h2 {
+
+            margin:
+                0 0 5px;
+
+            color:
+                var(--heading) !important;
+
+            font-size:
+                16px;
+        }
+
+
+        .improvement-box p {
+
+            margin:
+                0;
+
+            color:
+                var(--muted) !important;
+
+            font-size:
+                11px;
+        }
+
+
+        .subject-pills {
+
+            display:
+                flex;
+
+            flex-wrap:
+                wrap;
+
+            gap:
+                8px;
+
+            margin-top:
+                18px;
+        }
+
+
+        .subject-pill {
+
+            display:
+                inline-flex;
+
+            align-items:
+                center;
+
+            gap:
+                6px;
+
+            padding:
+                8px 11px;
+
+            border-radius:
+                20px;
+
+            background:
+                #eef2ff !important;
+
+            color:
+                #4f46e5 !important;
+
+            border:
+                1px solid #e0e7ff;
+            
+            font-size:
+                11px;
+
+            font-weight:
+                600;
+        }
+
+
+        body.dark .subject-pill {
+
+            background:
+                rgba(99,102,241,0.15) !important;
+
+            color:
+                #a5b4fc !important;
+
+            border-color:
+                rgba(129,140,248,0.25);
+        }
+
+
+        /* =====================================================
+           MOBILE
+        ===================================================== */
+
+        @media (max-width: 1100px) {
+
+            .stats-grid {
+
+                grid-template-columns:
+                    repeat(2, minmax(0, 1fr));
+            }
+
+
+            .dashboard-grid {
+
+                grid-template-columns:
+                    1fr;
+            }
+
+        }
+
+
+        @media (max-width: 800px) {
+
+            .sidebar {
+
+                display:
+                    none !important;
+            }
+
+
+            .main-content {
+
+                margin-left:
+                    0 !important;
+
+                width:
+                    100% !important;
+
+                padding:
+                    25px 20px 45px;
+            }
+
+
+            .student-profile-card {
+
+                flex-direction:
+                    column;
+
+                align-items:
+                    flex-start;
+            }
+
+
+            .student-details {
+
+                width:
+                    100%;
+
+                flex-direction:
+                    column;
+            }
+
+
+            .detail-item {
+
+                width:
+                    100%;
+            }
+
+        }
+
+
+        @media (max-width: 600px) {
+
+            .welcome {
+
+                flex-direction:
+                    column;
+
+                align-items:
+                    flex-start;
+            }
+
+
+            .stats-grid {
+
+                grid-template-columns:
+                    1fr;
+            }
+
+
+            .main-content {
+
+                padding:
+                    20px 15px 40px;
+            }
+
+
+            .welcome h1 {
+
+                font-size:
+                    24px;
+            }
+
+
+            .card {
+
+                padding:
+                    18px;
+            }
+
+
+            .chart-box {
+
+                height:
+                    280px;
+            }
+
+        }
+/* =====================================================
+   FINAL FIX - SAME TEXT COLOR FOR ALL 4 CARDS
+===================================================== */
+
+/* Card headings */
+.stats-grid .stat-card h3 {
+    color: #64748b !important;
+}
+
+/* All main values */
+.stats-grid .stat-card h2,
+.stats-grid .stat-card h2 .counter,
+.stats-grid .stat-card .status-value {
+    color: #0f172a !important;
+}
+
+/* Percentage signs */
+.stats-grid .stat-card h2 {
+    color: #0f172a !important;
+}
+
+/* Descriptions */
+.stats-grid .stat-card small {
+    color: #64748b !important;
+}
+
+
+/* =====================================================
+   DARK MODE
+===================================================== */
+
+body.dark .stats-grid .stat-card h2,
+body.dark .stats-grid .stat-card h2 .counter,
+body.dark .stats-grid .stat-card .status-value {
+    color: #f8fafc !important;
+}
+
+body.dark .stats-grid .stat-card h3,
+body.dark .stats-grid .stat-card small {
+    color: #94a3b8 !important;
+}
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     NAVBAR
+===================================================== -->
+
+<header class="navbar">
+
+
+    <div class="logo-area">
+
+        <div class="logo-icon">
+
+            <i class="fa-solid fa-graduation-cap"></i>
+
+        </div>
+
+
+        <div>
+
+            <h2>
+                Academic Lens
+            </h2>
+
+            <span>
+                Student Performance Analyzer
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <div class="nav-actions">
+
+
+        <button
+            type="button"
+            class="icon-btn"
+            id="themeButton"
+            title="Toggle theme">
+
+            <i class="fa-solid fa-moon"></i>
+
+        </button>
+
+
+        <a
+            href="{{ url_for('logout') }}"
+            class="logout-btn">
+
+            <i class="fa-solid fa-right-from-bracket"></i>
+
+            Logout
+
+        </a>
+
+    </div>
+
+</header>
+
+
+
+<!-- =====================================================
+     DASHBOARD
+===================================================== -->
+
+<div class="dashboard">
+
+
+    <!-- =================================================
+         SIDEBAR
+    ================================================== -->
+
+    <nav class="sidebar">
+
+
+        <div class="sidebar-title">
+            MAIN MENU
+        </div>
+
+
+        <a
+            href="{{ url_for('student_dashboard') }}"
+            class="sidebar-link active">
+
+            <i class="fa-solid fa-chart-pie"></i>
+
+            <span>
+                Dashboard
+            </span>
+
+        </a>
+
+
+        <a
+            href="{{ url_for('student_performance_page') }}"
+            class="sidebar-link">
+
+            <i class="fa-solid fa-chart-line"></i>
+
+            <span>
+                Performance
+            </span>
+
+        </a>
+
+
+        <a
+            href="{{ url_for('student_attendance') }}"
+            class="sidebar-link">
+
+            <i class="fa-solid fa-calendar-check"></i>
+
+            <span>
+                Attendance
+            </span>
+
+        </a>
+
+
+        <a
+            href="{{ url_for('student_subjects') }}"
+            class="sidebar-link">
+
+            <i class="fa-solid fa-book-open"></i>
+
+            <span>
+                Subjects
+            </span>
+
+        </a>
+
+
+        <div class="sidebar-title account-title">
+            ACCOUNT
+        </div>
+
+
+        <a
+            href="{{ url_for('student_profile') }}"
+            class="sidebar-link">
+
+            <i class="fa-solid fa-user"></i>
+
+            <span>
+                Profile
+            </span>
+
+        </a>
+
+
+        <a
+            href="{{ url_for('logout') }}"
+            class="sidebar-link logout-item">
+
+            <i class="fa-solid fa-right-from-bracket"></i>
+
+            <span>
+                Logout
+            </span>
+
+        </a>
+
+
+    </nav>
+
+
+
+    <!-- =================================================
+         MAIN CONTENT
+    ================================================== -->
+
+    <main class="main-content">
+
+
+        <!-- =================================================
+             WELCOME
+        ================================================== -->
+
+        <section class="welcome">
+
+
+            <div>
+
+                <h1>
+
+                    Welcome back,
+
+                    <span>
+                        {{ student.name }}
+                    </span>
+
+                    👋
+
+                </h1>
+
+
+                <p>
+                    Here's your academic performance overview.
+                </p>
+
+            </div>
+
+
+            <div class="date-badge">
+
+                <i class="fa-regular fa-calendar"></i>
+
+                <span id="currentDate"></span>
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             STUDENT PROFILE
+        ================================================== -->
+
+        <section class="student-profile-card">
+
+
+            <div class="profile-left">
+
+
+                <div class="student-avatar">
+
+                    {{ student.name[0] | upper }}
+
+                </div>
+
+
+                <div class="student-basic-info">
+
+                    <h2>
+                        {{ student.name }}
+                    </h2>
+
+
+                    <p class="student-role">
+
+                        <i class="fa-solid fa-graduation-cap"></i>
+
+                        Student
+
+                    </p>
+
+                </div>
+
+
+            </div>
+
+
+
+            <div class="student-details">
+
+
+                <div class="detail-item">
+
+
+                    <div class="detail-icon">
+
+                        <i class="fa-solid fa-book"></i>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>
+                            Course
+                        </span>
+
+                        <strong>
+                            {{ student.course }}
+                        </strong>
+
+                    </div>
+
+
+                </div>
+
+
+
+                <div class="detail-item">
+
+
+                    <div class="detail-icon">
+
+                        <i class="fa-solid fa-layer-group"></i>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>
+                            Semester
+                        </span>
+
+                        <strong>
+                            Semester {{ student.semester }}
+                        </strong>
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             PERFORMANCE CARDS
+        ================================================== -->
+
+        <section class="stats-grid">
+
+
+            <!-- AVERAGE MARKS -->
+
+            <div class="stat-card">
+
+
+                <div class="stat-top">
+
+
+                    <div class="stat-icon icon-purple">
+
+                        <i class="fa-solid fa-chart-line"></i>
+
+                    </div>
+
+
+                    <i
+                        class="fa-solid fa-arrow-trend-up"
+                        style="color:var(--success);">
+
+                    </i>
+
+
+                </div>
+
+
+                <h3>
+                    Average Marks
+                </h3>
+
+
+                <h2>
+
+                    <span
+                        class="counter"
+                        data-target="{{ average_marks }}">
+
+                        0
+
+                    </span>%
+
+                </h2>
+
+
+                <small>
+                    Overall academic average
+                </small>
+
+
+            </div>
+
+
+
+            <!-- ATTENDANCE -->
+
+            <div class="stat-card">
+
+
+                <div class="stat-top">
+
+
+                    <div class="stat-icon icon-blue">
+
+                        <i class="fa-solid fa-calendar-check"></i>
+
+                    </div>
+
+
+                    <i
+                        class="fa-solid fa-check"
+                        style="color:var(--success);">
+
+                    </i>
+
+
+                </div>
+
+
+                <h3>
+                    Attendance
+                </h3>
+
+
+                <h2>
+
+                    <span
+                        class="counter"
+                        data-target="{{ attendance_percentage }}">
+
+                        0
+
+                    </span>%
+
+                </h2>
+
+
+                <small>
+                    Overall attendance
+                </small>
+
+
+            </div>
+
+
+
+            <!-- SUBJECTS -->
+
+            <div class="stat-card">
+
+
+                <div class="stat-top">
+
+
+                    <div class="stat-icon icon-green">
+
+                        <i class="fa-solid fa-book-open"></i>
+
+                    </div>
+
+
+                </div>
+
+
+                <h3>
+                    Total Subjects
+                </h3>
+
+
+                <h2>
+
+                    <span
+                        class="counter"
+                        data-target="{{ marks|length }}">
+
+                        0
+
+                    </span>
+
+                </h2>
+
+
+                <small>
+                    Subjects evaluated
+                </small>
+
+
+            </div>
+
+
+
+            <!-- STATUS -->
+
+            <div class="stat-card">
+
+
+                <div class="stat-top">
+
+
+                    <div class="stat-icon icon-orange">
+
+                        <i class="fa-solid fa-award"></i>
+
+                    </div>
+
+
+                </div>
+
+
+                <h3>
+                    Performance Status
+                </h3>
+
+
+                <h2 class="status-value">
+
+                    {{ status }}
+
+                </h2>
+
+
+                <small>
+                    Keep improving!
+                </small>
+
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             PERFORMANCE CHARTS
+        ================================================== -->
+
+        <section class="dashboard-grid">
+
+
+            <!-- SUBJECT PERFORMANCE -->
+
+            <div class="card">
+
+
+                <div class="card-header">
+
+
+                    <div>
+
+                        <h2>
+                            Subject-wise Performance
+                        </h2>
+
+                        <p>
+                            Final marks across all subjects
+                        </p>
+
+                    </div>
+
+
+                    <i
+                        class="fa-solid fa-chart-column"
+                        style="color:var(--primary);">
+
+                    </i>
+
+
+                </div>
+
+
+                <div class="chart-box">
+
+                    <canvas
+                        id="marksChart"
+
+                        data-subjects='{{ marks | map(attribute="subject_name") | list | tojson }}'
+
+                        data-marks='{{ marks | map(attribute="final_marks") | list | tojson }}'>
+
+                    </canvas>
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- INTERNAL EXAMS -->
+
+            <div class="card">
+
+
+                <div class="card-header">
+
+
+                    <div>
+
+                        <h2>
+                            Internal Exams
+                        </h2>
+
+                        <p>
+                            Internal 1 vs Internal 2
+                        </p>
+
+                    </div>
+
+
+                    <i
+                        class="fa-solid fa-chart-line"
+                        style="color:var(--info);">
+
+                    </i>
+
+
+                </div>
+
+
+                <div class="chart-box">
+
+                    <canvas
+
+                        id="internalChart"
+
+                        data-subjects='{{ marks | map(attribute="subject_name") | list | tojson }}'
+
+                        data-internal1='{{ marks | map(attribute="internal1") | list | tojson }}'
+
+                        data-internal2='{{ marks | map(attribute="internal2") | list | tojson }}'>
+
+                    </canvas>
+
+                </div>
+
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             ATTENDANCE + INSIGHT
+        ================================================== -->
+
+        <section class="dashboard-grid">
+
+
+            <!-- ATTENDANCE CHART -->
+
+            <div class="card">
+
+
+                <div class="card-header">
+
+
+                    <div>
+
+                        <h2>
+                            Attendance Overview
+                        </h2>
+
+                        <p>
+                            Attended vs missed classes
+                        </p>
+
+                    </div>
+
+
+                    <i
+                        class="fa-solid fa-calendar-check"
+                        style="color:var(--success);">
+
+                    </i>
+
+
+                </div>
+
+
+                <div class="chart-box">
+
+                    <canvas
+
+                        id="attendanceChart"
+
+                        data-attended='{{ attendance | sum(attribute="attended_classes") }}'
+
+                        data-total='{{ attendance | sum(attribute="total_classes") }}'>
+
+                    </canvas>
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- ACADEMIC INSIGHT -->
+
+            <div class="card">
+
+
+                <div class="card-header">
+
+
+                    <div>
+
+                        <h2>
+                            Academic Insight
+                        </h2>
+
+                        <p>
+                            Quick summary
+                        </p>
+
+                    </div>
+
+
+                    <i
+                        class="fa-solid fa-lightbulb"
+                        style="color:var(--warning);">
+
+                    </i>
+
+
+                </div>
+
+
+                <div class="insight-box">
+
+
+                    <p>
+
+                        Your current overall performance is
+
+                        <strong>
+                            {{ average_marks }}%
+                        </strong>.
+
+                        Your attendance is
+
+                        <strong>
+                            {{ attendance_percentage }}%
+                        </strong>.
+
+                    </p>
+
+
+                    <div class="insight-message">
+
+
+                        {% if average_marks >= 75 %}
+
+
+                            <strong
+                                style="color:var(--success);">
+
+                                <i
+                                    class="fa-solid fa-circle-check">
+                                </i>
+
+                                Excellent work!
+
+                            </strong>
+
+
+                            <p>
+
+                                You are performing very well.
+                                Keep maintaining your consistency.
+
+                            </p>
+
+
+                        {% elif average_marks >= 50 %}
+
+
+                            <strong
+                                style="color:var(--warning);">
+
+                                <i
+                                    class="fa-solid fa-circle-info">
+                                </i>
+
+                                Good progress!
+
+                            </strong>
+
+
+                            <p>
+
+                                Focus on weaker subjects
+                                to improve your overall score.
+
+                            </p>
+
+
+                        {% else %}
+
+
+                            <strong
+                                style="color:var(--danger);">
+
+                                <i
+                                    class="fa-solid fa-triangle-exclamation">
+                                </i>
+
+                                Attention required
+
+                            </strong>
+
+
+                            <p>
+
+                                Consider spending additional
+                                time on your subjects.
+
+                            </p>
+
+
+                        {% endif %}
+
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             SUBJECT PERFORMANCE TABLE
+        ================================================== -->
+
+        <section class="card">
+
+
+            <div class="card-header">
+
+
+                <div>
+
+                    <h2>
+                        Subject Performance
+                    </h2>
+
+                    <p>
+                        Marks and attendance by subject
+                    </p>
+
+                </div>
+
+
+                <i
+                    class="fa-solid fa-table"
+                    style="color:var(--primary);">
+
+                </i>
+
+
+            </div>
+
+
+
+            <div class="performance-table-wrapper">
+
+
+                <table class="performance-table">
+
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Subject
+                            </th>
+
+                            <th>
+                                Final Marks
+                            </th>
+
+                            <th>
+                                Performance
+                            </th>
+
+                            <th>
+                                Attendance
+                            </th>
+
+                            <th>
+                                Status
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+
+                    {% for mark in marks %}
+
+
+                        <tr>
+
+
+                            <!-- SUBJECT -->
+
+                            <td>
+
+                                <span class="subject-name">
+
+                                    {{ mark.subject_name }}
+
+                                </span>
+
+                            </td>
+
+
+
+                            <!-- MARKS -->
+
+                            <td>
+
+                                <span class="marks-value">
+
+                                    {{ mark.final_marks }}/100
+
+                                </span>
+
+                            </td>
+
+
+
+                            <!-- PROGRESS -->
+
+                            <td>
+
+                                <div class="progress">
+
+                                    <div
+                                        class="progress-bar"
+                                        data-width="{{ mark.final_marks }}">
+
+                                    </div>
+
+                                </div>
+
+                            </td>
+
+
+
+                            <!-- ATTENDANCE -->
+
+                            <td>
+
+
+                                {% for attend in attendance %}
+
+
+                                    {% if
+                                        attend.subject_name
+                                        ==
+                                        mark.subject_name
+                                    %}
+
+
+                                        {% if
+                                            attend.total_classes > 0
+                                        %}
+
+
+                                            {{
+                                                (
+                                                    attend.attended_classes
+                                                    /
+                                                    attend.total_classes
+                                                    *
+                                                    100
+                                                ) | round(1)
+                                            }}%
+
+
+                                        {% else %}
+
+                                            0%
+
+                                        {% endif %}
+
+
+                                    {% endif %}
+
+
+                                {% endfor %}
+
+
+                            </td>
+
+
+
+                            <!-- STATUS -->
+
+                            <td>
+
+
+                                {% if mark.final_marks >= 75 %}
+
+
+                                    <span
+                                        class="badge badge-good">
+
+                                        <i
+                                            class="fa-solid fa-trophy">
+                                        </i>
+
+                                        Excellent
+
+                                    </span>
+
+
+                                {% elif mark.final_marks >= 50 %}
+
+
+                                    <span
+                                        class="badge badge-average">
+
+                                        <i
+                                            class="fa-solid fa-chart-line">
+                                        </i>
+
+                                        Average
+
+                                    </span>
+
+
+                                {% else %}
+
+
+                                    <span
+                                        class="badge badge-danger">
+
+                                        <i
+                                            class="fa-solid fa-triangle-exclamation">
+                                        </i>
+
+                                        Improve
+
+                                    </span>
+
+
+                                {% endif %}
+
+
+                            </td>
+
+
+                        </tr>
+
+
+                    {% endfor %}
+
+
+                    </tbody>
+
+
+                </table>
+
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             IMPROVEMENT SECTION
+        ================================================== -->
+
+        {% if improvement_subjects %}
+
+
+        <section class="improvement-box">
+
+
+            <div class="improvement-header">
+
+
+                <div class="warning-icon">
+
+                    <i
+                        class="fa-solid fa-triangle-exclamation">
+                    </i>
+
+                </div>
+
+
+                <div>
+
+                    <h2>
+                        Subjects That Need Improvement
+                    </h2>
+
+                    <p>
+                        Consider giving extra attention to these subjects.
+                    </p>
+
+                </div>
+
+
+            </div>
+
+
+            <div class="subject-pills">
+
+
+                {% for subject in improvement_subjects %}
+
+
+                    <span class="subject-pill">
+
+                        <i class="fa-solid fa-book"></i>
+
+                        {{ subject }}
+
+                    </span>
+
+
+                {% endfor %}
+
+
+            </div>
+
+
+        </section>
+
+
+        {% else %}
+
+
+        <section class="improvement-box">
+
+
+            <div class="improvement-header">
+
+
+                <div
+                    class="warning-icon"
+                    style="
+                        background:#dcfce7;
+                        color:#16a34a;
+                    ">
+
+                    <i
+                        class="fa-solid fa-circle-check">
+                    </i>
+
+                </div>
+
+
+                <div>
+
+                    <h2>
+                        Great Job!
+                    </h2>
+
+                    <p>
+                        No subjects currently need improvement.
+                    </p>
+
+                </div>
+
+
+            </div>
+
+
+        </section>
+
+
+        {% endif %}
+
+
+    </main>
+
+
+</div>
+
+
+
+<!-- =====================================================
+     JAVASCRIPT
+===================================================== -->
+
+<script>
+
+
+/* =====================================================
+   DATE
+===================================================== */
+
+const currentDate =
+    document.getElementById(
+        "currentDate"
+    );
+
+
+if (currentDate) {
+
+    currentDate.textContent =
+        new Date().toLocaleDateString(
+            "en-IN",
+            {
+                day: "numeric",
+                month: "short",
+                year: "numeric"
+            }
+        );
+
+}
+
+
+
+/* =====================================================
+   COUNTERS
+===================================================== */
+
+document
+    .querySelectorAll(".counter")
+    .forEach(counter => {
+
+
+        const target =
+            parseFloat(
+                counter.dataset.target
+            ) || 0;
+
+
+        let current = 0;
+
+
+        const duration =
+            900;
+
+
+        const steps =
+            45;
+
+
+        const increment =
+            target / steps;
+
+
+        const timer =
+            setInterval(() => {
+
+
+                current += increment;
+
+
+                if (current >= target) {
+
+                    current = target;
+
+                    clearInterval(timer);
+
+                }
+
+
+                counter.textContent =
+                    Number.isInteger(target)
+                        ? Math.round(current)
+                        : current.toFixed(1);
+
+
+            }, duration / steps);
+
+    });
+
+
+
+/* =====================================================
+   PROGRESS BARS
+===================================================== */
+
+document
+    .querySelectorAll(".progress-bar")
+    .forEach(bar => {
+
+
+        const width =
+            Number(
+                bar.dataset.width
+            ) || 0;
+
+
+        setTimeout(() => {
+
+
+            bar.style.width =
+                Math.min(
+                    Math.max(
+                        width,
+                        0
+                    ),
+                    100
+                ) + "%";
+
+
+        }, 250);
+
+    });
+
+
+
+/* =====================================================
+   CHART INSTANCES
+===================================================== */
+
+let marksChart = null;
+
+let internalChart = null;
+
+let attendanceChart = null;
+
+
+
+/* =====================================================
+   CHART THEME
+===================================================== */
+
+function getChartTheme() {
+
+
+    const dark =
+        document.body.classList.contains(
+            "dark"
+        );
+
+
+    return {
+
+        text:
+            dark
+                ? "#e2e8f0"
+                : "#334155",
+
+        muted:
+            dark
+                ? "#94a3b8"
+                : "#64748b",
+
+        grid:
+            dark
+                ? "rgba(148,163,184,0.12)"
+                : "rgba(148,163,184,0.18)",
+
+        primary:
+            dark
+                ? "#818cf8"
+                : "#6366f1",
+
+        secondary:
+            dark
+                ? "#a78bfa"
+                : "#7c3aed",
+
+        blue:
+            dark
+                ? "#60a5fa"
+                : "#3b82f6",
+
+        green:
+            dark
+                ? "#34d399"
+                : "#10b981",
+
+        absent:
+            dark
+                ? "#fb7185"
+                : "#f43f5e"
+
+    };
+
+}
+
+
+
+/* =====================================================
+   BUILD CHARTS
+===================================================== */
+
+function buildCharts() {
+
+
+    const theme =
+        getChartTheme();
+
+
+    /* -----------------------------------------------------
+       Destroy old charts
+    ----------------------------------------------------- */
+
+    if (marksChart) {
+
+        marksChart.destroy();
+
+        marksChart = null;
+
+    }
+
+
+    if (internalChart) {
+
+        internalChart.destroy();
+
+        internalChart = null;
+
+    }
+
+
+    if (attendanceChart) {
+
+        attendanceChart.destroy();
+
+        attendanceChart = null;
+
+    }
+
+
+
+    /* =====================================================
+       MARKS CHART
+    ====================================================== */
+
+    const marksCanvas =
+        document.getElementById(
+            "marksChart"
+        );
+
+
+    if (marksCanvas) {
+
+
+        const subjects =
+            JSON.parse(
+                marksCanvas.dataset.subjects
+            );
+
+
+        const marksData =
+            JSON.parse(
+                marksCanvas.dataset.marks
+            );
+
+
+        marksChart =
+            new Chart(
+                marksCanvas,
+                {
+
+                    type:
+                        "bar",
+
+
+                    data: {
+
+                        labels:
+                            subjects,
+
+
+                        datasets: [
+
+                            {
+
+                                label:
+                                    "Final Marks",
+
+                                data:
+                                    marksData,
+
+                                backgroundColor:
+                                    theme.primary,
+
+                                borderRadius:
+                                    8,
+
+                                borderSkipped:
+                                    false
+
+                            }
+
+                        ]
+
+                    },
+
+
+                    options: {
+
+                        responsive:
+                            true,
+
+                        maintainAspectRatio:
+                            false,
+
+
+                        plugins: {
+
+                            legend: {
+
+                                display:
+                                    false
+
+                            }
+
+                        },
+
+
+                        scales: {
+
+                            y: {
+
+                                beginAtZero:
+                                    true,
+
+                                max:
+                                    100,
+
+
+                                ticks: {
+
+                                    color:
+                                        theme.muted
+
+                                },
+
+
+                                grid: {
+
+                                    color:
+                                        theme.grid
+
+                                }
+
+                            },
+
+
+                            x: {
+
+                                ticks: {
+
+                                    color:
+                                        theme.muted
+
+                                },
+
+
+                                grid: {
+
+                                    display:
+                                        false
+
+                                }
+
+                            }
+
+                        }
+
+                    }
+
+                }
+            );
+
+    }
+
+
+
+    /* =====================================================
+       INTERNAL EXAMS CHART
+    ====================================================== */
+
+    const internalCanvas =
+        document.getElementById(
+            "internalChart"
+        );
+
+
+    if (internalCanvas) {
+
+
+        const subjects =
+            JSON.parse(
+                internalCanvas.dataset.subjects
+            );
+
+
+        const internal1 =
+            JSON.parse(
+                internalCanvas.dataset.internal1
+            );
+
+
+        const internal2 =
+            JSON.parse(
+                internalCanvas.dataset.internal2
+            );
+
+
+        internalChart =
+            new Chart(
+                internalCanvas,
+                {
+
+                    type:
+                        "line",
+
+
+                    data: {
+
+                        labels:
+                            subjects,
+
+
+                        datasets: [
+
+                            {
+
+                                label:
+                                    "Internal Exam 1",
+
+                                data:
+                                    internal1,
+
+                                borderColor:
+                                    theme.primary,
+
+                                backgroundColor:
+                                    theme.primary,
+
+                                tension:
+                                    0.35,
+
+                                pointRadius:
+                                    5,
+
+                                pointHoverRadius:
+                                    7,
+
+                                fill:
+                                    false
+
+                            },
+
+
+                            {
+
+                                label:
+                                    "Internal Exam 2",
+
+                                data:
+                                    internal2,
+
+                                borderColor:
+                                    theme.blue,
+
+                                backgroundColor:
+                                    theme.blue,
+
+                                tension:
+                                    0.35,
+
+                                pointRadius:
+                                    5,
+
+                                pointHoverRadius:
+                                    7,
+
+                                fill:
+                                    false
+
+                            }
+
+                        ]
+
+                    },
+
+
+                    options: {
+
+                        responsive:
+                            true,
+
+                        maintainAspectRatio:
+                            false,
+
+
+                        plugins: {
+
+                            legend: {
+
+                                labels: {
+
+                                    color:
+                                        theme.text,
+
+                                    font: {
+
+                                        size:
+                                            12
+
+                                    }
+
+                                }
+
+                            }
+
+                        },
+
+
+                        scales: {
+
+                            y: {
+
+                                beginAtZero:
+                                    true,
+
+                                max:
+                                    100,
+
+                                ticks: {
+
+                                    color:
+                                        theme.muted
+
+                                },
+
+                                grid: {
+
+                                    color:
+                                        theme.grid
+
+                                }
+
+                            },
+
+
+                            x: {
+
+                                ticks: {
+
+                                    color:
+                                        theme.muted
+
+                                },
+
+                                grid: {
+
+                                    color:
+                                        theme.grid
+
+                                }
+
+                            }
+
+                        }
+
+                    }
+
+                }
+            );
+
+    }
+
+
+
+    /* =====================================================
+       ATTENDANCE CHART
+    ====================================================== */
+
+    const attendanceCanvas =
+        document.getElementById(
+            "attendanceChart"
+        );
+
+
+    if (attendanceCanvas) {
+
+
+        const attended =
+            Number(
+                attendanceCanvas.dataset.attended
+            ) || 0;
+
+
+        const total =
+            Number(
+                attendanceCanvas.dataset.total
+            ) || 0;
+
+
+        const absent =
+            Math.max(
+                total - attended,
+                0
+            );
+
+
+        attendanceChart =
+            new Chart(
+                attendanceCanvas,
+                {
+
+                    type:
+                        "doughnut",
+
+
+                    data: {
+
+                        labels: [
+                            "Attended",
+                            "Absent"
+                        ],
+
+
+                        datasets: [
+
+                            {
+
+                                data: [
+                                    attended,
+                                    absent
+                                ],
+
+                                backgroundColor: [
+                                    theme.green,
+                                    theme.absent
+                                ],
+
+                                borderWidth:
+                                    0
+
+                            }
+
+                        ]
+
+                    },
+
+
+                    options: {
+
+                        responsive:
+                            true,
+
+                        maintainAspectRatio:
+                            false,
+
+                        cutout:
+                            "70%",
+
+
+                        plugins: {
+
+                            legend: {
+
+                                position:
+                                    "bottom",
+
+                                labels: {
+
+                                    color:
+                                        theme.text,
+
+                                    padding:
+                                        18,
+
+                                    font: {
+
+                                        size:
+                                            12
+
+                                    }
+
+                                }
+
+                            }
+
+                        }
+
+                    }
+
+                }
+            );
+
+    }
+
+}
+
+
+
+/* =====================================================
+   THEME STORAGE
+===================================================== */
+
+const savedTheme =
+    localStorage.getItem(
+        "academicLensTheme"
+    );
+
+
+if (savedTheme === "dark") {
+
+    document.body.classList.add(
+        "dark"
+    );
+
+}
+
+
+
+/* =====================================================
+   UPDATE THEME ICON
+===================================================== */
+
+function updateThemeIcon() {
+
+
+    const button =
+        document.getElementById(
+            "themeButton"
+        );
+
+
+    if (!button) {
+        return;
+    }
+
+
+    const icon =
+        button.querySelector(
+            "i"
+        );
+
+
+    if (!icon) {
+        return;
+    }
+
+
+    if (
+        document.body.classList.contains(
+            "dark"
+        )
+    ) {
+
+        icon.className =
+            "fa-solid fa-sun";
+
+        button.title =
+            "Switch to light mode";
+
+    }
+
+    else {
+
+        icon.className =
+            "fa-solid fa-moon";
+
+        button.title =
+            "Switch to dark mode";
+
+    }
+
+}
+
+
+updateThemeIcon();
+
+
+
+/* =====================================================
+   THEME TOGGLE
+===================================================== */
+
+const themeButton =
+    document.getElementById(
+        "themeButton"
+    );
+
+
+if (themeButton) {
+
+
+    themeButton.addEventListener(
+        "click",
+        function () {
+
+
+            document.body.classList.toggle(
+                "dark"
+            );
+
+
+            const isDark =
+                document.body.classList.contains(
+                    "dark"
+                );
+
+
+            localStorage.setItem(
+                "academicLensTheme",
+
+                isDark
+                    ? "dark"
+                    : "light"
+            );
+
+
+            updateThemeIcon();
+
+
+            /*
+                Rebuild all charts so
+                their labels and grid colors
+                match the selected theme.
+            */
+
+            buildCharts();
+
+        }
+    );
+
+}
+
+
+
+/* =====================================================
+   INITIALIZE CHARTS
+===================================================== */
+
+buildCharts();
+
+</script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,1774 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Academic Lens | Students</title>
+
+    <!-- Main CSS -->
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+
+        body {
+
+            margin: 0;
+
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
+
+            background:
+                radial-gradient(
+                    circle at top right,
+                    rgba(99,102,241,0.12),
+                    transparent 35%
+                ),
+                radial-gradient(
+                    circle at bottom left,
+                    rgba(14,165,233,0.08),
+                    transparent 30%
+                ),
+                #f5f7fb;
+
+            color: #1e293b;
+
+        }
+
+
+        /* =====================================================
+           PAGE
+        ===================================================== */
+
+        .students-page {
+
+            min-height: 100vh;
+
+            padding: 30px 40px;
+
+        }
+
+
+        /* =====================================================
+           TOP NAVIGATION
+        ===================================================== */
+
+        .topbar {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            margin-bottom: 30px;
+
+        }
+
+
+        .back-btn {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 9px;
+
+            padding: 11px 17px;
+
+            border-radius: 11px;
+
+            background: white;
+
+            color: #475569;
+
+            text-decoration: none;
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+            border: 1px solid #e2e8f0;
+
+            box-shadow:
+                0 6px 20px rgba(15,23,42,0.05);
+
+            transition: 0.3s;
+
+        }
+
+
+        .back-btn:hover {
+
+            transform:
+                translateX(-4px);
+
+            color: #4f46e5;
+
+            box-shadow:
+                0 10px 25px rgba(15,23,42,0.10);
+
+        }
+
+
+        .top-title {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            color: #64748b;
+
+            font-size: 13px;
+
+        }
+
+
+        .top-title i {
+
+            color: #6366f1;
+
+        }
+
+
+        /* =====================================================
+           HEADER
+        ===================================================== */
+
+        .page-header {
+
+            display: flex;
+
+            align-items: flex-end;
+
+            justify-content: space-between;
+
+            gap: 20px;
+
+            margin-bottom: 30px;
+
+        }
+
+
+        .header-left {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 18px;
+
+        }
+
+
+        .header-icon {
+
+            width: 65px;
+
+            height: 65px;
+
+            flex-shrink: 0;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border-radius: 19px;
+
+            color: white;
+
+            font-size: 25px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #6366f1,
+                    #8b5cf6
+                );
+
+            box-shadow:
+                0 12px 28px
+                rgba(99,102,241,0.25);
+
+        }
+
+
+        .page-header h1 {
+
+            margin: 0 0 5px;
+
+            font-size: 30px;
+
+            font-weight: 800;
+
+            letter-spacing: -0.5px;
+
+        }
+
+
+        .page-header p {
+
+            margin: 0;
+
+            color: #64748b;
+
+            font-size: 14px;
+
+        }
+
+
+        /* =====================================================
+           STAT CARDS
+        ===================================================== */
+
+        .stats {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 18px;
+
+            margin-bottom: 25px;
+
+        }
+
+
+        .stat-card {
+
+            position: relative;
+
+            overflow: hidden;
+
+            background: rgba(255,255,255,0.95);
+
+            border: 1px solid #e2e8f0;
+
+            border-radius: 18px;
+
+            padding: 20px;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 15px;
+
+            box-shadow:
+                0 8px 30px
+                rgba(15,23,42,0.06);
+
+            transition: 0.3s;
+
+        }
+
+
+        .stat-card:hover {
+
+            transform:
+                translateY(-4px);
+
+            box-shadow:
+                0 14px 35px
+                rgba(15,23,42,0.10);
+
+        }
+
+
+        .stat-card::after {
+
+            content: "";
+
+            position: absolute;
+
+            width: 90px;
+
+            height: 90px;
+
+            border-radius: 50%;
+
+            right: -35px;
+
+            top: -35px;
+
+            background:
+                rgba(99,102,241,0.06);
+
+        }
+
+
+        .stat-icon {
+
+            width: 47px;
+
+            height: 47px;
+
+            border-radius: 14px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 18px;
+
+        }
+
+
+        .purple {
+
+            background: #ede9fe;
+
+            color: #7c3aed;
+
+        }
+
+
+        .blue {
+
+            background: #dbeafe;
+
+            color: #2563eb;
+
+        }
+
+
+        .green {
+
+            background: #d1fae5;
+
+            color: #059669;
+
+        }
+
+
+        .stat-text small {
+
+            display: block;
+
+            color: #64748b;
+
+            font-size: 11px;
+
+            margin-bottom: 3px;
+
+        }
+
+
+        .stat-text strong {
+
+            font-size: 22px;
+
+            font-weight: 800;
+
+        }
+
+
+        /* =====================================================
+           MAIN CARD
+        ===================================================== */
+
+        .students-card {
+
+            background:
+                rgba(255,255,255,0.97);
+
+            border:
+                1px solid #e2e8f0;
+
+            border-radius: 22px;
+
+            box-shadow:
+                0 15px 45px
+                rgba(15,23,42,0.07);
+
+            overflow: hidden;
+
+        }
+
+
+        /* =====================================================
+           CARD HEADER
+        ===================================================== */
+
+        .card-header {
+
+            padding: 25px 28px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 20px;
+
+            border-bottom:
+                1px solid #eef2f7;
+
+        }
+
+
+        .card-title {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+        }
+
+
+        .card-title-icon {
+
+            width: 40px;
+
+            height: 40px;
+
+            border-radius: 12px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            color: #4f46e5;
+
+            background: #eef2ff;
+
+        }
+
+
+        .card-title h2 {
+
+            margin: 0;
+
+            font-size: 17px;
+
+        }
+
+
+        .card-title p {
+
+            margin: 4px 0 0;
+
+            font-size: 11px;
+
+            color: #64748b;
+
+        }
+
+
+        /* =====================================================
+           SEARCH
+        ===================================================== */
+
+        .search-box {
+
+            position: relative;
+
+            width: 350px;
+
+        }
+
+
+        .search-box i {
+
+            position: absolute;
+
+            left: 15px;
+
+            top: 50%;
+
+            transform:
+                translateY(-50%);
+
+            color: #94a3b8;
+
+            font-size: 13px;
+
+        }
+
+
+        .search-box input {
+
+            width: 100%;
+
+            height: 43px;
+
+            padding:
+                0 40px 0 40px;
+
+            border:
+                1px solid #dbe2ea;
+
+            border-radius: 12px;
+
+            background: #f8fafc;
+
+            outline: none;
+
+            font-size: 12px;
+
+            color: #1e293b;
+
+            transition: 0.25s;
+
+        }
+
+
+        .search-box input:focus {
+
+            background: white;
+
+            border-color: #6366f1;
+
+            box-shadow:
+                0 0 0 4px
+                rgba(99,102,241,0.10);
+
+        }
+
+
+        .clear-search {
+
+            position: absolute;
+
+            right: 13px;
+
+            top: 50%;
+
+            transform:
+                translateY(-50%);
+
+            border: none;
+
+            background: none;
+
+            color: #94a3b8;
+
+            cursor: pointer;
+
+            display: none;
+
+        }
+
+
+        /* =====================================================
+           TABLE
+        ===================================================== */
+
+        .table-wrapper {
+
+            width: 100%;
+
+            overflow-x: auto;
+
+        }
+
+
+        table {
+
+            width: 100%;
+
+            border-collapse: collapse;
+
+            min-width: 850px;
+
+        }
+
+
+        thead {
+
+            background:
+                #f8fafc;
+
+        }
+
+
+        th {
+
+            padding:
+                15px 22px;
+
+            text-align: left;
+
+            font-size: 10px;
+
+            text-transform: uppercase;
+
+            letter-spacing: 0.7px;
+
+            color: #64748b;
+
+            font-weight: 800;
+
+            border-bottom:
+                1px solid #e2e8f0;
+
+        }
+
+
+        td {
+
+            padding:
+                16px 22px;
+
+            border-bottom:
+                1px solid #f1f5f9;
+
+            font-size: 12px;
+
+            color: #334155;
+
+        }
+
+
+        tbody tr {
+
+            transition: 0.25s;
+
+            animation:
+                rowAppear 0.4s ease both;
+
+        }
+
+
+        tbody tr:hover {
+
+            background:
+                #fafaff;
+
+        }
+
+
+        @keyframes rowAppear {
+
+            from {
+
+                opacity: 0;
+
+                transform:
+                    translateY(6px);
+
+            }
+
+            to {
+
+                opacity: 1;
+
+                transform:
+                    translateY(0);
+
+            }
+
+        }
+
+
+        /* =====================================================
+           STUDENT PROFILE
+        ===================================================== */
+
+        .student-info {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+        }
+
+
+        .avatar {
+
+            width: 40px;
+
+            height: 40px;
+
+            border-radius: 13px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            flex-shrink: 0;
+
+            color: white;
+
+            font-size: 13px;
+
+            font-weight: 800;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #6366f1,
+                    #8b5cf6
+                );
+
+        }
+
+
+        .student-name {
+
+            font-weight: 800;
+
+            color: #1e293b;
+
+            font-size: 12px;
+
+        }
+
+
+        .student-email {
+
+            margin-top: 3px;
+
+            color: #94a3b8;
+
+            font-size: 10px;
+
+        }
+
+
+        /* =====================================================
+           COURSE
+        ===================================================== */
+
+        .course-badge {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 6px;
+
+            padding:
+                6px 10px;
+
+            border-radius: 8px;
+
+            background: #f1f5f9;
+
+            color: #475569;
+
+            font-size: 10px;
+
+            font-weight: 700;
+
+        }
+
+
+        .course-badge i {
+
+            color: #6366f1;
+
+        }
+
+
+        /* =====================================================
+           SEMESTER
+        ===================================================== */
+
+        .semester {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 5px;
+
+            color: #475569;
+
+            font-weight: 700;
+
+        }
+
+
+        .semester i {
+
+            color: #10b981;
+
+        }
+
+
+        /* =====================================================
+           VIEW BUTTON
+        ===================================================== */
+
+        .view-btn {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            gap: 7px;
+
+            padding:
+                9px 13px;
+
+            border-radius: 9px;
+
+            color: #4f46e5;
+
+            background: #eef2ff;
+
+            text-decoration: none;
+
+            font-size: 10px;
+
+            font-weight: 800;
+
+            transition: 0.3s;
+
+        }
+
+
+        .view-btn:hover {
+
+            color: white;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #6366f1,
+                    #8b5cf6
+                );
+
+            transform:
+                translateY(-2px);
+
+            box-shadow:
+                0 7px 18px
+                rgba(99,102,241,0.25);
+
+        }
+
+
+        /* =====================================================
+           EMPTY STATE
+        ===================================================== */
+
+        .empty-state {
+
+            display: none;
+
+            text-align: center;
+
+            padding: 65px 20px;
+
+        }
+
+
+        .empty-icon {
+
+            width: 65px;
+
+            height: 65px;
+
+            margin:
+                0 auto 15px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border-radius: 20px;
+
+            color: #64748b;
+
+            background: #f1f5f9;
+
+            font-size: 24px;
+
+        }
+
+
+        .empty-state h3 {
+
+            margin: 0 0 6px;
+
+            font-size: 16px;
+
+        }
+
+
+        .empty-state p {
+
+            margin: 0;
+
+            color: #94a3b8;
+
+            font-size: 12px;
+
+        }
+
+
+        /* =====================================================
+           FOOTER
+        ===================================================== */
+
+        .table-footer {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            padding:
+                17px 25px;
+
+            color: #64748b;
+
+            font-size: 11px;
+
+            background: #fafbfc;
+
+        }
+
+
+        .result-count strong {
+
+            color: #4f46e5;
+
+        }
+
+
+        .status {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 6px;
+
+            color: #059669;
+
+            font-weight: 700;
+
+        }
+
+
+        .status-dot {
+
+            width: 7px;
+
+            height: 7px;
+
+            border-radius: 50%;
+
+            background: #10b981;
+
+            box-shadow:
+                0 0 0 4px
+                rgba(16,185,129,0.12);
+
+        }
+
+
+        /* =====================================================
+           RESPONSIVE
+        ===================================================== */
+
+        @media(max-width:900px) {
+
+            .students-page {
+
+                padding: 20px;
+
+            }
+
+
+            .stats {
+
+                grid-template-columns:
+                    1fr;
+
+            }
+
+
+            .page-header {
+
+                align-items: flex-start;
+
+            }
+
+
+            .card-header {
+
+                flex-direction: column;
+
+                align-items: stretch;
+
+            }
+
+
+            .search-box {
+
+                width: 100%;
+
+            }
+
+        }
+
+
+        @media(max-width:600px) {
+
+            .students-page {
+
+                padding: 15px;
+
+            }
+
+
+            .page-header {
+
+                flex-direction: column;
+
+            }
+
+
+            .header-left {
+
+                align-items: flex-start;
+
+            }
+
+
+            .page-header h1 {
+
+                font-size: 25px;
+
+            }
+
+
+            .header-icon {
+
+                width: 55px;
+
+                height: 55px;
+
+            }
+
+
+            .top-title {
+
+                display: none;
+
+            }
+
+
+            .card-header {
+
+                padding: 20px;
+
+            }
+
+
+            th,
+            td {
+
+                padding:
+                    13px 15px;
+
+            }
+
+
+            .table-footer {
+
+                flex-direction: column;
+
+                gap: 8px;
+
+                align-items: flex-start;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="students-page">
+
+
+    <!-- =====================================================
+         TOP BAR
+    ===================================================== -->
+
+    <div class="topbar">
+
+        <a
+            href="{{ url_for('admin_dashboard') }}"
+            class="back-btn">
+
+            <i class="fa-solid fa-arrow-left"></i>
+
+            Back to Dashboard
+
+        </a>
+
+
+        <div class="top-title">
+
+            <i class="fa-solid fa-shield-halved"></i>
+
+            Admin • Student Management
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         PAGE HEADER
+    ===================================================== -->
+
+    <div class="page-header">
+
+
+        <div class="header-left">
+
+
+            <div class="header-icon">
+
+                <i class="fa-solid fa-users"></i>
+
+            </div>
+
+
+            <div>
+
+                <h1>
+                    Student Directory
+                </h1>
+
+                <p>
+                    Manage and monitor registered students
+                </p>
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- =====================================================
+         STATISTICS
+    ===================================================== -->
+
+    <div class="stats">
+
+
+        <!-- TOTAL -->
+
+        <div class="stat-card">
+
+            <div class="stat-icon purple">
+
+                <i class="fa-solid fa-user-group"></i>
+
+            </div>
+
+
+            <div class="stat-text">
+
+                <small>
+                    Students Found
+                </small>
+
+                <strong id="studentCount">
+                    {{ students|length }}
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <!-- RECORDS -->
+
+        <div class="stat-card">
+
+            <div class="stat-icon blue">
+
+                <i class="fa-solid fa-database"></i>
+
+            </div>
+
+
+            <div class="stat-text">
+
+                <small>
+                    Database Records
+                </small>
+
+                <strong>
+                    {{ students|length }}
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <!-- STATUS -->
+
+        <div class="stat-card">
+
+            <div class="stat-icon green">
+
+                <i class="fa-solid fa-circle-check"></i>
+
+            </div>
+
+
+            <div class="stat-text">
+
+                <small>
+                    Directory Status
+                </small>
+
+                <strong style="font-size:17px;">
+                    Active
+                </strong>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- =====================================================
+         STUDENTS CARD
+    ===================================================== -->
+
+    <div class="students-card">
+
+
+        <!-- CARD HEADER -->
+
+        <div class="card-header">
+
+
+            <div class="card-title">
+
+                <div class="card-title-icon">
+
+                    <i class="fa-solid fa-graduation-cap"></i>
+
+                </div>
+
+
+                <div>
+
+                    <h2>
+                        Registered Students
+                    </h2>
+
+                    <p>
+                        Search a student to view their academic profile
+                    </p>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- SEARCH -->
+
+            <div class="search-box">
+
+                <i class="fa-solid fa-magnifying-glass"></i>
+
+
+                <input
+                    type="text"
+                    id="studentSearch"
+                    value="{{ search|default('') }}"
+                    placeholder="Search by name, email or course..."
+                    autocomplete="off">
+
+
+                <button
+                    type="button"
+                    class="clear-search"
+                    id="clearSearch">
+
+                    <i class="fa-solid fa-xmark"></i>
+
+                </button>
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- =================================================
+             TABLE
+        ================================================= -->
+
+        <div class="table-wrapper">
+
+
+            <table>
+
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Student
+                        </th>
+
+                        <th>
+                            Course
+                        </th>
+
+                        <th>
+                            Semester
+                        </th>
+
+                        <th>
+                            Profile
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+
+                <tbody id="studentTableBody">
+
+
+                    {% for student in students %}
+
+
+                    <tr class="student-row">
+
+
+                        <!-- STUDENT -->
+
+                        <td>
+
+
+                            <div class="student-info">
+
+
+                                <div
+                                    class="avatar"
+                                    data-name="{{ student.name }}">
+
+                                    {{ student.name[0]|upper }}
+
+                                </div>
+
+
+                                <div>
+
+                                    <div class="student-name">
+
+                                        {{ student.name }}
+
+                                    </div>
+
+
+                                    <div class="student-email">
+
+                                        {{ student.email }}
+
+                                    </div>
+
+                                </div>
+
+
+                            </div>
+
+
+                        </td>
+
+
+
+                        <!-- COURSE -->
+
+                        <td>
+
+                            <span class="course-badge">
+
+                                <i class="fa-solid fa-book-open"></i>
+
+                                {{ student.course }}
+
+                            </span>
+
+                        </td>
+
+
+
+                        <!-- SEMESTER -->
+
+                        <td>
+
+                            <span class="semester">
+
+                                <i class="fa-solid fa-layer-group"></i>
+
+                                Semester
+                                {{ student.semester }}
+
+                            </span>
+
+                        </td>
+
+
+
+                        <!-- VIEW -->
+
+                        <td>
+
+                            <a
+                                href="{{ url_for('student_performance', student_id=student.id) }}"
+                                class="view-btn">
+
+                                <i class="fa-solid fa-chart-line"></i>
+
+                                View Performance
+
+                            </a>
+
+                        </td>
+
+
+                    </tr>
+
+
+                    {% endfor %}
+
+
+                </tbody>
+
+
+            </table>
+
+
+
+            <!-- EMPTY -->
+
+            <div
+                class="empty-state"
+                id="emptyState">
+
+
+                <div class="empty-icon">
+
+                    <i class="fa-solid fa-user-slash"></i>
+
+                </div>
+
+
+                <h3>
+                    No students found
+                </h3>
+
+
+                <p>
+                    Try searching with a different name, email or course.
+                </p>
+
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- =================================================
+             FOOTER
+        ================================================= -->
+
+        <div class="table-footer">
+
+
+            <div class="result-count">
+
+                Showing
+
+                <strong id="visibleCount">
+                    {{ students|length }}
+                </strong>
+
+                student(s)
+
+            </div>
+
+
+            <div class="status">
+
+                <span class="status-dot"></span>
+
+                Student directory is active
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+
+<!-- =====================================================
+     JAVASCRIPT
+===================================================== -->
+
+<script>
+
+
+    const searchInput =
+        document.getElementById(
+            "studentSearch"
+        );
+
+
+    const clearButton =
+        document.getElementById(
+            "clearSearch"
+        );
+
+
+    const rows =
+        document.querySelectorAll(
+            ".student-row"
+        );
+
+
+    const visibleCount =
+        document.getElementById(
+            "visibleCount"
+        );
+
+
+    const studentCount =
+        document.getElementById(
+            "studentCount"
+        );
+
+
+    const emptyState =
+        document.getElementById(
+            "emptyState"
+        );
+
+
+
+    /* =====================================================
+       SEARCH
+    ===================================================== */
+
+    function searchStudents() {
+
+
+        const value =
+            searchInput.value
+                .toLowerCase()
+                .trim();
+
+
+        let count = 0;
+
+
+        rows.forEach(function(row) {
+
+
+            const text =
+                row.textContent
+                    .toLowerCase();
+
+
+            if (
+                text.includes(value)
+            ) {
+
+                row.style.display = "";
+
+                count++;
+
+            }
+
+            else {
+
+                row.style.display = "none";
+
+            }
+
+        });
+
+
+
+        /* COUNT */
+
+        visibleCount.textContent =
+            count;
+
+
+        studentCount.textContent =
+            count;
+
+
+
+        /* EMPTY STATE */
+
+        if (count === 0) {
+
+            emptyState.style.display =
+                "block";
+
+        }
+
+        else {
+
+            emptyState.style.display =
+                "none";
+
+        }
+
+
+
+        /* CLEAR BUTTON */
+
+        if (value.length > 0) {
+
+            clearButton.style.display =
+                "block";
+
+        }
+
+        else {
+
+            clearButton.style.display =
+                "none";
+
+        }
+
+    }
+
+
+
+    searchInput.addEventListener(
+        "input",
+        searchStudents
+    );
+
+
+
+    /* =====================================================
+       CLEAR SEARCH
+    ===================================================== */
+
+    clearButton.addEventListener(
+        "click",
+        function() {
+
+            searchInput.value = "";
+
+            searchInput.focus();
+
+            searchStudents();
+
+        }
+    );
+
+
+
+    /* =====================================================
+       KEYBOARD SHORTCUT
+    ===================================================== */
+
+    document.addEventListener(
+        "keydown",
+        function(event) {
+
+            if (
+                event.key === "/" &&
+                document.activeElement !== searchInput
+            ) {
+
+                event.preventDefault();
+
+                searchInput.focus();
+
+            }
+
+        }
+    );
+
+
+    /* =====================================================
+       INITIAL SEARCH
+    ===================================================== */
+
+    searchStudents();
+
+
+</script>
+
+
+</body>
+
+</html>
