@@ -1,3 +1,4 @@
+import os
 from flask import Flask, render_template, request, redirect, url_for, session, flash
 from functools import wraps
 from database import get_db_connection
@@ -9,7 +10,10 @@ from database import get_db_connection
 
 app = Flask(__name__)
 
-app.secret_key = "academic_lens_secret_key"
+app.secret_key = os.getenv(
+    "SECRET_KEY",
+    "development-secret-key"
+)
 
 
 # =========================================================
