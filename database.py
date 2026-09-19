@@ -1,26 +1,25 @@
 import os
-
 import mysql.connector
 from dotenv import load_dotenv
 
-
 load_dotenv()
-
 
 def get_db_connection():
 
-    return mysql.connector.connect(
+    connection = mysql.connector.connect(
+        host=os.getenv("DB_HOST"),
+        port=int(os.getenv("DB_PORT")),
+        user=os.getenv("DB_USER"),
+        password=os.getenv("DB_PASSWORD"),
+        database=os.getenv("DB_NAME"),
 
-        host=os.getenv("DB_HOST", "127.0.0.1"),
-
-        port=int(
-            os.getenv("DB_PORT", "3306")
+        ssl_ca=os.path.join(
+            os.path.dirname(__file__),
+            "ca.pem"
         ),
 
-        user=os.getenv("DB_USER", "root"),
-
-        password=os.getenv("DB_PASSWORD", ""),
-
-        database=os.getenv("DB_NAME", "student_performance")
-
+        ssl_verify_cert=True,
+        ssl_verify_identity=True
     )
+
+    return connection
