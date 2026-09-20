@@ -1,12 +1,21 @@
 from database import get_db_connection
 
 try:
-    connection = get_db_connection()
+    conn = get_db_connection()
 
-    print("MySQL connection successful!")
+    print("Aiven MySQL connection successful!")
 
-    connection.close()
+    cursor = conn.cursor()
+    cursor.execute("SELECT DATABASE()")
+    
+    result = cursor.fetchone()
+
+    print("Connected database:", result[0])
+
+    cursor.close()
+    conn.close()
 
 except Exception as e:
-    print("Database connection failed!")
-    print(e)
+    print("Connection failed!")
+    print("Error:", e)
+    
