@@ -11,155 +11,929 @@
     <title>Academic Lens | Performance</title>
 
 
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <!-- =========================================================
+         MAIN CSS
+         ========================================================= -->
 
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+
+    <!-- =========================================================
+         FONT AWESOME
+         ========================================================= -->
 
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
+
+    <!-- =========================================================
+         CHART.JS
+         ========================================================= -->
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 
     <style>
 
-        .page-container {
-            padding: 35px;
+        /* =========================================================
+           THEME VARIABLES
+           ========================================================= */
+
+        :root {
+
+            --background: #f5f7fb;
+
+            --card: #ffffff;
+
+            --card-soft: #f8fafc;
+
+            --text: #172033;
+
+            --heading: #0f172a;
+
+            --muted: #64748b;
+
+            --border: #e2e8f0;
+
+            --primary: #6366f1;
+
+            --secondary: #7c3aed;
+
+            --success: #10b981;
+
+            --warning: #f59e0b;
+
+            --danger: #ef4444;
+
+            --info: #3b82f6;
+
+            --sidebar: #111827;
+
+            --sidebar-text: #dbe4f3;
+
+            --sidebar-muted: #7b8ba8;
+
+            --shadow:
+                0 10px 30px rgba(15, 23, 42, 0.08);
         }
 
+
+        /* =========================================================
+           DARK MODE
+           ========================================================= */
+
+        body.dark {
+
+            --background: #0f172a;
+
+            --card: #18243b;
+
+            --card-soft: #1e293b;
+
+            --text: #f8fafc;
+
+            --heading: #ffffff;
+
+            --muted: #94a3b8;
+
+            --border: #334155;
+
+            --primary: #818cf8;
+
+            --secondary: #a78bfa;
+
+            --success: #34d399;
+
+            --warning: #fbbf24;
+
+            --danger: #f87171;
+
+            --info: #60a5fa;
+
+            --sidebar: #0b1120;
+
+            --sidebar-text: #e2e8f0;
+
+            --sidebar-muted: #94a3b8;
+
+            --shadow:
+                0 12px 35px rgba(0, 0, 0, 0.25);
+        }
+
+
+        /* =========================================================
+           GLOBAL
+           ========================================================= */
+
+        * {
+            box-sizing: border-box;
+        }
+
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+
+        body {
+
+            margin: 0;
+            padding: 0;
+
+            background: var(--background);
+
+            color: var(--text);
+
+            font-family:
+                Inter,
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                Roboto,
+                Arial,
+                sans-serif;
+
+            transition:
+                background-color 0.3s ease,
+                color 0.3s ease;
+        }
+
+
+        a {
+            text-decoration: none;
+        }
+
+
+        button {
+            font-family: inherit;
+        }
+
+
+        /* =========================================================
+           NAVBAR
+           ========================================================= */
+
+        .navbar {
+
+            position: fixed;
+
+            top: 0;
+            left: 0;
+
+            width: 100%;
+            height: 75px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            padding: 0 35px;
+
+            background: var(--card);
+
+            border-bottom:
+                1px solid var(--border);
+
+            z-index: 1000;
+
+            transition:
+                background-color 0.3s ease,
+                border-color 0.3s ease;
+        }
+
+
+        .logo-area {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 13px;
+        }
+
+
+        .logo-icon {
+
+            width: 44px;
+            height: 44px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 12px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #6366f1,
+                    #7c3aed
+                );
+
+            color: #ffffff;
+
+            font-size: 20px;
+
+            box-shadow:
+                0 7px 18px
+                rgba(99, 102, 241, 0.25);
+        }
+
+
+        .logo-area h2 {
+
+            margin: 0;
+
+            color: var(--heading);
+
+            font-size: 20px;
+
+            font-weight: 800;
+        }
+
+
+        .logo-area span {
+
+            display: block;
+
+            margin-top: 1px;
+
+            color: var(--muted);
+
+            font-size: 11px;
+        }
+
+
+        .nav-actions {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+        }
+
+
+        /* =========================================================
+           THEME BUTTON
+           ========================================================= */
+
+        .icon-btn {
+
+            width: 43px;
+            height: 43px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            border: 1px solid var(--border);
+
+            border-radius: 11px;
+
+            background: var(--card);
+
+            color: var(--heading);
+
+            cursor: pointer;
+
+            font-size: 15px;
+
+            transition: all 0.25s ease;
+        }
+
+
+        .icon-btn:hover {
+
+            color: var(--primary);
+
+            border-color: var(--primary);
+
+            transform: translateY(-1px);
+        }
+
+
+        /* =========================================================
+           LOGOUT BUTTON
+           ========================================================= */
+
+        .logout-btn {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 7px;
+
+            padding: 12px 18px;
+
+            border-radius: 11px;
+
+            background: #ffe1e5;
+
+            color: #ef3340;
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+            transition: all 0.25s ease;
+        }
+
+
+        .logout-btn:hover {
+
+            background: #ffd1d8;
+
+            transform: translateY(-1px);
+        }
+
+
+        body.dark .logout-btn {
+
+            background:
+                rgba(239, 68, 68, 0.15);
+
+            color: #fca5a5;
+        }
+
+
+        body.dark .logout-btn:hover {
+
+            background:
+                rgba(239, 68, 68, 0.22);
+        }
+
+
+        /* =========================================================
+           SIDEBAR
+           ========================================================= */
+
+        .sidebar {
+
+            position: fixed;
+
+            top: 75px;
+            left: 0;
+
+            width: 245px;
+
+            height:
+                calc(100vh - 75px);
+
+            padding: 36px 15px;
+
+            background: var(--sidebar);
+
+            overflow-y: auto;
+
+            z-index: 900;
+
+            transition:
+                background-color 0.3s ease;
+        }
+
+
+        .sidebar-section-title {
+
+            padding: 0 15px;
+
+            margin-bottom: 18px;
+
+            color: var(--sidebar-muted);
+
+            font-size: 11px;
+
+            font-weight: 700;
+
+            letter-spacing: 1.5px;
+        }
+
+
+        .sidebar-nav {
+
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 6px;
+        }
+
+
+        .sidebar-link {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 14px;
+
+            padding: 13px 16px;
+
+            border-radius: 12px;
+
+            color: var(--sidebar-text);
+
+            font-size: 14px;
+
+            font-weight: 600;
+
+            transition: all 0.25s ease;
+        }
+
+
+        .sidebar-link i {
+
+            width: 18px;
+
+            text-align: center;
+
+            color: #aab8cf;
+
+            font-size: 15px;
+        }
+
+
+        .sidebar-link:hover {
+
+            background:
+                rgba(99, 102, 241, 0.14);
+
+            color: #ffffff;
+        }
+
+
+        .sidebar-link:hover i {
+
+            color: #a5b4fc;
+        }
+
+
+        .sidebar-link.active {
+
+            background:
+                rgba(99, 102, 241, 0.20);
+
+            color: #ffffff;
+
+            border-left:
+                3px solid #6366f1;
+
+            padding-left: 13px;
+        }
+
+
+        .sidebar-link.active i {
+
+            color: #818cf8;
+        }
+
+
+        .account-title {
+
+            margin-top: 38px;
+        }
+
+
+        .logout-link:hover {
+
+            color: #ff9ca5;
+        }
+
+
+        /* =========================================================
+           MAIN CONTENT
+           ========================================================= */
+
+        .main-content {
+
+            margin-left: 245px !important;
+
+            width:
+                calc(100% - 245px) !important;
+
+            min-height: 100vh;
+
+            padding-top: 75px;
+
+            background: var(--background);
+
+            color: var(--text);
+
+            transition:
+                background-color 0.3s ease,
+                color 0.3s ease;
+        }
+
+
+        .page-container {
+
+            max-width: 1400px;
+
+            margin: 0 auto;
+
+            padding: 42px 45px 60px;
+        }
+
+
+        /* =========================================================
+           PAGE HEADER
+           ========================================================= */
 
         .page-header {
 
             display: flex;
 
-            justify-content: space-between;
-
             align-items: center;
 
-            margin-bottom: 30px;
+            justify-content: space-between;
 
+            gap: 20px;
+
+            margin-bottom: 30px;
+        }
+
+
+        .page-header-left {
+
+            display: flex;
+
+            flex-direction: column;
         }
 
 
         .page-header h1 {
 
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+
             margin: 0;
+
+            color: var(--heading);
 
             font-size: 30px;
 
-            color: #f8fafc;
+            font-weight: 800;
 
+            line-height: 1.2;
+        }
+
+
+        .page-header h1 i {
+
+            color: var(--primary);
+
+            font-size: 29px;
         }
 
 
         .page-header p {
 
-            color: #94a3b8;
+            margin: 8px 0 0;
 
-            margin-top: 6px;
+            color: var(--muted);
 
+            font-size: 13px;
         }
 
+
+        /* =========================================================
+           BACK BUTTON
+           ========================================================= */
 
         .back-btn {
 
-            text-decoration: none;
+            display: inline-flex;
 
-            padding: 11px 18px;
+            align-items: center;
 
-            border-radius: 10px;
+            justify-content: center;
 
-            background: #6366f1;
+            gap: 8px;
 
-            color: white;
+            padding: 12px 18px;
 
+            border-radius: 11px;
+
+            background: #ffe1e5;
+
+            color: #dc2626;
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+            transition: all 0.25s ease;
         }
 
+
+        .back-btn:hover {
+
+            background: #ffd1d8;
+
+            transform: translateY(-2px);
+        }
+
+
+        body.dark .back-btn {
+
+            background:
+                rgba(239, 68, 68, 0.15);
+
+            color: #fca5a5;
+        }
+
+
+        body.dark .back-btn:hover {
+
+            background:
+                rgba(239, 68, 68, 0.22);
+        }
+
+
+        /* =========================================================
+           SUMMARY CARD
+           ========================================================= */
 
         .info-card {
 
-            background: #1b273d;
-
-            border: 1px solid #2b3a55;
-
-            border-radius: 18px;
+            margin-bottom: 25px;
 
             padding: 25px;
 
-            margin-bottom: 25px;
+            background: var(--card);
 
+            border: 1px solid var(--border);
+
+            border-radius: 18px;
+
+            box-shadow: var(--shadow);
+
+            transition:
+                background-color 0.3s ease,
+                border-color 0.3s ease;
         }
 
 
-        .info-card h2 {
+        .summary-card {
 
-            margin-top: 0;
+            position: relative;
 
-            color: #f8fafc;
+            overflow: hidden;
 
+            background:
+                linear-gradient(
+                    135deg,
+                    #1f2d47,
+                    #17233a
+                );
+
+            border: none;
+
+            color: #ffffff;
+
+            box-shadow:
+                0 15px 35px
+                rgba(15, 23, 42, 0.15);
         }
 
 
-        .info-card p {
+        .summary-card::after {
 
-            color: #94a3b8;
+            content: "";
 
+            position: absolute;
+
+            width: 180px;
+            height: 180px;
+
+            right: -70px;
+            top: -90px;
+
+            border-radius: 50%;
+
+            background:
+                rgba(99, 102, 241, 0.18);
         }
 
 
-        .info-card strong {
+        .summary-card h2 {
 
-            color: #f8fafc;
+            display: flex;
 
+            align-items: center;
+
+            gap: 9px;
+
+            margin: 0 0 10px;
+
+            color: #ffffff;
+
+            font-size: 22px;
+
+            font-weight: 800;
         }
 
+
+        .summary-card h2 i {
+
+            color: #c4b5fd;
+        }
+
+
+        .summary-card p {
+
+            margin: 5px 0;
+
+            color: #cbd5e1;
+
+            font-size: 14px;
+        }
+
+
+        .summary-card strong {
+
+            color: #ffffff;
+
+            font-weight: 800;
+        }
+
+
+        .summary-content {
+
+            position: relative;
+
+            z-index: 2;
+        }
+
+
+        .status-badge {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 6px;
+
+            margin-top: 10px;
+
+            padding: 7px 12px;
+
+            border-radius: 30px;
+
+            background:
+                rgba(255, 255, 255, 0.10);
+
+            color: #ffffff;
+
+            font-size: 12px;
+
+            font-weight: 700;
+        }
+
+
+        /* =========================================================
+           CHART GRID
+           ========================================================= */
 
         .chart-grid {
 
             display: grid;
 
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns:
+                repeat(2, minmax(0, 1fr));
 
             gap: 25px;
 
             margin-bottom: 25px;
-
         }
 
 
         .chart-card {
 
-            background: #1b273d;
+            padding: 25px;
 
-            border: 1px solid #2b3a55;
+            background: var(--card);
+
+            border: 1px solid var(--border);
 
             border-radius: 18px;
 
-            padding: 25px;
+            box-shadow: var(--shadow);
 
+            transition:
+                background-color 0.3s ease,
+                border-color 0.3s ease;
         }
 
 
         .chart-card h2 {
 
-            margin-top: 0;
+            display: flex;
 
-            color: #f8fafc;
+            align-items: center;
 
+            gap: 8px;
+
+            margin: 0;
+
+            color: var(--heading);
+
+            font-size: 19px;
+
+            font-weight: 700;
+        }
+
+
+        .chart-card h2 i {
+
+            color: var(--primary);
         }
 
 
         .chart-card p {
 
-            color: #94a3b8;
+            margin: 7px 0 0;
 
+            color: var(--muted);
+
+            font-size: 13px;
         }
 
 
         .chart-box {
 
+            position: relative;
+
+            width: 100%;
+
             height: 320px;
 
+            margin-top: 20px;
+        }
+
+
+        /* =========================================================
+           TABLE CARD
+           ========================================================= */
+
+        .table-card {
+
+            padding: 25px;
+
+            background: var(--card);
+
+            border: 1px solid var(--border);
+
+            border-radius: 18px;
+
+            box-shadow: var(--shadow);
+
+            transition:
+                background-color 0.3s ease,
+                border-color 0.3s ease;
+        }
+
+
+        .table-card h2 {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 9px;
+
+            margin: 0;
+
+            color: var(--heading);
+
+            font-size: 19px;
+
+            font-weight: 700;
+        }
+
+
+        .table-card h2 i {
+
+            color: var(--primary);
+        }
+
+
+        .table-wrapper {
+
+            width: 100%;
+
+            overflow-x: auto;
+
+            margin-top: 20px;
         }
 
 
@@ -167,73 +941,316 @@
 
             width: 100%;
 
+            min-width: 650px;
+
             border-collapse: collapse;
-
-        }
-
-
-        .performance-table th,
-
-        .performance-table td {
-
-            padding: 14px;
-
-            text-align: left;
-
-            border-bottom: 1px solid #334155;
-
         }
 
 
         .performance-table th {
 
-            color: #94a3b8;
+            padding: 15px;
 
+            background: var(--card-soft);
+
+            color: var(--muted);
+
+            border-bottom:
+                1px solid var(--border);
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+            text-align: left;
+
+            white-space: nowrap;
         }
 
 
         .performance-table td {
 
-            color: #f8fafc;
+            padding: 16px 15px;
 
+            background: var(--card);
+
+            color: var(--text);
+
+            border-bottom:
+                1px solid var(--border);
+
+            font-size: 13px;
         }
 
 
+        .performance-table tbody tr {
+
+            transition:
+                background-color 0.2s ease;
+        }
+
+
+        .performance-table tbody tr:hover td {
+
+            background: var(--card-soft);
+        }
+
+
+        .performance-table tbody tr:last-child td {
+
+            border-bottom: none;
+        }
+
+
+        .subject-name {
+
+            color: var(--heading);
+
+            font-weight: 700;
+        }
+
+
+        .mark-value {
+
+            color: var(--text);
+
+            font-weight: 600;
+        }
+
+
+        .final-mark {
+
+            color: var(--primary);
+
+            font-weight: 800;
+        }
+
+
+        /* =========================================================
+           MARK BADGES
+           ========================================================= */
+
+        .mark-badge {
+
+            display: inline-block;
+
+            min-width: 48px;
+
+            padding: 5px 8px;
+
+            border-radius: 7px;
+
+            text-align: center;
+
+            font-size: 12px;
+
+            font-weight: 700;
+        }
+
+
+        .mark-good {
+
+            background: #dcfce7;
+
+            color: #15803d;
+        }
+
+
+        .mark-average {
+
+            background: #fef3c7;
+
+            color: #b45309;
+        }
+
+
+        .mark-low {
+
+            background: #fee2e2;
+
+            color: #dc2626;
+        }
+
+
+        body.dark .mark-good {
+
+            background:
+                rgba(16, 185, 129, 0.15);
+
+            color: #6ee7b7;
+        }
+
+
+        body.dark .mark-average {
+
+            background:
+                rgba(245, 158, 11, 0.15);
+
+            color: #fbbf24;
+        }
+
+
+        body.dark .mark-low {
+
+            background:
+                rgba(239, 68, 68, 0.15);
+
+            color: #fca5a5;
+        }
+
+
+        /* =========================================================
+           EMPTY STATE
+           ========================================================= */
+
         .empty-message {
+
+            min-height: 240px;
+
+            display: flex;
+
+            flex-direction: column;
+
+            align-items: center;
+
+            justify-content: center;
 
             padding: 35px;
 
             text-align: center;
 
-            color: #94a3b8;
-
+            color: var(--muted);
         }
 
 
-        @media(max-width: 900px) {
+        .empty-message i {
+
+            margin-bottom: 15px;
+
+            color: var(--muted);
+
+            font-size: 42px;
+        }
+
+
+        .empty-message p {
+
+            margin: 0;
+
+            color: var(--muted);
+
+            font-size: 14px;
+        }
+
+
+        /* =========================================================
+           RESPONSIVE
+           ========================================================= */
+
+        @media (max-width: 1050px) {
 
             .chart-grid {
 
                 grid-template-columns: 1fr;
-
             }
 
             .page-container {
 
-                padding: 20px;
+                padding-left: 30px;
 
+                padding-right: 30px;
             }
+        }
+
+
+        @media (max-width: 900px) {
+
+            .sidebar {
+
+                display: none !important;
+            }
+
+
+            .main-content {
+
+                margin-left: 0 !important;
+
+                width: 100% !important;
+            }
+
+
+            .navbar {
+
+                padding: 0 20px;
+            }
+
+
+            .page-container {
+
+                padding:
+                    30px 20px 45px;
+            }
+        }
+
+
+        @media (max-width: 650px) {
+
+            .logo-area span {
+
+                display: none;
+            }
+
+
+            .logo-area h2 {
+
+                font-size: 18px;
+            }
+
+
+            .navbar {
+
+                padding: 0 15px;
+            }
+
+
+            .logout-btn {
+
+                padding: 11px 13px;
+            }
+
+
+            .logout-btn span {
+
+                display: none;
+            }
+
 
             .page-header {
 
                 flex-direction: column;
 
                 align-items: flex-start;
-
-                gap: 15px;
-
             }
 
+
+            .page-header h1 {
+
+                font-size: 25px;
+            }
+
+
+            .summary-card,
+            .chart-card,
+            .table-card {
+
+                padding: 18px;
+            }
+
+
+            .chart-box {
+
+                height: 280px;
+            }
         }
 
     </style>
@@ -244,463 +1261,1238 @@
 <body>
 
 
-<header class="navbar">
+    <!-- =========================================================
+         NAVBAR
+         ========================================================= -->
 
+    <header class="navbar">
 
-    <div class="logo-area">
+        <div class="logo-area">
 
-        <div class="logo-icon">
+            <div class="logo-icon">
 
-            <i class="fa-solid fa-graduation-cap"></i>
+                <i class="fa-solid fa-graduation-cap"></i>
 
-        </div>
+            </div>
 
 
-        <div>
+            <div>
 
-            <h2>Academic Lens</h2>
+                <h2>
+                    Academic Lens
+                </h2>
 
-            <span>
-                Student Performance Analyzer
-            </span>
-
-        </div>
-
-    </div>
-
-
-    <div class="nav-actions">
-
-        <a href="{{ url_for('student_dashboard') }}"
-           class="logout-btn">
-
-            <i class="fa-solid fa-arrow-left"></i>
-
-            Dashboard
-
-        </a>
-
-    </div>
-
-
-</header>
-
-
-
-<main class="main-content">
-
-
-<div class="page-container">
-
-
-    <!-- HEADER -->
-
-    <div class="page-header">
-
-        <div>
-
-            <h1 class="performance-title">
-                Performance Analysis
-            </h1>
-
-
-            <p>
-
-                {{ student.name }}
-
-                •
-
-                {{ student.course }}
-
-                •
-
-                Semester {{ student.semester }}
-
-            </p>
-
-        </div>
-
-
-        <a href="{{ url_for('student_dashboard') }}"
-           class="back-btn">
-
-            <i class="fa-solid fa-arrow-left"></i>
-
-            Back
-
-        </a>
-
-    </div>
-
-
-
-    <!-- SUMMARY -->
-
-    <div class="info-card">
-
-        <h2>
-
-            <i class="fa-solid fa-graduation-cap"></i>
-
-            Academic Performance
-
-        </h2>
-
-
-        <p>
-
-            Average Marks:
-
-            <strong>
-                {{ average_marks }}%
-            </strong>
-
-        </p>
-
-
-        <p>
-
-            Performance Status:
-
-            <strong>
-                {{ status }}
-            </strong>
-
-        </p>
-
-    </div>
-
-
-
-    <!-- CHARTS -->
-
-    <div class="chart-grid">
-
-
-        <!-- INTERNAL EXAM -->
-
-        <div class="chart-card">
-
-            <h2>
-                Internal Exam Performance
-            </h2>
-
-
-            <p>
-                Internal Exam 1 vs Internal Exam 2
-            </p>
-
-
-            <div class="chart-box">
-
-                <canvas id="internalChart"></canvas>
+                <span>
+                    Student Performance Analyzer
+                </span>
 
             </div>
 
         </div>
 
 
+        <div class="nav-actions">
 
-        <!-- FINAL MARKS -->
+            <!-- Theme Button -->
 
-        <div class="chart-card">
+            <button
+                type="button"
+                class="icon-btn"
+                id="themeButton"
+                title="Toggle theme">
 
-            <h2>
-                Final Marks
-            </h2>
+                <i class="fa-solid fa-moon"></i>
+
+            </button>
 
 
-            <p>
-                Subject-wise final marks
-            </p>
+            <!-- Logout -->
+
+            <a
+                href="{{ url_for('logout') }}"
+                class="logout-btn">
+
+                <i class="fa-solid fa-right-from-bracket"></i>
+
+                <span>
+                    Logout
+                </span>
+
+            </a>
+
+        </div>
+
+    </header>
 
 
-            <div class="chart-box">
 
-                <canvas id="finalChart"></canvas>
+    <!-- =========================================================
+         SIDEBAR
+         ========================================================= -->
+
+    <aside class="sidebar">
+
+
+        <!-- MAIN MENU -->
+
+        <div class="sidebar-section-title">
+
+            MAIN MENU
+
+        </div>
+
+
+        <nav class="sidebar-nav">
+
+
+            <!-- Dashboard -->
+
+            <a
+                href="{{ url_for('student_dashboard') }}"
+                class="sidebar-link">
+
+                <i class="fa-solid fa-chart-pie"></i>
+
+                <span>
+                    Dashboard
+                </span>
+
+            </a>
+
+
+            <!-- Performance - ACTIVE -->
+
+            <a
+                href="{{ url_for('student_performance_page') }}"
+                class="sidebar-link active">
+
+                <i class="fa-solid fa-chart-line"></i>
+
+                <span>
+                    Performance
+                </span>
+
+            </a>
+
+
+            <!-- Attendance -->
+
+            <a
+                href="{{ url_for('student_attendance') }}"
+                class="sidebar-link">
+
+                <i class="fa-solid fa-calendar-check"></i>
+
+                <span>
+                    Attendance
+                </span>
+
+            </a>
+
+
+            <!-- Subjects -->
+
+            <a
+                href="{{ url_for('student_subjects') }}"
+                class="sidebar-link">
+
+                <i class="fa-solid fa-book-open"></i>
+
+                <span>
+                    Subjects
+                </span>
+
+            </a>
+
+        </nav>
+
+
+
+        <!-- ACCOUNT -->
+
+        <div class="sidebar-section-title account-title">
+
+            ACCOUNT
+
+        </div>
+
+
+        <nav class="sidebar-nav">
+
+
+            <!-- Profile -->
+
+            <a
+                href="{{ url_for('student_profile') }}"
+                class="sidebar-link">
+
+                <i class="fa-solid fa-user"></i>
+
+                <span>
+                    Profile
+                </span>
+
+            </a>
+
+
+            <!-- Logout -->
+
+            <a
+                href="{{ url_for('logout') }}"
+                class="sidebar-link logout-link">
+
+                <i class="fa-solid fa-right-from-bracket"></i>
+
+                <span>
+                    Logout
+                </span>
+
+            </a>
+
+        </nav>
+
+    </aside>
+
+
+
+    <!-- =========================================================
+         MAIN CONTENT
+         ========================================================= -->
+
+    <main class="main-content">
+
+
+        <div class="page-container">
+
+
+            <!-- =================================================
+                 PAGE HEADER
+                 ================================================= -->
+
+            <div class="page-header">
+
+
+                <div class="page-header-left">
+
+                    <h1>
+
+                        <i class="fa-solid fa-chart-line"></i>
+
+                        Performance Analysis
+
+                    </h1>
+
+
+                    <p>
+
+                        {{ student.name }}
+
+                        • {{ student.course }}
+
+                        • Semester {{ student.semester }}
+
+                    </p>
+
+                </div>
+
+
+                <a
+                    href="{{ url_for('student_dashboard') }}"
+                    class="back-btn">
+
+                    <i class="fa-solid fa-arrow-left"></i>
+
+                    Dashboard
+
+                </a>
 
             </div>
 
+
+
+            <!-- =================================================
+                 PERFORMANCE SUMMARY
+                 ================================================= -->
+
+            <div class="info-card summary-card">
+
+                <div class="summary-content">
+
+                    <h2>
+
+                        <i class="fa-solid fa-graduation-cap"></i>
+
+                        Academic Performance
+
+                    </h2>
+
+
+                    <p>
+
+                        Average Marks:
+
+                        <strong>
+                            {{ average_marks }}%
+                        </strong>
+
+                    </p>
+
+
+                    <p>
+
+                        Performance Status:
+
+                        <strong>
+                            {{ status }}
+                        </strong>
+
+                    </p>
+
+
+                    <div class="status-badge">
+
+                        <i class="fa-solid fa-chart-simple"></i>
+
+                        Overall Performance
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 CHARTS
+                 ================================================= -->
+
+            <div class="chart-grid">
+
+
+                <!-- INTERNAL EXAM CHART -->
+
+                <div class="chart-card">
+
+                    <h2>
+
+                        <i class="fa-solid fa-chart-line"></i>
+
+                        Internal Exam Performance
+
+                    </h2>
+
+
+                    <p>
+                        Internal Exam 1 vs Internal Exam 2
+                    </p>
+
+
+                    <div class="chart-box">
+
+                        <canvas
+                            id="internalChart">
+                        </canvas>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- FINAL MARKS CHART -->
+
+                <div class="chart-card">
+
+                    <h2>
+
+                        <i class="fa-solid fa-chart-column"></i>
+
+                        Final Marks
+
+                    </h2>
+
+
+                    <p>
+                        Subject-wise final marks
+                    </p>
+
+
+                    <div class="chart-box">
+
+                        <canvas
+                            id="finalChart">
+                        </canvas>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 DETAILED MARKS
+                 ================================================= -->
+
+            <div class="table-card">
+
+
+                <h2>
+
+                    <i class="fa-solid fa-table"></i>
+
+                    Detailed Marks
+
+                </h2>
+
+
+                {% if marks %}
+
+
+                    <div class="table-wrapper">
+
+                        <table class="performance-table">
+
+
+                            <thead>
+
+                                <tr>
+
+                                    <th>
+                                        Subject
+                                    </th>
+
+                                    <th>
+                                        Internal 1
+                                    </th>
+
+                                    <th>
+                                        Internal 2
+                                    </th>
+
+                                    <th>
+                                        Final Marks
+                                    </th>
+
+                                </tr>
+
+                            </thead>
+
+
+                            <tbody>
+
+
+                                {% for mark in marks %}
+
+                                    <tr>
+
+
+                                        <!-- SUBJECT -->
+
+                                        <td>
+
+                                            <span class="subject-name">
+
+                                                {{ mark.subject_name }}
+
+                                            </span>
+
+                                        </td>
+
+
+
+                                        <!-- INTERNAL 1 -->
+
+                                        <td>
+
+                                            {% set internal1 =
+                                                mark.internal1 or 0
+                                            %}
+
+
+                                            {% if internal1 >= 75 %}
+
+                                                <span class="mark-badge mark-good">
+                                                    {{ internal1 }}
+                                                </span>
+
+                                            {% elif internal1 >= 50 %}
+
+                                                <span class="mark-badge mark-average">
+                                                    {{ internal1 }}
+                                                </span>
+
+                                            {% else %}
+
+                                                <span class="mark-badge mark-low">
+                                                    {{ internal1 }}
+                                                </span>
+
+                                            {% endif %}
+
+                                        </td>
+
+
+
+                                        <!-- INTERNAL 2 -->
+
+                                        <td>
+
+                                            {% set internal2 =
+                                                mark.internal2 or 0
+                                            %}
+
+
+                                            {% if internal2 >= 75 %}
+
+                                                <span class="mark-badge mark-good">
+                                                    {{ internal2 }}
+                                                </span>
+
+                                            {% elif internal2 >= 50 %}
+
+                                                <span class="mark-badge mark-average">
+                                                    {{ internal2 }}
+                                                </span>
+
+                                            {% else %}
+
+                                                <span class="mark-badge mark-low">
+                                                    {{ internal2 }}
+                                                </span>
+
+                                            {% endif %}
+
+                                        </td>
+
+
+
+                                        <!-- FINAL MARKS -->
+
+                                        <td>
+
+                                            {% set final_marks =
+                                                mark.final_marks or 0
+                                            %}
+
+
+                                            {% if final_marks >= 75 %}
+
+                                                <span class="mark-badge mark-good final-mark">
+                                                    {{ final_marks }}/100
+                                                </span>
+
+                                            {% elif final_marks >= 50 %}
+
+                                                <span class="mark-badge mark-average final-mark">
+                                                    {{ final_marks }}/100
+                                                </span>
+
+                                            {% else %}
+
+                                                <span class="mark-badge mark-low final-mark">
+                                                    {{ final_marks }}/100
+                                                </span>
+
+                                            {% endif %}
+
+                                        </td>
+
+                                    </tr>
+
+                                {% endfor %}
+
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+
+                {% else %}
+
+
+                    <div class="empty-message">
+
+                        <i class="fa-solid fa-chart-line"></i>
+
+                        <p>
+                            No marks have been added yet.
+                        </p>
+
+                    </div>
+
+
+                {% endif %}
+
+
+            </div>
+
+
         </div>
 
-
-    </div>
-
-
-
-    <!-- MARKS TABLE -->
-
-    <div class="info-card">
-
-
-        <h2>
-
-            <i class="fa-solid fa-table"></i>
-
-            Detailed Marks
-
-        </h2>
-
-
-        {% if marks %}
-
-
-        <div style="overflow-x:auto;">
-
-            <table class="performance-table">
-
-                <thead>
-
-                    <tr>
-
-                        <th>Subject</th>
-
-                        <th>Internal 1</th>
-
-                        <th>Internal 2</th>
-
-                        <th>Final Marks</th>
-
-                    </tr>
-
-                </thead>
-
-
-                <tbody>
-
-
-                {% for mark in marks %}
-
-                    <tr>
-
-                        <td>
-                            {{ mark.subject_name }}
-                        </td>
-
-
-                        <td>
-                            {{ mark.internal1 or 0 }}
-                        </td>
-
-
-                        <td>
-                            {{ mark.internal2 or 0 }}
-                        </td>
-
-
-                        <td>
-                            {{ mark.final_marks or 0 }}/100
-                        </td>
-
-                    </tr>
-
-                {% endfor %}
-
-
-                </tbody>
-
-            </table>
-
-        </div>
-
-
-        {% else %}
-
-
-        <div class="empty-message">
-
-            <i class="fa-solid fa-chart-line"
-               style="font-size:40px;">
-            </i>
-
-
-            <p>
-                No marks have been added yet.
-            </p>
-
-        </div>
-
-
-        {% endif %}
-
-
-    </div>
-
-
-</div>
-
-
-</main>
+    </main>
 
 
 
-<!--
-    Flask sends chart information here as JSON.
-    This prevents Jinja from being mixed directly
-    with JavaScript statements.
--->
+    <!-- =========================================================
+         CHART DATA FROM FLASK
+         ========================================================= -->
 
-<script id="performance-data"
+    <script
+        id="performance-data"
         type="application/json">
 
-{{ chart_data | tojson }}
+        {{ chart_data | tojson }}
 
-</script>
-
-
-
-<script>
-
-
-    const performanceElement =
-        document.getElementById("performance-data");
-
-
-    const chartData =
-        JSON.parse(performanceElement.textContent);
+    </script>
 
 
 
-    /*
-        INTERNAL EXAM LINE CHART
-    */
+    <!-- =========================================================
+         JAVASCRIPT
+         ========================================================= -->
 
-    const internalCanvas =
-        document.getElementById("internalChart");
-
-
-    if (internalCanvas) {
-
-        new Chart(internalCanvas, {
-
-            type: "line",
-
-            data: {
-
-                labels: chartData.subjects,
-
-                datasets: [
-
-                    {
-
-                        label: "Internal Exam 1",
-
-                        data: chartData.internal1,
-
-                        tension: 0.4,
-
-                        fill: false,
-
-                        pointRadius: 5
-
-                    },
+    <script>
 
 
-                    {
+        /* =====================================================
+           THEME BUTTON
+           ===================================================== */
 
-                        label: "Internal Exam 2",
-
-                        data: chartData.internal2,
-
-                        tension: 0.4,
-
-                        fill: false,
-
-                        pointRadius: 5
-
-                    }
-
-                ]
-
-            },
+        const themeButton =
+            document.getElementById(
+                "themeButton"
+            );
 
 
-            options: {
+        const savedTheme =
+            localStorage.getItem(
+                "academicLensTheme"
+            );
 
-                responsive: true,
 
-                maintainAspectRatio: false,
+        if (savedTheme === "dark") {
 
-                scales: {
+            document.body.classList.add("dark");
 
-                    y: {
+        }
 
-                        beginAtZero: true,
 
-                        max: 100
 
-                    }
+        /* =====================================================
+           THEME ICON
+           ===================================================== */
 
-                }
+        function updateThemeIcon() {
+
+            if (!themeButton) {
+                return;
+            }
+
+
+            const icon =
+                themeButton.querySelector("i");
+
+
+            if (
+                document.body.classList.contains(
+                    "dark"
+                )
+            ) {
+
+                icon.className =
+                    "fa-solid fa-sun";
+
+                themeButton.title =
+                    "Switch to light mode";
 
             }
 
-        });
+            else {
 
-    }
+                icon.className =
+                    "fa-solid fa-moon";
 
-
-
-    /*
-        FINAL MARKS BAR CHART
-    */
-
-    const finalCanvas =
-        document.getElementById("finalChart");
-
-
-    if (finalCanvas) {
-
-        new Chart(finalCanvas, {
-
-            type: "bar",
-
-            data: {
-
-                labels: chartData.subjects,
-
-                datasets: [
-
-                    {
-
-                        label: "Final Marks",
-
-                        data: chartData.final_marks
-
-                    }
-
-                ]
-
-            },
-
-
-            options: {
-
-                responsive: true,
-
-                maintainAspectRatio: false,
-
-                scales: {
-
-                    y: {
-
-                        beginAtZero: true,
-
-                        max: 100
-
-                    }
-
-                }
+                themeButton.title =
+                    "Switch to dark mode";
 
             }
 
-        });
-
-    }
+        }
 
 
-</script>
+        updateThemeIcon();
 
+
+
+        /* =====================================================
+           CHART DATA
+           ===================================================== */
+
+        const performanceElement =
+            document.getElementById(
+                "performance-data"
+            );
+
+
+        let chartData = {
+
+            subjects: [],
+
+            internal1: [],
+
+            internal2: [],
+
+            final_marks: []
+
+        };
+
+
+        if (performanceElement) {
+
+            try {
+
+                chartData =
+                    JSON.parse(
+                        performanceElement.textContent
+                    );
+
+            }
+
+            catch (error) {
+
+                console.error(
+                    "Unable to read performance data:",
+                    error
+                );
+
+            }
+
+        }
+
+
+
+        /* =====================================================
+           CHART INSTANCES
+           ===================================================== */
+
+        let internalChart = null;
+
+        let finalChart = null;
+
+
+
+        /* =====================================================
+           CHART COLOURS
+           ===================================================== */
+
+        function getChartColors() {
+
+            const isDark =
+                document.body.classList.contains(
+                    "dark"
+                );
+
+
+            return {
+
+                text:
+                    isDark
+                        ? "#e2e8f0"
+                        : "#334155",
+
+                muted:
+                    isDark
+                        ? "#94a3b8"
+                        : "#64748b",
+
+                grid:
+                    isDark
+                        ? "rgba(148,163,184,0.16)"
+                        : "rgba(100,116,139,0.16)",
+
+                internal1:
+                    isDark
+                        ? "#60a5fa"
+                        : "#3b82f6",
+
+                internal2:
+                    isDark
+                        ? "#fb7185"
+                        : "#f43f5e",
+
+                finalMarks:
+                    isDark
+                        ? "#93c5fd"
+                        : "#6ab0e8"
+
+            };
+
+        }
+
+
+
+        /* =====================================================
+           CREATE INTERNAL CHART
+           ===================================================== */
+
+        function createInternalChart() {
+
+            const canvas =
+                document.getElementById(
+                    "internalChart"
+                );
+
+
+            if (!canvas) {
+                return;
+            }
+
+
+            if (internalChart) {
+
+                internalChart.destroy();
+
+                internalChart = null;
+
+            }
+
+
+            const colors =
+                getChartColors();
+
+
+            internalChart =
+                new Chart(
+                    canvas,
+                    {
+
+                        type: "line",
+
+
+                        data: {
+
+                            labels:
+                                chartData.subjects || [],
+
+
+                            datasets: [
+
+                                {
+
+                                    label:
+                                        "Internal Exam 1",
+
+                                    data:
+                                        chartData.internal1 || [],
+
+                                    borderColor:
+                                        colors.internal1,
+
+                                    backgroundColor:
+                                        colors.internal1,
+
+                                    tension:
+                                        0.4,
+
+                                    fill:
+                                        false,
+
+                                    pointRadius:
+                                        5,
+
+                                    pointHoverRadius:
+                                        7,
+
+                                    borderWidth:
+                                        3
+
+                                },
+
+
+                                {
+
+                                    label:
+                                        "Internal Exam 2",
+
+                                    data:
+                                        chartData.internal2 || [],
+
+                                    borderColor:
+                                        colors.internal2,
+
+                                    backgroundColor:
+                                        colors.internal2,
+
+                                    tension:
+                                        0.4,
+
+                                    fill:
+                                        false,
+
+                                    pointRadius:
+                                        5,
+
+                                    pointHoverRadius:
+                                        7,
+
+                                    borderWidth:
+                                        3
+
+                                }
+
+                            ]
+
+                        },
+
+
+                        options: {
+
+                            responsive: true,
+
+                            maintainAspectRatio: false,
+
+
+                            interaction: {
+
+                                mode:
+                                    "index",
+
+                                intersect:
+                                    false
+
+                            },
+
+
+                            plugins: {
+
+                                legend: {
+
+                                    position:
+                                        "top",
+
+                                    labels: {
+
+                                        color:
+                                            colors.text,
+
+                                        padding:
+                                            14,
+
+                                        usePointStyle:
+                                            true,
+
+                                        font: {
+
+                                            size:
+                                                12
+                                        }
+                                    }
+                                }
+                            },
+
+
+                            scales: {
+
+                                x: {
+
+                                    ticks: {
+
+                                        color:
+                                            colors.muted,
+
+                                        font: {
+                                            size: 11
+                                        }
+                                    },
+
+
+                                    grid: {
+
+                                        color:
+                                            colors.grid
+                                    }
+                                },
+
+
+                                y: {
+
+                                    beginAtZero:
+                                        true,
+
+                                    max:
+                                        100,
+
+
+                                    ticks: {
+
+                                        color:
+                                            colors.muted,
+
+                                        stepSize:
+                                            20
+                                    },
+
+
+                                    grid: {
+
+                                        color:
+                                            colors.grid
+                                    }
+                                }
+
+                            }
+
+                        }
+
+                    }
+                );
+
+        }
+
+
+
+        /* =====================================================
+           CREATE FINAL MARKS CHART
+           ===================================================== */
+
+        function createFinalChart() {
+
+            const canvas =
+                document.getElementById(
+                    "finalChart"
+                );
+
+
+            if (!canvas) {
+                return;
+            }
+
+
+            if (finalChart) {
+
+                finalChart.destroy();
+
+                finalChart = null;
+
+            }
+
+
+            const colors =
+                getChartColors();
+
+
+            finalChart =
+                new Chart(
+                    canvas,
+                    {
+
+                        type: "bar",
+
+
+                        data: {
+
+                            labels:
+                                chartData.subjects || [],
+
+
+                            datasets: [
+
+                                {
+
+                                    label:
+                                        "Final Marks",
+
+                                    data:
+                                        chartData.final_marks || [],
+
+                                    backgroundColor:
+                                        colors.finalMarks,
+
+                                    borderColor:
+                                        colors.finalMarks,
+
+                                    borderWidth:
+                                        1,
+
+                                    borderRadius:
+                                        6,
+
+                                    maxBarThickness:
+                                        55
+
+                                }
+
+                            ]
+
+                        },
+
+
+                        options: {
+
+                            responsive: true,
+
+                            maintainAspectRatio: false,
+
+
+                            plugins: {
+
+                                legend: {
+
+                                    position:
+                                        "top",
+
+                                    labels: {
+
+                                        color:
+                                            colors.text,
+
+                                        padding:
+                                            14,
+
+                                        usePointStyle:
+                                            true,
+
+                                        font: {
+
+                                            size:
+                                                12
+                                        }
+                                    }
+                                }
+                            },
+
+
+                            scales: {
+
+                                x: {
+
+                                    ticks: {
+
+                                        color:
+                                            colors.muted,
+
+                                        font: {
+                                            size: 11
+                                        }
+                                    },
+
+
+                                    grid: {
+
+                                        color:
+                                            colors.grid
+                                    }
+                                },
+
+
+                                y: {
+
+                                    beginAtZero:
+                                        true,
+
+                                    max:
+                                        100,
+
+
+                                    ticks: {
+
+                                        color:
+                                            colors.muted,
+
+                                        stepSize:
+                                            20
+                                    },
+
+
+                                    grid: {
+
+                                        color:
+                                            colors.grid
+                                    }
+
+                                }
+
+                            }
+
+                        }
+
+                    }
+                );
+
+        }
+
+
+
+        /* =====================================================
+           CREATE ALL CHARTS
+           ===================================================== */
+
+        function createCharts() {
+
+            createInternalChart();
+
+            createFinalChart();
+
+        }
+
+
+        createCharts();
+
+
+
+        /* =====================================================
+           THEME TOGGLE
+           ===================================================== */
+
+        if (themeButton) {
+
+            themeButton.addEventListener(
+                "click",
+                function () {
+
+
+                    document.body.classList.toggle(
+                        "dark"
+                    );
+
+
+                    const isDark =
+                        document.body.classList.contains(
+                            "dark"
+                        );
+
+
+                    localStorage.setItem(
+                        "academicLensTheme",
+
+                        isDark
+                            ? "dark"
+                            : "light"
+                    );
+
+
+                    updateThemeIcon();
+
+
+                    /*
+                        Recreate charts so that
+                        their text/grid colours
+                        match the selected theme.
+                    */
+
+                    createCharts();
+
+                }
+            );
+
+        }
+
+    </script>
 
 </body>
 
