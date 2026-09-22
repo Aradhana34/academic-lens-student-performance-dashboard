@@ -2,751 +2,859 @@
 <html lang="en">
 
 <head>
-
     <meta charset="UTF-8">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
 
     <title>Academic Lens | Attendance</title>
 
+    <!-- Flask Static CSS -->
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
 
-    <!-- =====================================================
-         MAIN CSS
-    ====================================================== -->
-<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <!-- Font Awesome -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-
-    <!-- =====================================================
-         FONT AWESOME
-    ====================================================== -->
-
-    <link
-        rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
-
-    <!-- =====================================================
-         CHART.JS
-    ====================================================== -->
-
-    <script
-        src="https://cdn.jsdelivr.net/npm/chart.js">
-    </script>
-
-
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <style>
 
-        /* =====================================================
+        /* =========================================================
            THEME VARIABLES
-        ====================================================== */
+           ========================================================= */
 
         :root {
-
             --background: #f5f7fb;
-
             --card: #ffffff;
-
             --card-soft: #f8fafc;
 
             --text: #172033;
-
             --heading: #0f172a;
-
             --muted: #64748b;
 
             --border: #e2e8f0;
 
             --primary: #6366f1;
-
             --secondary: #7c3aed;
 
             --success: #10b981;
-
             --danger: #ef4444;
-
+            --warning: #f59e0b;
             --info: #3b82f6;
 
-            --shadow:
-                0 10px 30px rgba(15,23,42,0.08);
+            --sidebar: #111827;
+            --sidebar-text: #dbe4f3;
+            --sidebar-muted: #7b8ba8;
 
+            --shadow:
+                0 10px 30px rgba(15, 23, 42, 0.08);
         }
 
 
-        /* =====================================================
+        /* =========================================================
            DARK MODE
-        ====================================================== */
+           ========================================================= */
 
         body.dark {
-
             --background: #0f172a;
-
             --card: #18243b;
-
             --card-soft: #1e293b;
 
             --text: #f8fafc;
-
             --heading: #ffffff;
-
             --muted: #94a3b8;
 
             --border: #334155;
 
             --primary: #818cf8;
-
             --secondary: #a78bfa;
 
             --success: #34d399;
-
             --danger: #f87171;
-
+            --warning: #fbbf24;
             --info: #60a5fa;
 
-            --shadow:
-                0 12px 35px rgba(0,0,0,0.25);
+            --sidebar: #0b1120;
+            --sidebar-text: #e2e8f0;
+            --sidebar-muted: #94a3b8;
 
+            --shadow:
+                0 12px 35px rgba(0, 0, 0, 0.25);
         }
 
 
-        /* =====================================================
-           PAGE
-        ====================================================== */
+        /* =========================================================
+           GLOBAL
+           ========================================================= */
+
+        * {
+            box-sizing: border-box;
+        }
 
         html {
             scroll-behavior: smooth;
         }
 
-
         body {
+            margin: 0;
+            padding: 0;
 
-            background:
-                var(--background) !important;
+            background: var(--background);
+            color: var(--text);
 
-            color:
-                var(--text) !important;
+            font-family:
+                Inter,
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                Roboto,
+                Arial,
+                sans-serif;
 
             transition:
                 background-color 0.3s ease,
                 color 0.3s ease;
-
         }
 
 
-        .main-content {
+        a {
+            text-decoration: none;
+        }
+
+
+        button {
+            font-family: inherit;
+        }
+
+
+        /* =========================================================
+           TOP NAVBAR
+           ========================================================= */
+
+        .navbar {
+            position: fixed;
+
+            top: 0;
+            left: 0;
+
+            width: 100%;
+            height: 75px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 0 35px;
+
+            background: var(--card);
+
+            border-bottom: 1px solid var(--border);
+
+            z-index: 1000;
+
+            transition:
+                background-color 0.3s ease,
+                border-color 0.3s ease;
+        }
+
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+        }
+
+
+        .logo-icon {
+            width: 44px;
+            height: 44px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 12px;
 
             background:
-                var(--background) !important;
+                linear-gradient(
+                    135deg,
+                    #6366f1,
+                    #7c3aed
+                );
 
-            color:
-                var(--text) !important;
+            color: #ffffff;
 
-            min-height:
-                calc(100vh - 75px);
+            font-size: 20px;
 
+            box-shadow:
+                0 7px 18px rgba(99, 102, 241, 0.25);
+        }
+
+
+        .logo-area h2 {
+            margin: 0;
+
+            font-size: 20px;
+            font-weight: 800;
+
+            color: var(--heading);
+        }
+
+
+        .logo-area span {
+            display: block;
+
+            margin-top: 1px;
+
+            font-size: 11px;
+
+            color: var(--muted);
+        }
+
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+
+        /* =========================================================
+           THEME BUTTON
+           ========================================================= */
+
+        .icon-btn {
+            width: 43px;
+            height: 43px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 11px;
+
+            border: 1px solid var(--border);
+
+            background: var(--card);
+            color: var(--heading);
+
+            cursor: pointer;
+
+            font-size: 15px;
+
+            transition: all 0.25s ease;
+        }
+
+
+        .icon-btn:hover {
+            color: var(--primary);
+            border-color: var(--primary);
+
+            transform: translateY(-1px);
+        }
+
+
+        /* =========================================================
+           LOGOUT BUTTON
+           ========================================================= */
+
+        .logout-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+
+            padding: 12px 18px;
+
+            border-radius: 11px;
+
+            background: #ffe1e5;
+            color: #ef3340;
+
+            font-size: 13px;
+            font-weight: 700;
+
+            transition: all 0.25s ease;
+        }
+
+
+        .logout-btn:hover {
+            background: #ffd1d8;
+
+            transform: translateY(-1px);
+        }
+
+
+        body.dark .logout-btn {
+            background: rgba(239, 68, 68, 0.15);
+            color: #fca5a5;
+        }
+
+
+        body.dark .logout-btn:hover {
+            background: rgba(239, 68, 68, 0.22);
+        }
+
+
+        /* =========================================================
+           SIDEBAR
+           ========================================================= */
+
+        .sidebar {
+            position: fixed;
+
+            left: 0;
+            top: 75px;
+
+            width: 245px;
+            height: calc(100vh - 75px);
+
+            padding: 36px 15px;
+
+            background: var(--sidebar);
+
+            overflow-y: auto;
+
+            z-index: 900;
+
+            transition:
+                background-color 0.3s ease;
+        }
+
+
+        .sidebar-section-title {
+            padding: 0 15px;
+
+            margin-bottom: 18px;
+
+            color: var(--sidebar-muted);
+
+            font-size: 11px;
+            font-weight: 700;
+
+            letter-spacing: 1.5px;
+        }
+
+
+        .sidebar-nav {
+            display: flex;
+            flex-direction: column;
+
+            gap: 6px;
+        }
+
+
+        .sidebar-link {
+            position: relative;
+
+            display: flex;
+            align-items: center;
+
+            gap: 14px;
+
+            padding: 13px 16px;
+
+            border-radius: 12px;
+
+            color: var(--sidebar-text);
+
+            font-size: 14px;
+            font-weight: 600;
+
+            transition: all 0.25s ease;
+        }
+
+
+        .sidebar-link i {
+            width: 18px;
+
+            text-align: center;
+
+            font-size: 15px;
+
+            color: #aab8cf;
+        }
+
+
+        .sidebar-link:hover {
+            background: rgba(99, 102, 241, 0.14);
+
+            color: #ffffff;
+        }
+
+
+        .sidebar-link:hover i {
+            color: #a5b4fc;
+        }
+
+
+        .sidebar-link.active {
+            background:
+                rgba(99, 102, 241, 0.20);
+
+            color: #ffffff;
+
+            border-left: 3px solid #6366f1;
+
+            padding-left: 13px;
+        }
+
+
+        .sidebar-link.active i {
+            color: #818cf8;
+        }
+
+
+        .account-title {
+            margin-top: 38px;
+        }
+
+
+        .logout-link:hover {
+            color: #ff9ca5;
+        }
+
+
+        /* =========================================================
+           MAIN CONTENT
+           ========================================================= */
+
+        .main-content {
+            margin-left: 245px !important;
+
+            width: calc(100% - 245px) !important;
+
+            min-height: 100vh;
+
+            padding-top: 75px;
+
+            background: var(--background);
+            color: var(--text);
+
+            transition:
+                background-color 0.3s ease,
+                color 0.3s ease;
         }
 
 
         .page-container {
+            padding: 42px 45px 60px;
 
-            padding:
-                35px;
+            max-width: 1400px;
 
+            margin: 0 auto;
         }
 
 
-        /* =====================================================
+        /* =========================================================
            PAGE HEADER
-        ====================================================== */
+           ========================================================= */
 
         .page-header {
+            display: flex;
 
-            display:
-                flex;
+            align-items: center;
 
-            justify-content:
-                space-between;
+            justify-content: space-between;
 
-            align-items:
-                center;
+            gap: 20px;
 
-            margin-bottom:
-                30px;
+            margin-bottom: 30px;
+        }
 
+
+        .page-header-left {
+            display: flex;
+            flex-direction: column;
         }
 
 
         .page-header h1 {
+            display: flex;
+            align-items: center;
 
-            margin:
-                0;
+            gap: 10px;
 
-            font-size:
-                30px;
+            margin: 0;
 
-            font-weight:
-                800;
+            color: var(--heading);
 
-            color:
-                var(--heading) !important;
+            font-size: 30px;
+            font-weight: 800;
 
+            line-height: 1.2;
         }
 
 
         .page-header h1 i {
+            color: var(--primary);
 
-            color:
-                var(--primary);
-
-            margin-right:
-                8px;
-
+            font-size: 29px;
         }
 
 
         .page-header p {
+            margin: 8px 0 0;
 
-            color:
-                var(--muted) !important;
+            color: var(--muted);
 
-            margin-top:
-                6px;
-
-            font-size:
-                13px;
-
+            font-size: 13px;
         }
 
 
-        /* =====================================================
+        /* =========================================================
            BACK BUTTON
-        ====================================================== */
+           ========================================================= */
 
         .back-btn {
+            display: inline-flex;
 
-            display:
-                inline-flex;
+            align-items: center;
+            justify-content: center;
 
-            align-items:
-                center;
+            gap: 8px;
 
-            gap:
-                8px;
+            padding: 12px 18px;
 
-            text-decoration:
-                none;
+            border-radius: 11px;
 
-            padding:
-                12px 18px;
+            background: #ffe1e5;
 
-            border-radius:
-                11px;
+            color: #dc2626;
 
-            background:
-                #fee2e2;
+            font-size: 13px;
+            font-weight: 700;
 
-            color:
-                #dc2626;
-
-            font-size:
-                13px;
-
-            font-weight:
-                700;
-
-            transition:
-                all 0.25s ease;
-
+            transition: all 0.25s ease;
         }
 
 
         .back-btn:hover {
+            background: #ffd1d8;
 
-            transform:
-                translateY(-2px);
-
-            background:
-                #fecaca;
-
+            transform: translateY(-2px);
         }
 
 
         body.dark .back-btn {
+            background: rgba(239, 68, 68, 0.15);
 
-            background:
-                rgba(239,68,68,0.15);
-
-            color:
-                #fca5a5;
-
+            color: #fca5a5;
         }
 
 
         body.dark .back-btn:hover {
-
-            background:
-                rgba(239,68,68,0.23);
-
+            background: rgba(239, 68, 68, 0.22);
         }
 
 
-        /* =====================================================
+        /* =========================================================
            STATISTICS
-        ====================================================== */
+           ========================================================= */
 
         .stats {
-
-            display:
-                grid;
+            display: grid;
 
             grid-template-columns:
-                repeat(3, 1fr);
+                repeat(3, minmax(0, 1fr));
 
-            gap:
-                20px;
+            gap: 20px;
 
-            margin-bottom:
-                25px;
-
+            margin-bottom: 25px;
         }
 
 
         .stat {
+            background: var(--card);
 
-            background:
-                var(--card) !important;
+            border: 1px solid var(--border);
 
-            border:
-                1px solid var(--border) !important;
+            border-radius: 18px;
 
-            border-radius:
-                18px;
+            padding: 24px;
 
-            padding:
-                25px;
-
-            box-shadow:
-                var(--shadow);
+            box-shadow: var(--shadow);
 
             transition:
-                all 0.3s ease;
-
+                transform 0.25s ease,
+                background-color 0.3s ease,
+                border-color 0.3s ease;
         }
 
 
         .stat:hover {
-
-            transform:
-                translateY(-4px);
-
-        }
-
-
-        .stat h3 {
-
-            color:
-                var(--muted) !important;
-
-            font-size:
-                13px;
-
-            font-weight:
-                600;
-
-            margin-bottom:
-                8px;
-
-        }
-
-
-        .stat h2 {
-
-            font-size:
-                30px;
-
-            margin:
-                0;
-
-            color:
-                var(--heading) !important;
-
-            font-weight:
-                800;
-
+            transform: translateY(-4px);
         }
 
 
         .stat-icon {
+            width: 44px;
+            height: 44px;
 
-            width:
-                44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
 
-            height:
-                44px;
+            margin-bottom: 15px;
 
-            border-radius:
-                12px;
+            border-radius: 12px;
 
-            display:
-                flex;
-
-            align-items:
-                center;
-
-            justify-content:
-                center;
-
-            margin-bottom:
-                15px;
-
-            font-size:
-                16px;
-
+            font-size: 16px;
         }
 
 
         .stat-icon.blue {
-
-            background:
-                #dbeafe;
-
-            color:
-                #2563eb;
-
+            background: #dbeafe;
+            color: #2563eb;
         }
 
 
         .stat-icon.green {
-
-            background:
-                #d1fae5;
-
-            color:
-                #059669;
-
+            background: #d1fae5;
+            color: #059669;
         }
 
 
         .stat-icon.purple {
-
-            background:
-                #ede9fe;
-
-            color:
-                #7c3aed;
-
+            background: #ede9fe;
+            color: #7c3aed;
         }
 
 
         body.dark .stat-icon.blue {
-
-            background:
-                rgba(37,99,235,0.18);
-
-            color:
-                #93c5fd;
-
+            background: rgba(37, 99, 235, 0.18);
+            color: #93c5fd;
         }
 
 
         body.dark .stat-icon.green {
-
-            background:
-                rgba(5,150,105,0.18);
-
-            color:
-                #6ee7b7;
-
+            background: rgba(5, 150, 105, 0.18);
+            color: #6ee7b7;
         }
 
 
         body.dark .stat-icon.purple {
-
-            background:
-                rgba(124,58,237,0.18);
-
-            color:
-                #c4b5fd;
-
+            background: rgba(124, 58, 237, 0.18);
+            color: #c4b5fd;
         }
 
 
-        /* =====================================================
-           CHART CARD / TABLE CARD
-        ====================================================== */
+        .stat h3 {
+            margin: 0 0 8px;
+
+            color: var(--muted);
+
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+
+        .stat h2 {
+            margin: 0;
+
+            color: var(--heading);
+
+            font-size: 30px;
+            font-weight: 800;
+
+            line-height: 1.2;
+        }
+
+
+        /* =========================================================
+           CARDS
+           ========================================================= */
 
         .chart-card,
         .table-card {
+            margin-bottom: 25px;
 
-            background:
-                var(--card) !important;
+            padding: 25px;
 
-            border:
-                1px solid var(--border) !important;
+            background: var(--card);
 
-            border-radius:
-                18px;
+            border: 1px solid var(--border);
 
-            padding:
-                25px;
+            border-radius: 18px;
 
-            margin-bottom:
-                25px;
-
-            box-shadow:
-                var(--shadow);
-
-            color:
-                var(--text) !important;
+            box-shadow: var(--shadow);
 
             transition:
                 background-color 0.3s ease,
-                border-color 0.3s ease,
-                color 0.3s ease;
-
+                border-color 0.3s ease;
         }
 
 
         .chart-card h2,
         .table-card h2 {
+            display: flex;
+            align-items: center;
 
-            margin-top:
-                0;
+            gap: 9px;
 
-            color:
-                var(--heading) !important;
+            margin: 0;
 
-            font-size:
-                19px;
+            color: var(--heading);
 
-            font-weight:
-                700;
-
+            font-size: 19px;
+            font-weight: 700;
         }
 
 
-        .chart-card h2 i {
-
-            color:
-                var(--primary);
-
-            margin-right:
-                8px;
-
+        .chart-card h2 i,
+        .table-card h2 i {
+            color: var(--primary);
         }
 
 
-        .chart-card p {
+        .chart-card > p {
+            margin: 7px 0 0;
 
-            color:
-                var(--muted) !important;
+            color: var(--muted);
 
-            font-size:
-                13px;
-
+            font-size: 13px;
         }
 
 
-        /* =====================================================
+        /* =========================================================
            CHART
-        ====================================================== */
+           ========================================================= */
 
         .chart-box {
+            position: relative;
 
-            height:
-                350px;
+            height: 360px;
 
-            max-width:
-                600px;
+            max-width: 650px;
 
-            margin:
-                0 auto;
-
-            position:
-                relative;
-
+            margin: 20px auto 0;
         }
 
 
-        /* =====================================================
-           ATTENDANCE TABLE
-        ====================================================== */
+        /* =========================================================
+           TABLE
+           ========================================================= */
 
         .table-wrapper {
+            width: 100%;
 
-            overflow-x:
-                auto;
+            overflow-x: auto;
 
-            margin-top:
-                18px;
-
+            margin-top: 20px;
         }
 
 
         .attendance-table {
+            width: 100%;
 
-            width:
-                100%;
+            min-width: 700px;
 
-            border-collapse:
-                collapse;
-
-            min-width:
-                650px;
-
+            border-collapse: collapse;
         }
 
 
         .attendance-table th {
+            padding: 15px;
 
-            color:
-                var(--muted) !important;
+            background: var(--card-soft);
 
-            background:
-                var(--card-soft) !important;
+            color: var(--muted);
 
-            font-size:
-                13px;
+            border-bottom: 1px solid var(--border);
 
-            font-weight:
-                700;
+            font-size: 13px;
+            font-weight: 700;
 
-            text-align:
-                left;
+            text-align: left;
 
-            padding:
-                15px;
-
-            border-bottom:
-                1px solid var(--border) !important;
-
+            white-space: nowrap;
         }
 
 
         .attendance-table td {
+            padding: 16px 15px;
 
-            color:
-                var(--text) !important;
+            background: var(--card);
 
-            font-size:
-                13px;
+            color: var(--text);
 
-            padding:
-                15px;
+            border-bottom: 1px solid var(--border);
 
-            border-bottom:
-                1px solid var(--border) !important;
+            font-size: 13px;
 
-            background:
-                var(--card) !important;
-
-        }
-
-
-        .attendance-table tbody tr {
-
-            transition:
-                background-color 0.2s ease;
-
+            transition: background-color 0.2s ease;
         }
 
 
         .attendance-table tbody tr:hover td {
-
-            background:
-                var(--card-soft) !important;
-
+            background: var(--card-soft);
         }
 
 
-        /* Subject name */
-
-        .attendance-table .subject-name {
-
-            color:
-                var(--heading) !important;
-
-            font-weight:
-                700;
-
+        .attendance-table tbody tr:last-child td {
+            border-bottom: none;
         }
 
 
-        /* Numbers */
+        .subject-name {
+            color: var(--heading);
 
-        .attendance-table .number-value {
-
-            color:
-                var(--text) !important;
-
-            font-weight:
-                600;
-
+            font-weight: 700;
         }
 
 
-        /* Percentage */
+        .number-value {
+            color: var(--text);
 
-        .attendance-table .percentage {
-
-            color:
-                var(--primary) !important;
-
-            font-weight:
-                800;
-
+            font-weight: 600;
         }
 
 
-        /* Absent */
+        .percentage {
+            display: inline-block;
 
-        .attendance-table .absent-value {
+            margin-bottom: 4px;
 
-            color:
-                var(--danger) !important;
+            color: var(--primary);
 
-            font-weight:
-                600;
-
+            font-weight: 800;
         }
 
 
-        /* =====================================================
-           ATTENDANCE PROGRESS
-        ====================================================== */
+        .absent-value {
+            color: var(--danger);
+
+            font-weight: 600;
+        }
+
+
+        /* =========================================================
+           PROGRESS BAR
+           ========================================================= */
 
         .attendance-progress {
+            width: 105px;
 
-            width:
-                100px;
+            height: 7px;
 
-            height:
-                7px;
+            overflow: hidden;
 
-            background:
-                var(--border);
+            margin-top: 5px;
 
-            border-radius:
-                20px;
+            border-radius: 50px;
 
-            overflow:
-                hidden;
-
-            margin-top:
-                6px;
-
+            background: var(--border);
         }
 
 
         .attendance-progress-bar {
+            width: 0;
 
-            height:
-                100%;
+            height: 100%;
 
-            border-radius:
-                20px;
+            border-radius: 50px;
 
             background:
                 linear-gradient(
@@ -755,1069 +863,965 @@
                     var(--secondary)
                 );
 
-            width:
-                0;
-
-            transition:
-                width 0.8s ease;
-
+            transition: width 0.8s ease;
         }
 
 
-        /* =====================================================
+        /* =========================================================
            EMPTY STATE
-        ====================================================== */
+           ========================================================= */
 
         .empty {
+            display: flex;
+            flex-direction: column;
 
-            text-align:
-                center;
+            align-items: center;
+            justify-content: center;
 
-            padding:
-                50px 20px;
+            min-height: 250px;
 
-            color:
-                var(--muted) !important;
+            text-align: center;
 
+            color: var(--muted);
         }
 
 
         .empty i {
+            margin-bottom: 15px;
 
-            color:
-                var(--muted);
+            color: var(--muted);
 
-            margin-bottom:
-                12px;
-
+            font-size: 45px;
         }
 
 
         .empty p {
+            margin: 0;
 
-            color:
-                var(--muted) !important;
+            color: var(--muted);
 
-            font-size:
-                14px;
-
+            font-size: 14px;
         }
 
 
-        /* =====================================================
-           NAVBAR
-        ====================================================== */
-
-        .navbar {
-
-            background:
-                var(--card) !important;
-
-            border-bottom:
-                1px solid var(--border) !important;
-
-        }
-
-
-        .navbar h2 {
-
-            color:
-                var(--heading) !important;
-
-        }
-
-
-        .navbar span {
-
-            color:
-                var(--muted) !important;
-
-        }
-
-
-        /* =====================================================
-           THEME BUTTON
-        ====================================================== */
-
-        .icon-btn {
-
-            background:
-                var(--card) !important;
-
-            color:
-                var(--text) !important;
-
-            border:
-                1px solid var(--border) !important;
-
-        }
-
-
-        .icon-btn:hover {
-
-            color:
-                var(--primary) !important;
-
-            border-color:
-                var(--primary) !important;
-
-        }
-
-
-        /* =====================================================
+        /* =========================================================
            MOBILE
-        ====================================================== */
+           ========================================================= */
 
-        @media(max-width: 900px) {
+        @media (max-width: 1000px) {
 
             .stats {
-
-                grid-template-columns:
-                    1fr;
-
+                grid-template-columns: 1fr;
             }
-
 
             .page-container {
-
-                padding:
-                    20px;
-
+                padding: 35px 25px 50px;
             }
-
-
-            .page-header {
-
-                flex-direction:
-                    column;
-
-                align-items:
-                    flex-start;
-
-                gap:
-                    15px;
-
-            }
-
-
-            .chart-box {
-
-                height:
-                    300px;
-
-            }
-
         }
 
 
-        @media(max-width: 500px) {
+        @media (max-width: 900px) {
+
+            .sidebar {
+                display: none !important;
+            }
+
+            .main-content {
+                margin-left: 0 !important;
+
+                width: 100% !important;
+            }
+
+            .navbar {
+                padding: 0 20px;
+            }
 
             .page-container {
+                padding: 30px 20px 45px;
+            }
+        }
 
-                padding:
-                    15px;
 
+        @media (max-width: 650px) {
+
+            .logo-area span {
+                display: none;
             }
 
+            .logo-area h2 {
+                font-size: 18px;
+            }
+
+            .navbar {
+                padding: 0 15px;
+            }
+
+            .logout-btn {
+                padding: 11px 13px;
+            }
+
+            .logout-btn span {
+                display: none;
+            }
+
+            .page-header {
+                flex-direction: column;
+
+                align-items: flex-start;
+            }
 
             .page-header h1 {
-
-                font-size:
-                    24px;
-
+                font-size: 25px;
             }
-
-
-            .stat h2 {
-
-                font-size:
-                    26px;
-
-            }
-
 
             .chart-card,
             .table-card {
-
-                padding:
-                    18px;
-
+                padding: 18px;
             }
 
+            .chart-box {
+                height: 300px;
+            }
         }
 
     </style>
-
 </head>
 
 
 <body>
 
 
-<!-- =====================================================
-     NAVBAR
-===================================================== -->
+    <!-- =========================================================
+         TOP NAVBAR
+         ========================================================= -->
 
-<header class="navbar">
+    <header class="navbar">
 
-    <div class="logo-area">
+        <div class="logo-area">
 
+            <div class="logo-icon">
+                <i class="fa-solid fa-graduation-cap"></i>
+            </div>
 
-        <div class="logo-icon">
+            <div>
+                <h2>Academic Lens</h2>
 
-            <i class="fa-solid fa-graduation-cap"></i>
-
-        </div>
-
-
-        <div>
-
-            <h2>
-                Academic Lens
-            </h2>
-
-            <span>
-                Student Performance Analyzer
-            </span>
+                <span>
+                    Student Performance Analyzer
+                </span>
+            </div>
 
         </div>
 
 
-    </div>
+        <div class="nav-actions">
+
+            <!-- Theme -->
+            <button
+                type="button"
+                class="icon-btn"
+                id="themeButton"
+                title="Toggle theme">
+
+                <i class="fa-solid fa-moon"></i>
+
+            </button>
+
+
+            <!-- Logout -->
+            <a
+                href="{{ url_for('logout') }}"
+                class="logout-btn">
+
+                <i class="fa-solid fa-right-from-bracket"></i>
+
+                <span>Logout</span>
+
+            </a>
+
+        </div>
+
+    </header>
 
 
 
-    <div class="nav-actions">
+    <!-- =========================================================
+         SIDEBAR
+         ========================================================= -->
+
+    <aside class="sidebar">
+
+        <!-- MAIN MENU -->
+
+        <div class="sidebar-section-title">
+            MAIN MENU
+        </div>
 
 
-        <button
-            class="icon-btn"
-            id="themeButton"
-            title="Toggle theme">
+        <nav class="sidebar-nav">
 
-            <i class="fa-solid fa-moon"></i>
+            <!-- Dashboard -->
+            <a
+                href="{{ url_for('student_dashboard') }}"
+                class="sidebar-link">
 
-        </button>
+                <i class="fa-solid fa-chart-pie"></i>
 
+                <span>Dashboard</span>
 
-        <a
-            href="{{ url_for('logout') }}"
-            class="logout-btn">
-
-            <i class="fa-solid fa-right-from-bracket"></i>
-
-            Logout
-
-        </a>
+            </a>
 
 
-    </div>
+            <!-- Performance -->
+            <a
+                href="{{ url_for('student_performance_page') }}"
+                class="sidebar-link">
 
-</header>
+                <i class="fa-solid fa-chart-line"></i>
 
+                <span>Performance</span>
 
-
-<!-- =====================================================
-     MAIN CONTENT
-===================================================== -->
-
-<main class="main-content">
-
-
-<div class="page-container">
+            </a>
 
 
-    <!-- =================================================
-         PAGE HEADER
-    ================================================== -->
-
-    <div class="page-header">
-
-
-        <div>
-
-            <h1>
+            <!-- Attendance -->
+            <a
+                href="{{ url_for('student_attendance') }}"
+                class="sidebar-link active">
 
                 <i class="fa-solid fa-calendar-check"></i>
 
-                Attendance
+                <span>Attendance</span>
 
-            </h1>
+            </a>
 
 
-            <p>
+            <!-- Subjects -->
+            <a
+                href="{{ url_for('student_subjects') }}"
+                class="sidebar-link">
 
-                {{ student.name }}
+                <i class="fa-solid fa-book-open"></i>
 
-                •
+                <span>Subjects</span>
 
-                {{ student.course }}
+            </a>
 
-                •
+        </nav>
 
-                Semester {{ student.semester }}
 
-            </p>
 
+        <!-- ACCOUNT -->
+
+        <div class="sidebar-section-title account-title">
+            ACCOUNT
         </div>
 
 
-        <a
-            href="{{ url_for('student_dashboard') }}"
-            class="back-btn">
+        <nav class="sidebar-nav">
 
-            <i class="fa-solid fa-arrow-left"></i>
+            <!-- Profile -->
+            <a
+                href="{{ url_for('student_profile') }}"
+                class="sidebar-link">
 
-            Dashboard
+                <i class="fa-solid fa-user"></i>
 
-        </a>
+                <span>Profile</span>
 
-
-    </div>
-
-
-
-    <!-- =================================================
-         STATISTICS
-    ================================================== -->
-
-    <div class="stats">
+            </a>
 
 
-        <!-- TOTAL CLASSES -->
+            <!-- Logout -->
+            <a
+                href="{{ url_for('logout') }}"
+                class="sidebar-link logout-link">
 
-        <div class="stat">
+                <i class="fa-solid fa-right-from-bracket"></i>
 
-            <div class="stat-icon blue">
+                <span>Logout</span>
 
-                <i class="fa-solid fa-calendar-days"></i>
+            </a>
+
+        </nav>
+
+    </aside>
+
+
+
+    <!-- =========================================================
+         MAIN CONTENT
+         ========================================================= -->
+
+    <main class="main-content">
+
+        <div class="page-container">
+
+
+            <!-- =================================================
+                 PAGE HEADER
+                 ================================================= -->
+
+            <div class="page-header">
+
+                <div class="page-header-left">
+
+                    <h1>
+
+                        <i class="fa-solid fa-calendar-check"></i>
+
+                        Attendance
+
+                    </h1>
+
+
+                    <p>
+
+                        {{ student.name }}
+
+                        • {{ student.course }}
+
+                        • Semester {{ student.semester }}
+
+                    </p>
+
+                </div>
+
+
+                <a
+                    href="{{ url_for('student_dashboard') }}"
+                    class="back-btn">
+
+                    <i class="fa-solid fa-arrow-left"></i>
+
+                    Dashboard
+
+                </a>
 
             </div>
 
 
-            <h3>
-                Total Classes
-            </h3>
+
+            <!-- =================================================
+                 STATISTICS
+                 ================================================= -->
+
+            <div class="stats">
 
 
-            <h2>
-                {{ total_classes }}
-            </h2>
+                <!-- TOTAL CLASSES -->
 
-        </div>
+                <div class="stat">
+
+                    <div class="stat-icon blue">
+
+                        <i class="fa-solid fa-calendar-days"></i>
+
+                    </div>
+
+                    <h3>
+                        Total Classes
+                    </h3>
+
+                    <h2>
+                        {{ total_classes | default(0) }}
+                    </h2>
+
+                </div>
 
 
 
-        <!-- ATTENDED -->
+                <!-- ATTENDED -->
 
-        <div class="stat">
+                <div class="stat">
 
-            <div class="stat-icon green">
+                    <div class="stat-icon green">
 
-                <i class="fa-solid fa-circle-check"></i>
+                        <i class="fa-solid fa-circle-check"></i>
+
+                    </div>
+
+                    <h3>
+                        Classes Attended
+                    </h3>
+
+                    <h2>
+                        {{ attended_classes | default(0) }}
+                    </h2>
+
+                </div>
+
+
+
+                <!-- PERCENTAGE -->
+
+                <div class="stat">
+
+                    <div class="stat-icon purple">
+
+                        <i class="fa-solid fa-percent"></i>
+
+                    </div>
+
+                    <h3>
+                        Attendance Percentage
+                    </h3>
+
+                    <h2>
+                        {{ attendance_percentage | default(0) }}%
+                    </h2>
+
+                </div>
 
             </div>
 
 
-            <h3>
-                Classes Attended
-            </h3>
+
+            <!-- =================================================
+                 ATTENDANCE CHART
+                 ================================================= -->
+
+            <div class="chart-card">
+
+                <h2>
+
+                    <i class="fa-solid fa-chart-pie"></i>
+
+                    Attendance Overview
+
+                </h2>
 
 
-            <h2>
-                {{ attended_classes }}
-            </h2>
-
-        </div>
+                <p>
+                    Attended classes compared with missed classes.
+                </p>
 
 
+                <div class="chart-box">
 
-        <!-- PERCENTAGE -->
+                    <canvas
+                        id="attendanceChart">
+                    </canvas>
 
-        <div class="stat">
-
-            <div class="stat-icon purple">
-
-                <i class="fa-solid fa-percent"></i>
+                </div>
 
             </div>
 
 
-            <h3>
-                Attendance Percentage
-            </h3>
+
+            <!-- =================================================
+                 SUBJECT-WISE TABLE
+                 ================================================= -->
+
+            <div class="table-card">
+
+                <h2>
+
+                    <i class="fa-solid fa-table"></i>
+
+                    Subject-wise Attendance
+
+                </h2>
 
 
-            <h2>
-                {{ attendance_percentage }}%
-            </h2>
+                {% if attendance %}
+
+                    <div class="table-wrapper">
+
+                        <table class="attendance-table">
+
+                            <thead>
+
+                                <tr>
+
+                                    <th>
+                                        Subject
+                                    </th>
+
+                                    <th>
+                                        Total Classes
+                                    </th>
+
+                                    <th>
+                                        Attended
+                                    </th>
+
+                                    <th>
+                                        Absent
+                                    </th>
+
+                                    <th>
+                                        Percentage
+                                    </th>
+
+                                </tr>
+
+                            </thead>
+
+
+                            <tbody>
+
+                                {% for item in attendance %}
+
+                                    <tr>
+
+                                        <!-- SUBJECT -->
+
+                                        <td>
+
+                                            <span class="subject-name">
+
+                                                {{ item.subject_name }}
+
+                                            </span>
+
+                                        </td>
+
+
+                                        <!-- TOTAL -->
+
+                                        <td>
+
+                                            <span class="number-value">
+
+                                                {{ item.total_classes or 0 }}
+
+                                            </span>
+
+                                        </td>
+
+
+                                        <!-- ATTENDED -->
+
+                                        <td>
+
+                                            <span class="number-value">
+
+                                                {{ item.attended_classes or 0 }}
+
+                                            </span>
+
+                                        </td>
+
+
+                                        <!-- ABSENT -->
+
+                                        <td>
+
+                                            <span class="absent-value">
+
+                                                {{
+                                                    (item.total_classes or 0)
+                                                    -
+                                                    (item.attended_classes or 0)
+                                                }}
+
+                                            </span>
+
+                                        </td>
+
+
+                                        <!-- PERCENTAGE -->
+
+                                        <td>
+
+                                            {% if item.total_classes
+                                                  and item.total_classes > 0 %}
+
+                                                {% set percentage =
+                                                    (
+                                                        (item.attended_classes or 0)
+                                                        /
+                                                        item.total_classes
+                                                        *
+                                                        100
+                                                    ) | round(1)
+                                                %}
+
+
+                                                <span class="percentage">
+
+                                                    {{ percentage }}%
+
+                                                </span>
+
+
+                                                <div class="attendance-progress">
+
+                                                    <div
+                                                        class="attendance-progress-bar"
+                                                        data-width="{{ percentage }}">
+                                                    </div>
+
+                                                </div>
+
+                                            {% else %}
+
+                                                <span class="percentage">
+                                                    0%
+                                                </span>
+
+                                            {% endif %}
+
+                                        </td>
+
+                                    </tr>
+
+                                {% endfor %}
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                {% else %}
+
+                    <div class="empty">
+
+                        <i class="fa-solid fa-calendar-xmark"></i>
+
+                        <p>
+                            No attendance records have been added yet.
+                        </p>
+
+                    </div>
+
+                {% endif %}
+
+            </div>
 
         </div>
 
+    </main>
 
-    </div>
 
 
+    <!-- =========================================================
+         FLASK DATA FOR CHART
+         ========================================================= -->
 
-    <!-- =================================================
-         PIE CHART
-    ================================================== -->
+    <script id="attendance-data" type="application/json">
+    {
+        "attended":
+            {{ attended_classes | default(0) | int }},
 
-    <div class="chart-card">
-
-
-        <h2>
-
-            <i class="fa-solid fa-chart-pie"></i>
-
-            Attendance Overview
-
-        </h2>
-
-
-        <p>
-            Attended classes compared with missed classes.
-        </p>
-
-
-        <div class="chart-box">
-
-            <canvas
-                id="attendanceChart">
-            </canvas>
-
-        </div>
-
-
-    </div>
-
-
-
-    <!-- =================================================
-         SUBJECT TABLE
-    ================================================== -->
-
-    <div class="table-card">
-
-
-        <h2>
-
-            <i
-                class="fa-solid fa-table"
-                style="color:var(--primary);">
-            </i>
-
-            Subject-wise Attendance
-
-        </h2>
-
-
-        {% if attendance %}
-
-
-        <div class="table-wrapper">
-
-
-            <table class="attendance-table">
-
-
-                <thead>
-
-                    <tr>
-
-                        <th>
-                            Subject
-                        </th>
-
-                        <th>
-                            Total Classes
-                        </th>
-
-                        <th>
-                            Attended
-                        </th>
-
-                        <th>
-                            Absent
-                        </th>
-
-                        <th>
-                            Percentage
-                        </th>
-
-                    </tr>
-
-                </thead>
-
-
-                <tbody>
-
-
-                {% for item in attendance %}
-
-
-                    <tr>
-
-
-                        <!-- SUBJECT -->
-
-                        <td>
-
-                            <span
-                                class="subject-name">
-
-                                {{ item.subject_name }}
-
-                            </span>
-
-                        </td>
-
-
-
-                        <!-- TOTAL -->
-
-                        <td>
-
-                            <span
-                                class="number-value">
-
-                                {{ item.total_classes or 0 }}
-
-                            </span>
-
-                        </td>
-
-
-
-                        <!-- ATTENDED -->
-
-                        <td>
-
-                            <span
-                                class="number-value">
-
-                                {{ item.attended_classes or 0 }}
-
-                            </span>
-
-                        </td>
-
-
-
-                        <!-- ABSENT -->
-
-                        <td>
-
-                            <span
-                                class="absent-value">
-
-                                {{
-                                    (item.total_classes or 0)
-                                    -
-                                    (item.attended_classes or 0)
-                                }}
-
-                            </span>
-
-                        </td>
-
-
-
-                        <!-- PERCENTAGE -->
-
-                        <td>
-
-
-                            {% if item.total_classes
-                                  and item.total_classes > 0 %}
-
-
-                                {% set percentage =
-                                    (
-                                        (item.attended_classes or 0)
-                                        /
-                                        item.total_classes
-                                        *
-                                        100
-                                    ) | round(1)
-                                %}
-
-
-                                <span
-                                    class="percentage">
-
-                                    {{ percentage }}%
-
-                                </span>
-
-
-                                <div
-                                    class="attendance-progress">
-
-                                    <div
-                                        class="attendance-progress-bar"
-                                        data-width="{{ percentage }}">
-
-                                    </div>
-
-                                </div>
-
-
-                            {% else %}
-
-                                <span
-                                    class="percentage">
-
-                                    0%
-
-                                </span>
-
-
-                            {% endif %}
-
-
-                        </td>
-
-
-                    </tr>
-
-
-                {% endfor %}
-
-
-                </tbody>
-
-
-            </table>
-
-
-        </div>
-
-
-        {% else %}
-
-
-        <div class="empty">
-
-
-            <i
-                class="fa-solid fa-calendar-xmark"
-                style="
-                    font-size:45px;
-                    display:block;
-                ">
-            </i>
-
-
-            <p>
-
-                No attendance records
-                have been added yet.
-
-            </p>
-
-
-        </div>
-
-
-        {% endif %}
-
-
-    </div>
-
-
-</div>
-
-</main>
-
-
-
-<!-- =====================================================
-     FLASK DATA
-===================================================== -->
-
-<script id="attendance-data" type="application/json">
-{
-    "attended":
-        {{ attended_classes | default(0) | int }},
-
-    "absent":
-        {{ absent_classes | default(0) | int }}
-}
-</script>
-
-
-
-<!-- =====================================================
-     JAVASCRIPT
-===================================================== -->
-
-<script>
-
-
-/* =====================================================
-   THEME
-===================================================== */
-
-const themeButton =
-    document.getElementById(
-        "themeButton"
-    );
-
-
-let savedTheme =
-    localStorage.getItem(
-        "academicLensTheme"
-    );
-
-
-if (savedTheme === "dark") {
-
-    document.body.classList.add("dark");
-
-}
-
-
-/* =====================================================
-   UPDATE THEME ICON
-===================================================== */
-
-function updateThemeIcon() {
-
-    if (!themeButton) {
-        return;
+        "absent":
+            {{ absent_classes | default(0) | int }}
     }
+    </script>
 
 
-    const icon =
-        themeButton.querySelector("i");
 
+    <!-- =========================================================
+         JAVASCRIPT
+         ========================================================= -->
 
-    if (
-        document.body.classList.contains("dark")
-    ) {
+    <script>
 
-        icon.className =
-            "fa-solid fa-sun";
+        /* =====================================================
+           THEME
+           ===================================================== */
 
-        themeButton.title =
-            "Switch to light mode";
+        const themeButton =
+            document.getElementById("themeButton");
 
-    }
 
-    else {
+        const savedTheme =
+            localStorage.getItem("academicLensTheme");
 
-        icon.className =
-            "fa-solid fa-moon";
 
-        themeButton.title =
-            "Switch to dark mode";
+        if (savedTheme === "dark") {
+            document.body.classList.add("dark");
+        }
 
-    }
 
-}
+        /* =====================================================
+           THEME ICON
+           ===================================================== */
 
+        function updateThemeIcon() {
 
-updateThemeIcon();
+            if (!themeButton) {
+                return;
+            }
 
 
+            const icon =
+                themeButton.querySelector("i");
 
-/* =====================================================
-   ATTENDANCE DATA
-===================================================== */
 
-const attendanceElement =
-    document.getElementById(
-        "attendance-data"
-    );
+            if (document.body.classList.contains("dark")) {
 
+                icon.className =
+                    "fa-solid fa-sun";
 
-const attendanceData =
-    JSON.parse(
-        attendanceElement.textContent
-    );
+                themeButton.title =
+                    "Switch to light mode";
 
+            } else {
 
-/* =====================================================
-   CHART INSTANCE
-===================================================== */
+                icon.className =
+                    "fa-solid fa-moon";
 
-let attendanceChart = null;
+                themeButton.title =
+                    "Switch to dark mode";
+            }
+        }
 
 
+        updateThemeIcon();
 
-/* =====================================================
-   CHART THEME
-===================================================== */
 
-function getAttendanceChartColors() {
 
-    const isDark =
-        document.body.classList.contains(
-            "dark"
-        );
+        /* =====================================================
+           ATTENDANCE DATA
+           ===================================================== */
 
+        const attendanceElement =
+            document.getElementById("attendance-data");
 
-    return {
 
-        text:
-            isDark
-                ? "#e2e8f0"
-                : "#334155",
+        let attendanceData = {
+            attended: 0,
+            absent: 0
+        };
 
-        muted:
-            isDark
-                ? "#94a3b8"
-                : "#64748b",
 
-        attended:
-            isDark
-                ? "#60a5fa"
-                : "#3b82f6",
+        if (attendanceElement) {
 
-        absent:
-            isDark
-                ? "#fb7185"
-                : "#f43f5e"
+            try {
 
-    };
+                attendanceData =
+                    JSON.parse(
+                        attendanceElement.textContent
+                    );
 
-}
+            } catch (error) {
 
-
-
-/* =====================================================
-   CREATE ATTENDANCE CHART
-===================================================== */
-
-function createAttendanceChart() {
-
-
-    const canvas =
-        document.getElementById(
-            "attendanceChart"
-        );
-
-
-    if (!canvas) {
-        return;
-    }
-
-
-    /* Destroy previous chart */
-
-    if (attendanceChart) {
-
-        attendanceChart.destroy();
-
-    }
-
-
-    const colors =
-        getAttendanceChartColors();
-
-
-    attendanceChart =
-        new Chart(
-            canvas,
-            {
-
-                type:
-                    "doughnut",
-
-
-                data: {
-
-                    labels: [
-
-                        "Attended",
-
-                        "Absent"
-
-                    ],
-
-
-                    datasets: [
-
-                        {
-
-                            data: [
-
-                                attendanceData.attended,
-
-                                attendanceData.absent
-
-                            ],
-
-
-                            backgroundColor: [
-
-                                colors.attended,
-
-                                colors.absent
-
-                            ],
-
-
-                            borderWidth:
-                                0
-
-
-                        }
-
-                    ]
-
-                },
-
-
-                options: {
-
-                    responsive:
-                        true,
-
-                    maintainAspectRatio:
-                        false,
-
-                    cutout:
-                        "65%",
-
-
-                    animation: {
-
-                        duration:
-                            900
-
-                    },
-
-
-                    plugins: {
-
-                        legend: {
-
-                            position:
-                                "bottom",
-
-
-                            labels: {
-
-                                color:
-                                    colors.text,
-
-                                padding:
-                                    18,
-
-                                font: {
-
-                                    size:
-                                        13
-
-                                }
-
-                            }
-
-                        }
-
-                    }
-
-                }
+                console.error(
+                    "Unable to read attendance data:",
+                    error
+                );
 
             }
-        );
-
-}
+        }
 
 
 
-/* =====================================================
-   THEME BUTTON
-===================================================== */
+        /* =====================================================
+           CHART
+           ===================================================== */
 
-if (themeButton) {
-
-    themeButton.addEventListener(
-        "click",
-        function () {
+        let attendanceChart = null;
 
 
-            document.body.classList.toggle(
-                "dark"
-            );
+        function getChartColors() {
+
+            const dark =
+                document.body.classList.contains("dark");
 
 
-            const isDark =
-                document.body.classList.contains(
-                    "dark"
+            return {
+
+                text:
+                    dark
+                        ? "#e2e8f0"
+                        : "#334155",
+
+                attended:
+                    dark
+                        ? "#60a5fa"
+                        : "#3b82f6",
+
+                absent:
+                    dark
+                        ? "#fb7185"
+                        : "#f43f5e"
+            };
+        }
+
+
+
+        function createAttendanceChart() {
+
+            const canvas =
+                document.getElementById(
+                    "attendanceChart"
                 );
 
 
-            localStorage.setItem(
-                "academicLensTheme",
-
-                isDark
-                    ? "dark"
-                    : "light"
-            );
+            if (!canvas) {
+                return;
+            }
 
 
-            updateThemeIcon();
+            if (attendanceChart) {
+
+                attendanceChart.destroy();
+
+                attendanceChart = null;
+            }
 
 
-            /* Update chart */
+            const colors =
+                getChartColors();
 
-            createAttendanceChart();
+
+            attendanceChart =
+                new Chart(
+                    canvas,
+                    {
+                        type: "doughnut",
+
+                        data: {
+
+                            labels: [
+                                "Attended",
+                                "Absent"
+                            ],
+
+                            datasets: [
+
+                                {
+                                    data: [
+                                        attendanceData.attended,
+                                        attendanceData.absent
+                                    ],
+
+                                    backgroundColor: [
+                                        colors.attended,
+                                        colors.absent
+                                    ],
+
+                                    borderWidth: 0,
+
+                                    hoverOffset: 7
+                                }
+
+                            ]
+                        },
 
 
+                        options: {
+
+                            responsive: true,
+
+                            maintainAspectRatio: false,
+
+                            cutout: "65%",
+
+
+                            animation: {
+                                duration: 900
+                            },
+
+
+                            plugins: {
+
+                                legend: {
+
+                                    position: "bottom",
+
+                                    labels: {
+
+                                        color:
+                                            colors.text,
+
+                                        padding: 18,
+
+                                        font: {
+                                            size: 13
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                );
         }
-    );
-
-}
 
 
 
-/* =====================================================
-   TABLE PROGRESS BARS
-===================================================== */
+        /* =====================================================
+           THEME TOGGLE
+           ===================================================== */
 
-document
-    .querySelectorAll(
-        ".attendance-progress-bar"
-    )
-    .forEach(bar => {
+        if (themeButton) {
 
+            themeButton.addEventListener(
+                "click",
+                function () {
 
-        const width =
-            Number(
-                bar.dataset.width
-            ) || 0;
+                    document.body.classList.toggle("dark");
 
 
-        setTimeout(() => {
-
-            bar.style.width =
-                Math.min(
-                    Math.max(
-                        width,
-                        0
-                    ),
-                    100
-                ) + "%";
-
-        }, 300);
-
-    });
+                    const isDark =
+                        document.body.classList.contains(
+                            "dark"
+                        );
 
 
+                    localStorage.setItem(
+                        "academicLensTheme",
+                        isDark
+                            ? "dark"
+                            : "light"
+                    );
 
-/* =====================================================
-   INITIALIZE CHART
-===================================================== */
 
-createAttendanceChart();
+                    updateThemeIcon();
 
 
-</script>
+                    /* Rebuild chart with new colours */
+                    createAttendanceChart();
 
+                }
+            );
+        }
+
+
+
+        /* =====================================================
+           PROGRESS BARS
+           ===================================================== */
+
+        document
+            .querySelectorAll(
+                ".attendance-progress-bar"
+            )
+            .forEach(function (bar) {
+
+                const width =
+                    Number(
+                        bar.dataset.width
+                    ) || 0;
+
+
+                setTimeout(function () {
+
+                    bar.style.width =
+                        Math.min(
+                            Math.max(
+                                width,
+                                0
+                            ),
+                            100
+                        ) + "%";
+
+                }, 300);
+
+            });
+
+
+
+        /* =====================================================
+           CREATE CHART
+           ===================================================== */
+
+        createAttendanceChart();
+
+    </script>
 
 </body>
-
 </html>
